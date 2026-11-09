@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LongkaliVerse Baru</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial;background:#0f172a;color:#fff;overflow:hidden}
+#header{position:fixed;top:0;left:0;right:0;z-index:999;background:#0e4a5a;padding:10px 12px;display:flex;justify-content:space-between}
+#header h1{margin:0;font-size:22px}#header h1 span{font-size:11px;background:#f59e0b;color:#000;padding:3px 7px;border-radius:6px}
+#header .r{text-align:right;font-size:11px}
+#header .r b{background:#134e4a;padding:3px 8px;border-radius:20px}
+#uangBar{background:#f59e0b;color:#000;font-weight:900;padding:4px 10px;border-radius:20px;font-size:12px;margin-top:4px;display:inline-block}
+#marquee{position:fixed;top:56px;left:0;right:0;z-index:999;background:#facc15;color:#000;font-size:13px;font-weight:700;padding:6px;overflow:hidden;white-space:nowrap}
+#marquee span{display:inline-block;animation:j 18s linear infinite}@keyframes j{from{transform:translateX(100%)}to{transform:translateX(-100%)}}
+#mapWrap{position:fixed;top:82px;left:0;right:0;bottom:62px;background:#87ceeb;z-index:1}
+#mapWrap canvas{position:absolute !important;top:0 !important;left:0 !important;z-index:1 !important;display:block !important}
+#card{position:absolute;top:12px;left:12px;z-index:50;background:#fff;color:#000;border-radius:14px;padding:10px 14px;min-width:140px;border:2px solid #0ea5e9;pointer-events:none}
+#card small{letter-spacing:2px;color:#0ea5e9;font-weight:900;font-size:11px}
+#card b{font-size:30px}
+#card p{margin:2px 0 0;font-size:11px;color:#64748b}
+#online{position:absolute;top:92px;left:12px;z-index:50;background:#16a34a;padding:7px 12px;border-radius:20px;font-size:13px;font-weight:700;pointer-events:none}
+#uangFloat{position:absolute;top:150px;left:12px;z-index:50;background:#f59e0b;color:#000;padding:8px 12px;border-radius:20px;font-weight:900;font-size:13px;pointer-events:none}
+#side{position:absolute;top:12px;right:12px;z-index:100;display:flex;flex-direction:column;gap:8px}
+#side button{width:44px;height:44px;border-radius:12px;border:none;background:#fff;font-size:22px;cursor:pointer}
+#btnJalan{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);z-index:100;background:#0e4a5a;color:#fff;border:none;padding:13px 26px;border-radius:30px;font-size:16px;font-weight:800;cursor:pointer}
+#btnUang{position:absolute;bottom:70px;left:50%;transform:translateX(-50%);z-index:100;background:#f59e0b;color:#000;border:none;padding:10px 18px;border-radius:20px;font-size:13px;font-weight:900;cursor:pointer}
+#btnKembali{position:fixed;top:12px;left:12px;z-index:9999;display:none;background:#ef4444;color:#fff;border:none;padding:10px 14px;border-radius:20px;font-weight:800;cursor:pointer}
+#modeLabel{position:fixed;top:12px;right:12px;z-index:9999;display:none;background:rgba(0,0,0,.7);padding:8px 12px;border-radius:20px;font-size:12px;pointer-events:none}
+#nav{position:fixed;bottom:0;left:0;right:0;z-index:999;background:#fdf6e3;display:flex;padding:6px 0 8px}
+#nav button{flex:1;background:none;border:none;font-size:14px;color:#0e4a5a;display:flex;flex-direction:column;align-items:center;cursor:pointer;padding:10px 0;font-weight:900}
+#nav button span{font-size:24px;pointer-events:none}
+#joystick{position:fixed;bottom:30px;left:20px;z-index:9999;width:130px;height:130px;background:rgba(255,255,255,.25);border:2px solid rgba(255,255,255,.6);border-radius:50%;display:none;touch-action:none}
+#knob{position:absolute;top:50%;left:50%;width:55px;height:55px;background:#fff;border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 4px 10px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;font-size:24px;pointer-events:none}
+#btnLompat{position:fixed;bottom:45px;right:20px;z-index:9999;width:70px;height:70px;border-radius:50%;background:#f59e0b;border:3px solid #fff;color:#000;font-size:28px;font-weight:900;display:none;cursor:pointer}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+<div id="header"><div><h1>LongkaliVerse <span>BARU</span></h1></div><div class="r"><div id="jam">Sen, 9 Nov 2026</div><div><b>☀️ SIANG • 🌤️ CERAH</b></div><div><span id="uangBar">💰 Rp 50.000</span></div></div></div>
+<div id="marquee"><span>📣 Selamat datang di LongkaliVerse Baru! • 💰 Uang kamu Rp 50.000 • 🎮 Pencet Jalan-jalan buat keliling desa!</span></div>
+<div id="mapWrap">
+<div id="card"><small>WARGA</small><br><b>4.000</b><p>diperbarui 2026-11-08 17:44</p></div>
+<div id="online">🟢 1 warga online</div>
+<div id="uangFloat">💰 <span id="uangFloatText">Rp 50.000</span></div>
+<div id="side"><button type="button" onclick="zoomIn()">+</button><button type="button" onclick="zoomOut()">−</button><button type="button" onclick="alert('Favorit!')">★</button></div>
+<button id="btnUang" type="button" onclick="tambahUang(10000)">💰 + Tambah Rp 10.000</button>
+<button id="btnJalan" type="button" onclick="masukJalan()">🎮 Jalan-jalan</button>
+</div>
+<button id="btnKembali" type="button" onclick="keluarJalan()">⬅ Kembali ke Menu</button>
+<div id="modeLabel">🎮 MODE JALAN-JALAN</div>
+<div id="joystick"><div id="knob">🕹️</div></div>
+<button id="btnLompat" type="button" onclick="lompat()">⬆️</button>
+<div id="nav">
+<button type="button"><span>🗺️</span>Map</button>
+</div>
+<script>
+var UANG_AWAL = 50000;
+var UANG = UANG_AWAL;
+function formatUang(n){return 'Rp '+n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.');}
+function updateUang(){document.getElementById('uangBar').innerText='💰 '+formatUang(UANG);document.getElementById('uangFloatText').innerText=formatUang(UANG);}
+function tambahUang(j){UANG+=j;updateUang();alert('Dapat +'+formatUang(j)+'! Total: '+formatUang(UANG));}
+updateUang();
+let scene=new THREE.Scene();scene.background=new THREE.Color(0x87ceeb);
+let cam=new THREE.PerspectiveCamera(55,innerWidth/(innerHeight-144),0.1,500);
+let ren=new THREE.WebGLRenderer({antialias:true});ren.setClearColor(0x87ceeb,1);ren.setSize(innerWidth,innerHeight-144);ren.domElement.style.position='absolute';ren.domElement.style.top='0';ren.domElement.style.left='0';ren.domElement.style.zIndex='1';ren.domElement.style.touchAction='none';document.getElementById('mapWrap').prepend(ren.domElement);
+scene.add(new THREE.AmbientLight(0xffffff,1.6));
+scene.add(new THREE.HemisphereLight(0xffffff,0x4ade80,1.2));
+let dl=new THREE.DirectionalLight(0xffffff,1.2);dl.position.set(20,30,10);scene.add(dl);
+let ground=new THREE.Mesh(new THREE.PlaneGeometry(110,110),new THREE.MeshLambertMaterial({color:0x4ade80}));ground.rotation.x=-Math.PI/2;scene.add(ground);
+function jalan(x1,z1,x2,z2){let len=Math.hypot(x2-x1,z2-z1);let a=Math.atan2(z2-z1,x2-x1);let m=new THREE.Mesh(new THREE.BoxGeometry(len,0.2,4.5),new THREE.MeshLambertMaterial({color:0x334155}));m.position.set((x1+x2)/2,0.1,(z1+z2)/2);m.rotation.y=-a;scene.add(m);let g=new THREE.Mesh(new THREE.BoxGeometry(len,0.25,0.4),new THREE.MeshLambertMaterial({color:0xfacc15}));g.position.set((x1+x2)/2,0.12,(z1+z2)/2);g.rotation.y=-a;scene.add(g);}
+jalan(-30,0,30,0);jalan(0,-30,0,30);
+function rumah(x,z,w,a){let g=new THREE.Group();g.position.set(x,0,z);let bm=new THREE.MeshLambertMaterial({color:w});let rm=new THREE.MeshLambertMaterial({color:a});let bb=new THREE.Mesh(new THREE.BoxGeometry(6,3.5,6),bm);bb.position.y=1.75;g.add(bb);let rr=new THREE.Mesh(new THREE.ConeGeometry(5.2,3.5,4),rm);rr.position.y=5.2;rr.rotation.y=Math.PI/4;g.add(rr);let door=new THREE.Mesh(new THREE.BoxGeometry(1.4,2.2,0.2),new THREE.MeshLambertMaterial({color:0x78350f}));door.position.set(0,1.1,3.05);g.add(door);scene.add(g);}
+rumah(10,10,0xffffff,0xdc2626);rumah(-15,5,0xfacc15,0x78350f);rumah(20,-15,0x3b82f6,0x111827);rumah(-20,-15,0x22c55e,0xdc2626);
+function pohon(x,z){let g=new THREE.Group();g.position.set(x,0,z);let t=new THREE.Mesh(new THREE.CylinderGeometry(0.4,0.5,3),new THREE.MeshLambertMaterial({color:0x78350f}));t.position.y=1.5;g.add(t);let l=new THREE.Mesh(new THREE.SphereGeometry(2.2,8,8),new THREE.MeshLambertMaterial({color:0x166534}));l.position.y=4.2;g.add(l);scene.add(g);}
+pohon(5,-5);pohon(-5,5);pohon(25,5);pohon(-25,-5);pohon(8,-12);pohon(-18,15);
+function lampu(x,z){let t=new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.2,5),new THREE.MeshLambertMaterial({color:0x111827}));t.position.set(x,2.5,z);scene.add(t);let s=new THREE.Mesh(new THREE.SphereGeometry(0.7,8,8),new THREE.MeshBasicMaterial({color:0xfde047}));s.position.set(x,5.2,z);scene.add(s);}
+lampu(0,5);lampu(0,-5);lampu(10,0);lampu(-10,0);
+let pemain=new THREE.Group();let badan=new THREE.Mesh(new THREE.CylinderGeometry(0.6,0.7,1.8,8),new THREE.MeshLambertMaterial({color:0xef4444}));badan.position.y=1.2;pemain.add(badan);let kepala=new THREE.Mesh(new THREE.SphereGeometry(0.6,8,8),new THREE.MeshLambertMaterial({color:0xfde68a}));kepala.position.y=2.6;pemain.add(kepala);scene.add(pemain);
+let yaw=0.8,pitch=0.9,dist=48;
+let joyX=0,joyY=0,isJoy=false,joyId=null,lompatY=0,isLompat=false;
+function lompat(){if(isLompat)return;isLompat=true;lompatY=0;}
+function updateCam(){if(!modeJalan){cam.position.set(Math.sin(yaw)*Math.cos(pitch)*dist,Math.sin(pitch)*dist,Math.cos(yaw)*Math.cos(pitch)*dist);cam.lookAt(0,0,0);}else{cam.position.set(pemain.position.x+Math.sin(yaw)*8,pemain.position.y+5,pemain.position.z+Math.cos(yaw)*8);cam.lookAt(pemain.position.x,pemain.position.y+2,pemain.position.z);}}updateCam();
+var modeJalan=false;
+function masukJalan(){modeJalan=true;document.getElementById('header').style.display='none';document.getElementById('marquee').style.display='none';document.getElementById('nav').style.display='none';document.getElementById('mapWrap').style.top='0';document.getElementById('mapWrap').style.bottom='0';document.getElementById('btnKembali').style.display='block';document.getElementById('modeLabel').style.display='block';document.getElementById('joystick').style.display='block';document.getElementById('btnLompat').style.display='block';ren.setSize(innerWidth,innerHeight);cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();updateCam();}
+function keluarJalan(){modeJalan=false;joyX=0;joyY=0;document.getElementById('header').style.display='flex';document.getElementById('marquee').style.display='block';document.getElementById('nav').style.display='flex';document.getElementById('mapWrap').style.top='82px';document.getElementById('mapWrap').style.bottom='62px';document.getElementById('btnKembali').style.display='none';document.getElementById('modeLabel').style.display='none';document.getElementById('joystick').style.display='none';document.getElementById('btnLompat').style.display='none';ren.setSize(innerWidth,innerHeight-144);cam.aspect=innerWidth/(innerHeight-144);cam.updateProjectionMatrix();updateCam();}
+function zoomIn(){dist=Math.max(15,dist-5);updateCam();}
+function zoomOut(){dist=Math.min(90,dist+5);updateCam();}
+function updateJam(){let d=new Date();let h=['Min','Sen','Sel','Rab','Kam','Jum','Sab'][d.getDay()];let b=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'][d.getMonth()];document.getElementById('jam').innerText=h+', '+d.getDate()+' '+b+' '+d.getFullYear()+' • '+String(d.getHours()).padStart(2,'0')+'.'+String(d.getMinutes()).padStart(2,'0')+' WIB';}setInterval(updateJam,10000);updateJam();
+let isDrag=false,lastX=0,lastY=0;
+ren.domElement.addEventListener('pointerdown',e=>{isDrag=true;lastX=e.clientX;lastY=e.clientY;});
+ren.domElement.addEventListener('pointermove',e=>{if(!isDrag)return;let dx=e.clientX-lastX;let dy=e.clientY-lastY;if(modeJalan){yaw-=dx*0.01;pitch=Math.max(0.2,Math.min(1.3,pitch+dy*0.005));}else{yaw-=dx*0.01;pitch=Math.max(0.2,Math.min(1.3,pitch+dy*0.01));}lastX=e.clientX;lastY=e.clientY;updateCam();});
+addEventListener('pointerup',()=>isDrag=false);
+let joyEl=document.getElementById('joystick');let knobEl=document.getElementById('knob');
+function joyStart(e){isJoy=true;joyId=e.pointerId;joyEl.setPointerCapture(e.pointerId);joyMove(e);e.stopPropagation();}
+function joyMove(e){if(!isJoy||e.pointerId!==joyId)return;let r=joyEl.getBoundingClientRect();let cx=r.left+r.width/2,cy=r.top+r.height/2;let dx=e.clientX-cx,dy=e.clientY-cy;let max=40;let len=Math.sqrt(dx*dx+dy*dy);if(len>max){dx=dx/len*max;dy=dy/len*max;}knobEl.style.transform='translate(calc(-50% + '+dx+'px), calc(-50% + '+dy+'px))';joyX=dx/max;joyY=dy/max;}
+function joyEnd(e){if(e.pointerId!==joyId)return;isJoy=false;joyX=0;joyY=0;knobEl.style.transform='translate(-50%,-50%)';}
+joyEl.addEventListener('pointerdown',joyStart);joyEl.addEventListener('pointermove',joyMove);joyEl.addEventListener('pointerup',joyEnd);joyEl.addEventListener('pointercancel',joyEnd);
+(function loop(){requestAnimationFrame(loop);if(modeJalan&&(joyX!=0||joyY!=0)){let sin=Math.sin(yaw),cos=Math.cos(yaw);let mx=(joyX*cos+joyY*sin)*0.35;let mz=(joyY*cos-joyX*sin)*0.35;pemain.position.x=Math.max(-48,Math.min(48,pemain.position.x+mx));pemain.position.z=Math.max(-48,Math.min(48,pemain.position.z+mz));pemain.rotation.y=Math.atan2(mx,mz);updateCam();}if(isLompat){lompatY+=0.25;pemain.position.y=Math.sin(lompatY)*2.5;if(lompatY>=Math.PI){pemain.position.y=0;isLompat=false;}updateCam();}ren.render(scene,cam);})();
+</script></body></html>
