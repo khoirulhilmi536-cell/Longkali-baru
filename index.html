@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>LongkaliVerse</title>
+<style>
+  /* ❌ JANGAN DIUBAH BAGIAN STYLE INI */
+  body{margin:0;overflow:hidden;background:#000;font-family:Arial}
+  #ui{position:fixed;top:0;left:0;right:0;background:#111;color:#fff;padding:8px;text-align:center;z-index:10}
+  #ktp{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;color:#000;padding:20px;border-radius:15px;z-index:99;width:280px}
+</style>
+</head>
+<body>
+
+<!-- ======================================================= -->
+<!-- ✅ BOLEH DIUBAH: TULISAN BERJALAN DI ATAS -->
+<!-- ======================================================= -->
+<div id="ui">
+  <marquee>Selamat datang di LongkaliVerse! • Desa Longkali •</marquee>
+  <!-- ✅ BOLEH DIUBAH: UANG YANG MUNCUL DI ATAS, TAPI NANTI OTOMATIS NGIKUTIN ANGKA DI BAWAH -->
+  <div>💰 <span id="uangBar">Rp 0</span> | Warga: 4.000 | <button onclick="bukaKTP()">📇 KTP</button></div>
+</div>
+
+<!-- ======================================================= -->
+<!-- ✅ BOLEH DIUBAH: ISI KTP -->
+<!-- ======================================================= -->
+<div id="ktp">
+  <h3>KTP LONGKALI</h3>
+  <p><b>Nama:</b> KHOIRUL HILMI</p>
+  <p><b>NIK:</b> 6402010908000001</p>
+  <p><b>Alamat:</b> Jl. Longkali RT 01</p>
+  <p><b>Saldo:</b> <span id="ktpUang">Rp 0</span></p>
+  <button onclick="tutupKTP()">Tutup</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// =======================================================
+// ❌ JANGAN DIUBAH: SETUP MAP - SAMPAI SINI JANGAN DISENTUH
+// =======================================================
+let scene = new THREE.Scene();
+let camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+let renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+camera.position.set(0, 20, 25);
+camera.lookAt(0,0,0);
+
+// Tanah
+let tanah = new THREE.Mesh(
+  new THREE.PlaneGeometry(110,110), // ✅ BOLEH DIUBAH: 110 = ukuran map. Ganti 150 biar lebih gede
+  new THREE.MeshBasicMaterial({color:0x2ea043}) // ✅ BOLEH DIUBAH: 0x2ea043 = warna tanah. Ganti 0x8B5A2B jadi coklat
+);
+tanah.rotation.x = -Math.PI/2;
+scene.add(tanah);
+
+// =======================================================
+// ✅✅✅ BAGIAN PALING PENTING - UBAH DI SINI AJA ✅✅✅
+// =======================================================
+
+// 1. UANG - UBAH ANGKA NYA AJA, JANGAN HAPUS TITIK KOMA ;
+let UANG = 0;
+
+// 2. NAMA NPC & OMONGAN NYA - UBAH YANG DI DALAM TANDA PETIK '...'
+let DAFTAR_NPC = [
+  { nama:'Pak RT', omongan:'Halo! Saya Pak RT Longkali...', warna:0x3b82f6, x:-10, z:-10 },
+  { nama:'Bu Sari', omongan:'Selamat datang di Longkali...', warna:0xf59e0b, x:10, z:10 },
+  { nama:'Bang Udin', omongan:'Woi! Lagi jalan-jalan ya?', warna:0xef4444, x:0, z:-15 },
+];
+
+// 3. JALAN - MAU HAPUS JALAN? HAPUS 2 BARIS DI BAWAH INI AJA!
+//    KALAU MAU JALAN NYA BALIK LAGI, TULIS LAGI 2 BARIS INI
+//    >>> MULAI HAPUS DARI SINI KALAU MAU JALAN HILANG <<<
+buatJalan(-30,0,30,0); // Jalan mendatar
+buatJalan(0,-30,0,30); // Jalan tegak
+//    >>> SAMPAI SINI HAPUSNYA <<<
+
+// =======================================================
+// ❌ JANGAN DIUBAH: DARI SINI KE BAWAH JANGAN DISENTUH
+//    INI MESIN NYA, KALAU DIUBAH BISA ERROR
+// =======================================================
+
+function updateUang(){
+  document.getElementById('uangBar').innerText = 'Rp ' + UANG.toLocaleString('id-ID');
+  document.getElementById('ktpUang').innerText = 'Rp ' + UANG.toLocaleString('id-ID');
+}
+updateUang();
+
+function bukaKTP(){ document.getElementById('ktp').style.display='block'; }
+function tutupKTP(){ document.getElementById('ktp').style.display='none'; }
+
+function buatJalan(x1,z1,x2,z2){
+  let len = Math.hypot(x2-x1, z2-z1);
+  let jln = new THREE.Mesh(new THREE.PlaneGeometry(len, 6), new THREE.MeshBasicMaterial({color:0x333333}));
+  jln.rotation.x = -Math.PI/2;
+  jln.rotation.z = -Math.atan2(z2-z1, x2-x1);
+  jln.position.set((x1+x2)/2, 0.1, (z1+z2)/2);
+  scene.add(jln);
+}
+
+function buatOrang(warna, x, z){
+  let badan = new THREE.Mesh(new THREE.BoxGeometry(1,2,1), new THREE.MeshBasicMaterial({color:warna}));
+  badan.position.set(x,1,z);
+  scene.add(badan);
+  return badan;
+}
+
+let listBadanNPC = [];
+DAFTAR_NPC.forEach(npc => {
+  let badan = buatOrang(npc.warna, npc.x, npc.z);
+  listBadanNPC.push(badan);
+});
+
+// Karakter Kamu
+let saya = buatOrang(0x22ff22, 0, 5);
+
+function animasi(){
+  requestAnimationFrame(animasi);
+  renderer.render(scene, camera);
+}
+animasi();
+
+// Kontrol Gerak Sederhana
+document.addEventListener('keydown', e=>{
+  if(e.key=='w') saya.position.z -= 0.5;
+  if(e.key=='s') saya.position.z += 0.5;
+  if(e.key=='a') saya.position.x -= 0.5;
+  if(e.key=='d') saya.position.x += 0.5;
+  camera.position.set(saya.position.x, 20, saya.position.z+25);
+  camera.lookAt(saya.position.x, 0, saya.position.z);
+});
+</script>
+</body>
+</html>
