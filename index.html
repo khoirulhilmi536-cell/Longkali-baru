@@ -76,7 +76,7 @@ body{margin:0;font-family:Arial;background:#0f172a;color:#fff;overflow:hidden}
 <button type="button" id="navKtp" onclick="showKTP()"><span>🪪</span>KTP</button>
 </div>
 <script>
-var UANG = 50000;
+var UANG = 0;
 function formatUang(n){return 'Rp '+n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.');}
 function updateUang(){document.getElementById('uangBar').innerText='💰 '+formatUang(UANG);document.getElementById('uangFloatText').innerText=formatUang(UANG);document.getElementById('ktpUang').innerText=formatUang(UANG);}
 updateUang();
