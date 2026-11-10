@@ -131,6 +131,40 @@ var JUMLAH_POHON = 400;
 var DB_URL = "https://admin-55bc3-default-rtdb.firebaseio.com";
 var KAS_DESA = 0;
 var AKUN_SAAT_INI = null;
+// === MULTIPLAYER ===
+var pemainLain = {};
+async function kirimPosisi(){
+  if(!AKUN_SAAT_INI || !pemain) return;
+  await fetch(DB_URL + "/online/" + AKUN_SAAT_INI.kode + ".json", {method:"PUT", body: JSON.stringify({nama: AKUN_SAAT_INI.nama, x: pemain.position.x, z: pemain.position.z, rot: pemain.rotation.y, waktu: Date.now()})});
+}
+async function ambilPemainLain(){
+  try{
+    let res = await fetch(DB_URL + "/online.json");
+    let data = await res.json();
+    if(!data) return;
+    let count = 0;
+    for(let kode in data){
+      if(data[kode].waktu < Date.now() - 10000) continue;
+      count++;
+      if(AKUN_SAAT_INI && kode == AKUN_SAAT_INI.kode) continue;
+      if(!pemainLain[kode]){
+        let g = new THREE.Group();
+        let b = new THREE.Mesh(new THREE.CylinderGeometry(0.6,0.7,1.8,8), new THREE.MeshLambertMaterial({color:0x3b82f6}));
+        b.position.y = 1.2; g.add(b);
+        let k = new THREE.Mesh(new THREE.SphereGeometry(0.6,8,8), new THREE.MeshLambertMaterial({color:0xfde68a}));
+        k.position.y = 2.6; g.add(k);
+        scene.add(g);
+        pemainLain[kode] = g;
+      }
+      pemainLain[kode].position.x = data[kode].x;
+      pemainLain[kode].position.z = data[kode].z;
+      pemainLain[kode].rotation.y = data[kode].rot;
+    }
+    document.getElementById('onlineCount').innerText = count;
+  }catch(e){}
+}
+setInterval(kirimPosisi, 200);
+setInterval(ambilPemainLain, 200);
 var BATAS_MAP = UKURAN_MAP/2 - 12;
 var BATAS_NPC = UKURAN_MAP/2 - 15;
 var yaw=0.8,pitch=0.9,dist=120;
