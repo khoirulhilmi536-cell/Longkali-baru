@@ -95,7 +95,7 @@ let ren=new THREE.WebGLRenderer({antialias:true});ren.setClearColor(0x87ceeb,1);
 scene.add(new THREE.AmbientLight(0xffffff,0.85));
 scene.add(new THREE.HemisphereLight(0xffffff,0x2ea043,0.55));
 let dl=new THREE.DirectionalLight(0xffffff,0.65);dl.position.set(20,30,10);scene.add(dl);
-let ground=new THREE.Mesh(new THREE.PlaneGeometry(110,110),new THREE.MeshLambertMaterial({color:0x2ea043}));ground.rotation.x=-Math.PI/2;scene.add(ground);
+let ground=new THREE.Mesh(new THREE.PlaneGeometry(220,220),new THREE.MeshLambertMaterial({color:0x2ea043}));ground.rotation.x=-Math.PI/2;scene.add(ground);
 // POHON DOANG - JALAN & BANGUNAN UDAH DIHAPUS
 for(let i=0;i<120;i++){let g=new THREE.Mesh(new THREE.ConeGeometry(0.35,1.2,5),new THREE.MeshLambertMaterial({color:i%2?0x22a355:0x3cb95e}));g.position.set((Math.random()-0.5)*100,0.6,(Math.random()-0.5)*100);scene.add(g);}
 function lampu(x,z){let t=new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.2,5),new THREE.MeshLambertMaterial({color:0x111827}));t.position.set(x,2.5,z);scene.add(t);let s=new THREE.Mesh(new THREE.SphereGeometry(0.7,8,8),new THREE.MeshBasicMaterial({color:0xfde047}));s.position.set(x,5.2,z);scene.add(s);}
@@ -127,10 +127,10 @@ function joyMove(e){if(!isJoy||e.pointerId!==joyId)return;let r=joyEl.getBoundin
 function joyEnd(e){if(e.pointerId!==joyId)return;isJoy=false;joyX=0;joyY=0;knobEl.style.transform='translate(-50%,-50%)';}
 joyEl.addEventListener('pointerdown',joyStart);joyEl.addEventListener('pointermove',joyMove);joyEl.addEventListener('pointerup',joyEnd);joyEl.addEventListener('pointercancel',joyEnd);
 (function loop(){requestAnimationFrame(loop);
-npcs.forEach(n=>{n.arah+=(Math.random()-0.5)*0.05; n.g.position.x+=Math.cos(n.arah)*n.kecepatan; n.g.position.z+=Math.sin(n.arah)*n.kecepatan; if(n.g.position.x>45||n.g.position.x<-45||n.g.position.z>45||n.g.position.z<-45){n.arah+=Math.PI;} n.g.rotation.y=-n.arah;});
+npcs.forEach(n=>{n.arah+=(Math.random()-0.5)*0.05; n.g.position.x+=Math.cos(n.arah)*n.kecepatan; n.g.position.z+=Math.sin(n.arah)*n.kecepatan; if(n.g.position.x>95||n.g.position.x<-95||n.g.position.z>95||n.g.position.z<-95){n.arah+=Math.PI;} n.g.rotation.y=-n.arah;});
 if(modeJalan){
   let ketemu=null;npcs.forEach(n=>{let d=Math.hypot(pemain.position.x-n.g.position.x,pemain.position.z-n.g.position.z);if(d<2.5) ketemu=n;});let info=document.getElementById('npcInfo');if(ketemu){info.style.display='block';info.innerHTML='👤 <b>'+ketemu.nama+'</b><br>'+ketemu.pesan;}else{info.style.display='none';}
 }
-if(modeJalan&&(Math.abs(joyX)>0.08||Math.abs(joyY)>0.08)){let sin=Math.sin(yaw),cos=Math.cos(yaw);let mx=(joyX*cos+joyY*sin)*0.38;let mz=(joyY*cos-joyX*sin)*0.38;pemain.position.x=Math.max(-48,Math.min(48,pemain.position.x+mx));pemain.position.z=Math.max(-48,Math.min(48,pemain.position.z+mz));pemain.rotation.y=Math.atan2(mx,mz);updateCam();}
+if(modeJalan&&(Math.abs(joyX)>0.08||Math.abs(joyY)>0.08)){let sin=Math.sin(yaw),cos=Math.cos(yaw);let mx=(joyX*cos+joyY*sin)*0.38;let mz=(joyY*cos-joyX*sin)*0.38;pemain.position.x=Math.max(-98,Math.min(98,pemain.position.x+mx));pemain.position.z=Math.max(-98,Math.min(98,pemain.position.z+mz));pemain.rotation.y=Math.atan2(mx,mz);updateCam();}
 if(isLompat){lompatY+=0.25;pemain.position.y=Math.sin(lompatY)*2.5;if(lompatY>=Math.PI){pemain.position.y=0;isLompat=false;}updateCam();}ren.render(scene,cam);})();
 </script></body></html>
