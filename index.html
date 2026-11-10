@@ -186,6 +186,10 @@ async function masukKTP(){
 }
 function keluarKTP(){ AKUN_SAAT_INI=null; localStorage.removeItem('longkali_kode_aktif'); updateUang(); tampilkanKTP(); }
 async function pakaiUang(jumlah){ if(!AKUN_SAAT_INI){ alert('Buat KTP / Masuk dulu!'); showKTP(); return; } if(AKUN_SAAT_INI.uang < jumlah){ alert('Uang kamu kurang! Sisa: '+formatUang(AKUN_SAAT_INI.uang)); return; } if(!confirm('Pakai '+formatUang(jumlah)+' ? Sisa jadi '+formatUang(AKUN_SAAT_INI.uang - jumlah))){ return; } AKUN_SAAT_INI.uang-=jumlah; await simpanAkunOnline(AKUN_SAAT_INI); updateUang(); tampilkanKTP(); alert('Berhasil pakai '+formatUang(jumlah)+'! Sisa: '+formatUang(AKUN_SAAT_INI.uang)); }
+function getTanggalHariIni(){let d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();}
+function updateHadiahStatus(){var el=document.getElementById('hadiahStatus');if(!el) return;if(!AKUN_SAAT_INI){el.innerText='Login dulu buat klaim!';return;}if(AKUN_SAAT_INI.lastHadiah===getTanggalHariIni()){el.innerText='✅ Udah diklaim hari ini! Balik besok lagi ya!';}else{el.innerText='Belum klaim hari ini! Lumayan Rp 5.000 gratis!';}}
+async function klaimHadiah(){if(!AKUN_SAAT_INI){alert('Buat KTP / Masuk dulu!');showKTP();return;}if(AKUN_SAAT_INI.lastHadiah===getTanggalHariIni()){alert('Udah diklaim hari ini! Besok lagi ya!');return;}AKUN_SAAT_INI.uang+=5000;AKUN_SAAT_INI.lastHadiah=getTanggalHariIni();await simpanAkunOnline(AKUN_SAAT_INI);updateUang();tampilkanKTP();alert('🎉 Berhasil! Kamu dapet Rp 5.000!\nSaldo sekarang: '+formatUang(AKUN_SAAT_INI.uang));}
+function pasangTombolHadiah(){if(document.getElementById('hadiahBox')) return;var kas=document.getElementById('ktpKasDesa');if(!kas) return;var box=document.createElement('div');box.id='hadiahBox';box.style.cssText='margin-top:10px;background:#fff7ed;padding:12px;border-radius:10px;text-align:center;border:2px dashed #f59e0b';box.innerHTML='🎁 <b>HADIAH HARIAN - UANG PEMAIN</b><br><span id="hadiahStatus" style="font-size:12px;color:#64748b">Login dulu!</span><br><button onclick="klaimHadiah()" style="margin-top:8px;background:#f59e0b;color:#000;border:none;padding:10px 18px;border-radius:20px;font-weight:900;cursor:pointer">🎁 Klaim Rp 5.000 Hari Ini</button>';kas.parentElement.parentElement.insertBefore(box,kas.parentElement);}
 function salinKode(){ if(!AKUN_SAAT_INI) return; var t=document.createElement('textarea'); t.value=AKUN_SAAT_INI.kode; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); alert('Kode '+AKUN_SAAT_INI.kode+' tersalin!'); }
 function tampilkanKTP(){
   if(AKUN_SAAT_INI){
@@ -197,7 +201,7 @@ function tampilkanKTP(){
   } else {
     document.getElementById('ktpKosong').style.display='block'; document.getElementById('ktpIsi').style.display='none';
   }
-  updateUang(); updateKasDesa();
+  updateUang(); updateKasDesa(); pasangTombolHadiah(); updateHadiahStatus();
 }
 (async function loadAkunAwal(){ await refreshWarga(); updateKasDesa(); var kodeAktif=localStorage.getItem('longkali_kode_aktif'); if(kodeAktif){ let akun = await ambilAkunOnline(kodeAktif); if(akun){ AKUN_SAAT_INI=akun; updateUang(); tampilkanKTP(); } } })();
 setInterval(refreshWarga, 5000);
