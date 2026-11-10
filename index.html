@@ -104,7 +104,16 @@ let ground=new THREE.Mesh(new THREE.PlaneGeometry(UKURAN_MAP,UKURAN_MAP),new THR
 for(let i=0;i<JUMLAH_POHON;i++){let g=new THREE.Mesh(new THREE.ConeGeometry(0.35,1.2,5),new THREE.MeshLambertMaterial({color:i%2?0x22a355:0x3cb95e}));g.position.set((Math.random()-0.5)*(UKURAN_MAP-20),0.6,(Math.random()-0.5)*(UKURAN_MAP-20));scene.add(g);}
 //function lampu(x,z){let t=new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.2,5),new THREE.MeshLambertMaterial({color:0x111827}));t.position.set(x,2.5,z);scene.add(t);let s=new THREE.Mesh(new THREE.SphereGeometry(0.7,8,8),new THREE.MeshBasicMaterial({color:0xfde047}));s.position.set(x,5.2,z);scene.add(s);}
 //lampu(0,5);lampu(0,-5);lampu(10,0);lampu(-10,0);
-let pemain=new THREE.Group();let badan=new THREE.Mesh(new THREE.CylinderGeometry(0.6,0.7,1.8,8),new THREE.MeshLambertMaterial({color:0xef4444}));badan.position.y=1.2;pemain.add(badan);let kepala=new THREE.Mesh(new THREE.SphereGeometry(0.6,8,8),new THREE.MeshLambertMaterial({color:0xfde68a}));kepala.position.y=2.6;pemain.add(kepala);scene.add(pemain);
+let pemain=new THREE.Group();
+let badan=new THREE.Mesh(new THREE.CylinderGeometry(0.6,0.7,1.8,8),new THREE.MeshLambertMaterial({color:0xef4444}));badan.position.y=1.2;pemain.add(badan);
+let kepala=new THREE.Mesh(new THREE.SphereGeometry(0.6,8,8),new THREE.MeshLambertMaterial({color:0xfde68a}));kepala.position.y=2.6;pemain.add(kepala);
+// TANGAN KIRI + KANAN
+let tanganKiri=new THREE.Mesh(new THREE.BoxGeometry(0.3,1.2,0.3),new THREE.MeshLambertMaterial({color:0xef4444}));tanganKiri.position.set(-0.9,1.2,0);pemain.add(tanganKiri);
+let tanganKanan=new THREE.Mesh(new THREE.BoxGeometry(0.3,1.2,0.3),new THREE.MeshLambertMaterial({color:0xef4444}));tanganKanan.position.set(0.9,1.2,0);pemain.add(tanganKanan);
+// KAKI KIRI + KANAN
+let kakiKiri=new THREE.Mesh(new THREE.BoxGeometry(0.35,0.8,0.35),new THREE.MeshLambertMaterial({color:0x1e293b}));kakiKiri.position.set(-0.35,-0.2,0);pemain.add(kakiKiri);
+let kakiKanan=new THREE.Mesh(new THREE.BoxGeometry(0.35,0.8,0.35),new THREE.MeshLambertMaterial({color:0x1e293b}));kakiKanan.position.set(0.35,-0.2,0);pemain.add(kakiKanan);
+scene.add(pemain);
 let npcs=[];
 function buatNPC(x,z,warnaBaju,nama,pesan){let g=new THREE.Group();g.position.set(x,0,z);let b=new THREE.Mesh(new THREE.CylinderGeometry(0.6,0.7,1.8,8),new THREE.MeshLambertMaterial({color:warnaBaju}));b.position.y=1.2;g.add(b);let k=new THREE.Mesh(new THREE.SphereGeometry(0.6,8,8),new THREE.MeshLambertMaterial({color:0xfde68a}));k.position.y=2.6;g.add(k);let topi=new THREE.Mesh(new THREE.CylinderGeometry(0.55,0.6,0.4,8),new THREE.MeshLambertMaterial({color:0x111827}));topi.position.y=3.1;g.add(topi);scene.add(g);npcs.push({g:g,nama:nama,pesan:pesan,arah:Math.random()*Math.PI*2,kecepatan:0.02+Math.random()*0.02});}
 buatNPC(8,8,0x3b82f6,'Pak RT','Halo! Saya Pak RT Longkali. Desa kita aman, warga '+formatWarga(WARGA)+' orang!');
