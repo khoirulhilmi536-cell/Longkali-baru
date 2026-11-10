@@ -106,7 +106,7 @@ body{margin:0;font-family:Arial;background:#0f172a;color:#fff}
 <button onclick="pakaiUang(5000)" style="flex:1;background:#991b1b;color:#fff;border:none;padding:10px;border-radius:10px;font-weight:900;cursor:pointer">- Rp 5.000 Pakai</button>
 </div>
 </div>
-<div style="margin-top:10px;background:#dcfce7;padding:12px;border-radius:10px;text-align:center;border:2px solid #16a34a">🏛️ <b>KAS DESA</b><br><b id="ktpKasDesa" style="font-size:20px;color:#14532d">Rp 0</b><br><span style="font-size:11px;color:#64748b">Dana desa • Hanya bisa diubah lewat codingan admin</span></div>
+<div style="margin-top:10px;background:#dcfce7;padding:12px;border-radius:10px;text-align:center;border:2px solid #16a34a">🏛️ <b>KAS DESA</b><br><b id="ktpKasDesa" style="font-size:20px;color:#14532d">Rp 0</b><br><span style="font-size:11px;color:#64748b">Dana desa </span></div>
 <div style="margin-top:10px;background:#eff6ff;padding:10px;border-radius:10px;text-align:center;font-size:12px">🔑 <b>Kode KTP kamu:</b><br><b id="ktpKodeBesar" style="font-size:22px;letter-spacing:3px;color:#0e4a5a">-</b><br><span style="color:#64748b">Kode ini bisa login di HP manapun!</span><br><button onclick="salinKode()" style="margin-top:6px;background:#fff;border:1px solid #0e4a5a;color:#0e4a5a;padding:6px 14px;border-radius:20px;font-weight:800;cursor:pointer">📋 Salin Kode</button></div>
 <button class="btnKTP btnAbu" onclick="keluarKTP()" style="margin-top:10px">🚪 Keluar / Ganti KTP</button>
 </div>
@@ -149,6 +149,18 @@ async function ambilPemainLain(){
       if(AKUN_SAAT_INI && kode == AKUN_SAAT_INI.kode) continue;
       if(!pemainLain[kode]){
         let g = new THREE.Group();
+        let canvasNama = document.createElement('canvas');
+canvasNama.width = 256; canvasNama.height = 64;
+let cNama = canvasNama.getContext('2d');
+cNama.fillStyle = "white";
+cNama.font = "bold 32px Arial";
+cNama.textAlign = "center";
+cNama.fillText(data[kode].nama || "Warga", 128, 42);
+let texNama = new THREE.CanvasTexture(canvasNama);
+let spriteNama = new THREE.Sprite(new THREE.SpriteMaterial({map: texNama, transparent: true}));
+spriteNama.position.y = 3.4;
+spriteNama.scale.set(2.2, 0.55, 1);
+g.add(spriteNama);
         let b = new THREE.Mesh(new THREE.CylinderGeometry(0.6,0.7,1.8,8), new THREE.MeshLambertMaterial({color:0x3b82f6}));
         b.position.y = 1.2; g.add(b);
         let k = new THREE.Mesh(new THREE.SphereGeometry(0.6,8,8), new THREE.MeshLambertMaterial({color:0xfde68a}));
