@@ -77,20 +77,19 @@ body{margin:0;font-family:Arial;background:#0f172a;color:#fff;overflow:hidden}
 // ==================================================
 // ========== PENGATURAN UTAMA - UBAH DISINI AJA ==========
 // ==================================================
-var UANG = 0; // <-- UANG TETAP
-var WARGA = 0; // <-- JUMLAH WARGA
-var WARGA_ONLINE = 0;
-var UKURAN_MAP = 500; // <-- UKURAN MAP! 110 = kecil, 220 = sedang, 500 = GEDE BANGET, 1000 = raksasa
-var JUMLAH_POHON = 10; // <-- JUMLAH POHON, makin gede map makin banyakin
+var UANG = 50000; // <-- UANG TETAP
+var WARGA = 4000; // <-- JUMLAH WARGA
+var WARGA_ONLINE = 1;
+var UKURAN_MAP = 500; // <-- UKURAN MAP! 110 = kecil, 500 = GEDE
+var JUMLAH_POHON = 400; // <-- JUMLAH POHON
 // ==================================================
-var BATAS_MAP = UKURAN_MAP/2 - 12; // otomatis: 500/2-12 = 238
-var BATAS_NPC = UKURAN_MAP/2 - 15; // otomatis: 235
+var BATAS_MAP = UKURAN_MAP/2 - 12; // 238
+var BATAS_NPC = UKURAN_MAP/2 - 15; // 235
 function formatUang(n){return 'Rp '+n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.');}
 function formatWarga(n){return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.');}
 function updateUang(){document.getElementById('uangBar').innerText='💰 '+formatUang(UANG);document.getElementById('uangFloatText').innerText=formatUang(UANG);document.getElementById('ktpUang').innerText=formatUang(UANG);}
 function updateWarga(){document.getElementById('wargaCount').innerText=formatWarga(WARGA);}
-updateUang(0);
-updateWarga(0);
+updateUang();updateWarga();
 function showKTP(){document.getElementById('ktpPage').style.display='block';document.getElementById('navMap').classList.remove('active');document.getElementById('navKtp').classList.add('active');}
 function showMap(){document.getElementById('ktpPage').style.display='none';document.getElementById('navMap').classList.add('active');document.getElementById('navKtp').classList.remove('active');}
 let scene=new THREE.Scene();scene.background=new THREE.Color(0x87ceeb);
@@ -100,25 +99,29 @@ scene.add(new THREE.AmbientLight(0xffffff,0.85));
 scene.add(new THREE.HemisphereLight(0xffffff,0x2ea043,0.55));
 let dl=new THREE.DirectionalLight(0xffffff,0.65);dl.position.set(20,30,10);scene.add(dl);
 let ground=new THREE.Mesh(new THREE.PlaneGeometry(UKURAN_MAP,UKURAN_MAP),new THREE.MeshLambertMaterial({color:0x2ea043}));ground.rotation.x=-Math.PI/2;scene.add(ground);
-// POHON - SEBARAN IKUT UKURAN MAP
 for(let i=0;i<JUMLAH_POHON;i++){let g=new THREE.Mesh(new THREE.ConeGeometry(0.35,1.2,5),new THREE.MeshLambertMaterial({color:i%2?0x22a355:0x3cb95e}));g.position.set((Math.random()-0.5)*(UKURAN_MAP-20),0.6,(Math.random()-0.5)*(UKURAN_MAP-20));scene.add(g);}
-//function lampu(x,z){let t=new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.2,5),new THREE.MeshLambertMaterial({color:0x111827}));t.position.set(x,2.5,z);scene.add(t);let s=new THREE.Mesh(new THREE.SphereGeometry(0.7,8,8),new THREE.MeshBasicMaterial({color:0xfde047}));s.position.set(x,5.2,z);scene.add(s);}
-//lampu(0,5);lampu(0,-5);lampu(10,0);lampu(-10,0);
+// === FUNGSI BIKIN TANGAN & KAKI BIAR BISA AYUN ===
+function bikinTanganKaki(group, warnaBaju){
+  // TANGAN - geometri digeser ke bawah biar putarannya di bahu
+  let geoTangan=new THREE.BoxGeometry(0.3,1.2,0.3); geoTangan.translate(0,-0.5,0);
+  let geoKaki=new THREE.BoxGeometry(0.35,0.9,0.35); geoKaki.translate(0,-0.4,0);
+  let tk=new THREE.Mesh(geoTangan,new THREE.MeshLambertMaterial({color:warnaBaju})); tk.position.set(-0.9,1.8,0); group.add(tk);
+  let tkn=new THREE.Mesh(geoTangan,new THREE.MeshLambertMaterial({color:warnaBaju})); tkn.position.set(0.9,1.8,0); group.add(tkn);
+  let kk=new THREE.Mesh(geoKaki,new THREE.MeshLambertMaterial({color:0x1e293b})); kk.position.set(-0.35,0.4,0); group.add(kk);
+  let kkn=new THREE.Mesh(geoKaki,new THREE.MeshLambertMaterial({color:0x1e293b})); kkn.position.set(0.35,0.4,0); group.add(kkn);
+  return {tanganKiri:tk, tanganKanan:tkn, kakiKiri:kk, kakiKanan:kkn};
+}
+// === PEMAIN ===
 let pemain=new THREE.Group();
-let badan=new THREE.Mesh(new THREE.CylinderGeometry(0.6,0.7,1.8,8),new THREE.MeshLambertMaterial({color:0xef4444}));badan.position.y=1.2;pemain.add(badan);
-let kepala=new THREE.Mesh(new THREE.SphereGeometry(0.6,8,8),new THREE.MeshLambertMaterial({color:0xfde68a}));kepala.position.y=2.6;pemain.add(kepala);
-// TANGAN KIRI + KANAN
-let tanganKiri=new THREE.Mesh(new THREE.BoxGeometry(0.3,1.2,0.3),new THREE.MeshLambertMaterial({color:0xef4444}));tanganKiri.position.set(-0.9,1.2,0);pemain.add(tanganKiri);
-let tanganKanan=new THREE.Mesh(new THREE.BoxGeometry(0.3,1.2,0.3),new THREE.MeshLambertMaterial({color:0xef4444}));tanganKanan.position.set(0.9,1.2,0);pemain.add(tanganKanan);
-// KAKI KIRI + KANAN
-let kakiKiri=new THREE.Mesh(new THREE.BoxGeometry(0.35,0.8,0.35),new THREE.MeshLambertMaterial({color:0x1e293b}));kakiKiri.position.set(-0.35,-0.2,0);pemain.add(kakiKiri);
-let kakiKanan=new THREE.Mesh(new THREE.BoxGeometry(0.35,0.8,0.35),new THREE.MeshLambertMaterial({color:0x1e293b}));kakiKanan.position.set(0.35,-0.2,0);pemain.add(kakiKanan);
+let badan=new THREE.Mesh(new THREE.CylinderGeometry(0.6,0.7,1.8,8),new THREE.MeshLambertMaterial({color:0xef4444})); badan.position.y=1.2; pemain.add(badan);
+let kepala=new THREE.Mesh(new THREE.SphereGeometry(0.6,8,8),new THREE.MeshLambertMaterial({color:0xfde68a})); kepala.position.y=2.6; pemain.add(kepala);
+let pLimb=bikinTanganKaki(pemain,0xef4444);
 scene.add(pemain);
 let npcs=[];
-function buatNPC(x,z,warnaBaju,nama,pesan){let g=new THREE.Group();g.position.set(x,0,z);let b=new THREE.Mesh(new THREE.CylinderGeometry(0.6,0.7,1.8,8),new THREE.MeshLambertMaterial({color:warnaBaju}));b.position.y=1.2;g.add(b);let k=new THREE.Mesh(new THREE.SphereGeometry(0.6,8,8),new THREE.MeshLambertMaterial({color:0xfde68a}));k.position.y=2.6;g.add(k);let topi=new THREE.Mesh(new THREE.CylinderGeometry(0.55,0.6,0.4,8),new THREE.MeshLambertMaterial({color:0x111827}));topi.position.y=3.1;g.add(topi);scene.add(g);npcs.push({g:g,nama:nama,pesan:pesan,arah:Math.random()*Math.PI*2,kecepatan:0.02+Math.random()*0.02});}
+function buatNPC(x,z,warnaBaju,nama,pesan){let g=new THREE.Group();g.position.set(x,0,z);let b=new THREE.Mesh(new THREE.CylinderGeometry(0.6,0.7,1.8,8),new THREE.MeshLambertMaterial({color:warnaBaju}));b.position.y=1.2;g.add(b);let k=new THREE.Mesh(new THREE.SphereGeometry(0.6,8,8),new THREE.MeshLambertMaterial({color:0xfde68a}));k.position.y=2.6;g.add(k);let topi=new THREE.Mesh(new THREE.CylinderGeometry(0.55,0.6,0.4,8),new THREE.MeshLambertMaterial({color:0x111827}));topi.position.y=3.1;g.add(topi);let limb=bikinTanganKaki(g,warnaBaju);scene.add(g);npcs.push({g:g,nama:nama,pesan:pesan,arah:Math.random()*Math.PI*2,kecepatan:0.02+Math.random()*0.02,limb:limb,waktu:Math.random()*100});}
 buatNPC(8,8,0x3b82f6,'Pak RT','Halo! Saya Pak RT Longkali. Desa kita aman, warga '+formatWarga(WARGA)+' orang!');
-buatNPC(-12,-8,0xf59e0b,'Bu Sari','Selamat datang di Longkali!');
-buatNPC(15,-12,0x22c55e,'Bang Udin','Woi! Lagi jalan-jalan ya?');
+buatNPC(-12,-8,0xf59e0b,'Bu Sari','Selamat datang di Longkali! Jangan lupa mampir ke warung saya ya!');
+buatNPC(15,-12,0x22c55e,'Bang Udin','Woi! Lagi jalan-jalan ya? Longkali sekarang udah ada Verse-nya!');
 let yaw=0.8,pitch=0.9,dist=120;
 let joyX=0,joyY=0,isJoy=false,joyId=null,lompatY=0,isLompat=false;
 function lompat(){if(isLompat)return;isLompat=true;lompatY=0;}
@@ -140,10 +143,15 @@ function joyMove(e){if(!isJoy||e.pointerId!==joyId)return;let r=joyEl.getBoundin
 function joyEnd(e){if(e.pointerId!==joyId)return;isJoy=false;joyX=0;joyY=0;knobEl.style.transform='translate(-50%,-50%)';}
 joyEl.addEventListener('pointerdown',joyStart);joyEl.addEventListener('pointermove',joyMove);joyEl.addEventListener('pointerup',joyEnd);joyEl.addEventListener('pointercancel',joyEnd);
 (function loop(){requestAnimationFrame(loop);
-npcs.forEach(n=>{n.arah+=(Math.random()-0.5)*0.05; n.g.position.x+=Math.cos(n.arah)*n.kecepatan; n.g.position.z+=Math.sin(n.arah)*n.kecepatan; if(n.g.position.x>BATAS_NPC||n.g.position.x<-BATAS_NPC||n.g.position.z>BATAS_NPC||n.g.position.z<-BATAS_NPC){n.arah+=Math.PI;} n.g.rotation.y=-n.arah;});
+let waktuGlobal=Date.now()*0.012;
+// === ANIMASI NPC - SELALU AYUN KARENA SELALU JALAN ===
+npcs.forEach(n=>{n.arah+=(Math.random()-0.5)*0.05; n.g.position.x+=Math.cos(n.arah)*n.kecepatan; n.g.position.z+=Math.sin(n.arah)*n.kecepatan; if(n.g.position.x>BATAS_NPC||n.g.position.x<-BATAS_NPC||n.g.position.z>BATAS_NPC||n.g.position.z<-BATAS_NPC){n.arah+=Math.PI;} n.g.rotation.y=-n.arah; n.waktu+=0.12; let a=Math.sin(n.waktu)*0.6; n.limb.tanganKiri.rotation.x=a; n.limb.tanganKanan.rotation.x=-a; n.limb.kakiKiri.rotation.x=-a; n.limb.kakiKanan.rotation.x=a;});
 if(modeJalan){
   let ketemu=null;npcs.forEach(n=>{let d=Math.hypot(pemain.position.x-n.g.position.x,pemain.position.z-n.g.position.z);if(d<2.5) ketemu=n;});let info=document.getElementById('npcInfo');if(ketemu){info.style.display='block';info.innerHTML='👤 <b>'+ketemu.nama+'</b><br>'+ketemu.pesan;}else{info.style.display='none';}
 }
+// === ANIMASI PEMAIN - AYUN CUMA KALO JALAN ===
+let lagiJalan = modeJalan && (Math.abs(joyX)>0.08||Math.abs(joyY)>0.08);
+if(lagiJalan){let ayun=Math.sin(waktuGlobal)*0.6; pLimb.tanganKiri.rotation.x=ayun; pLimb.tanganKanan.rotation.x=-ayun; pLimb.kakiKiri.rotation.x=-ayun; pLimb.kakiKanan.rotation.x=ayun;}else{pLimb.tanganKiri.rotation.x*=0.9; pLimb.tanganKanan.rotation.x*=0.9; pLimb.kakiKiri.rotation.x*=0.9; pLimb.kakiKanan.rotation.x*=0.9;}
 if(modeJalan&&(Math.abs(joyX)>0.08||Math.abs(joyY)>0.08)){let sin=Math.sin(yaw),cos=Math.cos(yaw);let mx=(joyX*cos+joyY*sin)*0.38;let mz=(joyY*cos-joyX*sin)*0.38;pemain.position.x=Math.max(-BATAS_MAP,Math.min(BATAS_MAP,pemain.position.x+mx));pemain.position.z=Math.max(-BATAS_MAP,Math.min(BATAS_MAP,pemain.position.z+mz));pemain.rotation.y=Math.atan2(mx,mz);updateCam();}
 if(isLompat){lompatY+=0.25;pemain.position.y=Math.sin(lompatY)*2.5;if(lompatY>=Math.PI){pemain.position.y=0;isLompat=false;}updateCam();}ren.render(scene,cam);})();
 </script></body></html>
