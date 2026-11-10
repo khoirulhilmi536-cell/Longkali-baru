@@ -4,33 +4,33 @@
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial;background:#0f172a;color:#fff;overflow:hidden}
-#header{position:fixed;top:0;left:0;right:0;z-index:999;background:#0e4a5a;padding:10px 12px;display:flex;justify-content:space-between}
-#header h1{margin:0;font-size:22px}#header h1 span{font-size:11px;background:#f59e0b;color:#000;padding:3px 7px;border-radius:6px}
-#header .r{text-align:right;font-size:11px}
-#header .r b{background:#134e4a;padding:3px 8px;border-radius:20px}
-#uangBar{background:#f59e0b;color:#000;font-weight:900;padding:4px 10px;border-radius:20px;font-size:12px;margin-top:4px;display:inline-block}
-#kasBar{background:#16a34a;color:#fff;font-weight:900;padding:4px 10px;border-radius:20px;font-size:12px;margin-top:4px;display:inline-block}
-#marquee{position:fixed;top:56px;left:0;right:0;z-index:999;background:#facc15;color:#000;font-size:13px;font-weight:700;padding:6px;overflow:hidden;white-space:nowrap}
+#header{position:fixed;top:0;left:0;right:0;z-index:999;background:#0e4a5a;padding:8px 10px;display:flex;justify-content:space-between;align-items:flex-start;min-height:78px}
+#header h1{margin:0;font-size:21px;line-height:1.1}#header h1 span{font-size:11px;background:#f59e0b;color:#000;padding:3px 7px;border-radius:6px;white-space:nowrap}
+#header .r{text-align:right;font-size:11px;flex-shrink:0;margin-left:8px}
+#header .r b{background:#134e4a;padding:3px 8px;border-radius:20px;display:inline-block}
+#uangBar{background:#f59e0b;color:#000;font-weight:900;padding:4px 10px;border-radius:20px;font-size:12px;margin-top:4px;display:block;text-align:center}
+#kasBar{background:#16a34a;color:#fff;font-weight:900;padding:4px 10px;border-radius:20px;font-size:12px;margin-top:4px;display:block;text-align:center;white-space:nowrap}
+#marquee{position:fixed;top:78px;left:0;right:0;z-index:999;background:#facc15;color:#000;font-size:13px;font-weight:700;padding:6px;overflow:hidden;white-space:nowrap}
 #marquee span{display:inline-block;animation:j 18s linear infinite}@keyframes j{from{transform:translateX(100%)}to{transform:translateX(-100%)}}
-#mapWrap{position:fixed;top:82px;left:0;right:0;bottom:62px;background:#2ea043;z-index:1}
+#mapWrap{position:fixed;top:104px;left:0;right:0;bottom:62px;background:#2ea043;z-index:1}
 #mapWrap canvas{position:absolute !important;top:0 !important;left:0 !important;z-index:1 !important;display:block !important}
-#card{position:absolute;top:12px;left:12px;z-index:50;background:#fff;color:#000;border-radius:14px;padding:10px 14px;min-width:150px;border:2px solid #0ea5e9;pointer-events:none}
+#card{position:absolute;top:10px;left:10px;z-index:50;background:#fff;color:#000;border-radius:14px;padding:10px 14px;min-width:140px;max-width:62%;border:2px solid #0ea5e9;pointer-events:none}
 #card small{letter-spacing:2px;color:#0ea5e9;font-weight:900;font-size:11px}
-#card b{font-size:30px}
+#card b{font-size:28px}
 #card p{margin:2px 0 0;font-size:11px;color:#64748b}
-#kasCard{position:absolute;top:92px;left:12px;z-index:50;background:#14532d;color:#fff;padding:8px 12px;border-radius:12px;font-size:12px;font-weight:700;pointer-events:none;border:2px solid #fff}
-#online{position:absolute;top:148px;left:12px;z-index:50;background:#16a34a;padding:7px 12px;border-radius:20px;font-size:13px;font-weight:700;pointer-events:none}
-#uangFloat{position:absolute;top:200px;left:12px;z-index:50;background:#f59e0b;color:#000;padding:8px 12px;border-radius:20px;font-weight:900;font-size:13px;pointer-events:none}
-#side{position:absolute;top:12px;right:12px;z-index:100;display:flex;flex-direction:column;gap:8px}
-#side button{width:44px;height:44px;border-radius:12px;border:none;background:#fff;font-size:22px;cursor:pointer}
+#kasCard{position:absolute;top:105px;left:10px;z-index:50;background:#14532d;color:#fff;padding:8px 12px;border-radius:12px;font-size:12px;font-weight:700;pointer-events:none;border:2px solid #fff;max-width:62%}
+#online{position:absolute;top:178px;left:10px;z-index:50;background:#16a34a;padding:7px 12px;border-radius:20px;font-size:12px;font-weight:700;pointer-events:none}
+#uangFloat{position:absolute;top:215px;left:10px;z-index:50;background:#f59e0b;color:#000;padding:8px 12px;border-radius:20px;font-weight:900;font-size:13px;pointer-events:none}
+#side{position:absolute;top:10px;right:10px;z-index:100;display:flex;flex-direction:column;gap:8px}
+#side button{width:44px;height:44px;border-radius:12px;border:none;background:#fff;font-size:22px;cursor:pointer;position:relative;z-index:101}
 #btnJalan{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);z-index:100;background:#0e4a5a;color:#fff;border:2px solid #fff;padding:14px 28px;border-radius:30px;font-size:16px;font-weight:900;cursor:pointer;box-shadow:0 4px 15px rgba(0,0,0,.4);white-space:nowrap}
 #btnMenuUtama{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:9999;display:none;background:#f59e0b;color:#000;border:2px solid #fff;padding:11px 22px;border-radius:25px;font-weight:900;font-size:14px;cursor:pointer;box-shadow:0 4px 15px rgba(0,0,0,.4);white-space:nowrap}
 #modeLabel{position:fixed;top:60px;left:50%;transform:translateX(-50%);z-index:9999;display:none;background:rgba(0,0,0,.7);padding:8px 12px;border-radius:20px;font-size:12px;pointer-events:none;white-space:nowrap}
 #nav{position:fixed;bottom:0;left:0;right:0;z-index:999;background:#fdf6e3;display:flex;padding:6px 0 8px}
-#nav button{flex:1;background:none;border:none;font-size:14px;color:#0e4a5a;display:flex;flex-direction:column;align-items:center;cursor:pointer;padding:10px 0;font-weight:900}
+#nav button{flex:1;background:none;border:none;font-size:14px;color:#0e4a5a;display:flex;flex-direction:column;align-items:center;cursor:pointer;padding:10px 0;font-weight:900;position:relative;z-index:1000}
 #nav button span{font-size:24px;pointer-events:none}
 #nav button.active{color:#f59e0b}
-#ktpPage{position:fixed;top:82px;left:0;right:0;bottom:62px;z-index:998;background:#e2e8f0;color:#000;display:none;overflow:auto;padding:16px}
+#ktpPage{position:fixed;top:104px;left:0;right:0;bottom:62px;z-index:998;background:#e2e8f0;color:#000;display:none;overflow:auto;padding:16px}
 #ktpCard{background:#fff;border-radius:16px;max-width:420px;margin:0 auto;padding:18px;border:2px solid #0e4a5a}
 #ktpCard h2{margin:0 0 4px;color:#0e4a5a;text-align:center}
 #ktpCard .sub{text-align:center;font-size:11px;color:#64748b;margin-bottom:12px}
@@ -40,7 +40,7 @@ body{margin:0;font-family:Arial;background:#0f172a;color:#fff;overflow:hidden}
 #ktpData b{color:#0e4a5a}
 .ktpInput{width:100%;padding:11px;border:2px solid #cbd5e1;border-radius:10px;font-size:14px;margin-bottom:8px;outline:none}
 .ktpInput:focus{border-color:#0e4a5a}
-.btnKTP{width:100%;padding:12px;border:none;border-radius:12px;font-weight:900;font-size:14px;cursor:pointer;margin-bottom:8px}
+.btnKTP{width:100%;padding:12px;border:none;border-radius:12px;font-weight:900;font-size:14px;cursor:pointer;margin-bottom:8px;position:relative;z-index:10}
 .btnUtama{background:#0e4a5a;color:#fff}
 .btnKuning{background:#f59e0b;color:#000}
 .btnAbu{background:#e2e8f0;color:#000}
@@ -97,20 +97,20 @@ body{margin:0;font-family:Arial;background:#0f172a;color:#fff;overflow:hidden}
 </div></div>
 <div style="margin-top:14px;background:#fef3c7;padding:12px;border-radius:10px;font-size:13px;text-align:center">💰 Uang Kamu: <b id="ktpUang">Rp 0</b><br><span style="color:#16a34a;font-weight:800;font-size:11px">✅ Tersimpan Online - Aman di semua HP</span>
 <div style="display:flex;gap:8px;margin-top:10px">
-<button onclick="tambahUang(1000)" style="flex:1;background:#16a34a;color:#fff;border:none;padding:10px;border-radius:10px;font-weight:900">+ Rp 1.000</button>
-<button onclick="tambahUang(5000)" style="flex:1;background:#0e4a5a;color:#fff;border:none;padding:10px;border-radius:10px;font-weight:900">+ Rp 5.000</button>
+<button onclick="tambahUang(1000)" style="flex:1;background:#16a34a;color:#fff;border:none;padding:10px;border-radius:10px;font-weight:900;cursor:pointer">+ Rp 1.000</button>
+<button onclick="tambahUang(5000)" style="flex:1;background:#0e4a5a;color:#fff;border:none;padding:10px;border-radius:10px;font-weight:900;cursor:pointer">+ Rp 5.000</button>
 </div>
 <div style="display:flex;gap:8px;margin-top:8px">
-<button onclick="pakaiUang(1000)" style="flex:1;background:#dc2626;color:#fff;border:none;padding:10px;border-radius:10px;font-weight:900">- Rp 1.000 Pakai</button>
-<button onclick="pakaiUang(5000)" style="flex:1;background:#991b1b;color:#fff;border:none;padding:10px;border-radius:10px;font-weight:900">- Rp 5.000 Pakai</button>
+<button onclick="pakaiUang(1000)" style="flex:1;background:#dc2626;color:#fff;border:none;padding:10px;border-radius:10px;font-weight:900;cursor:pointer">- Rp 1.000 Pakai</button>
+<button onclick="pakaiUang(5000)" style="flex:1;background:#991b1b;color:#fff;border:none;padding:10px;border-radius:10px;font-weight:900;cursor:pointer">- Rp 5.000 Pakai</button>
 </div>
 <p style="font-size:11px;color:#64748b;margin:8px 0 0">Tombol merah = uang kamu berkurang, buat jajan / bayar</p>
 </div>
 <div style="margin-top:10px;background:#dcfce7;padding:12px;border-radius:10px;text-align:center;border:2px solid #16a34a">🏛️ <b>KAS DESA</b><br><b id="ktpKasDesa" style="font-size:20px;color:#14532d">Rp 0</b><br><span style="font-size:11px;color:#64748b">Dana desa • Hanya bisa diubah lewat codingan admin</span></div>
-<div style="margin-top:10px;background:#eff6ff;padding:10px;border-radius:10px;text-align:center;font-size:12px">🔑 <b>Kode KTP kamu:</b><br><b id="ktpKodeBesar" style="font-size:22px;letter-spacing:3px;color:#0e4a5a">-</b><br><span style="color:#64748b">Kode ini bisa login di HP manapun!</span><br><button onclick="salinKode()" style="margin-top:6px;background:#fff;border:1px solid #0e4a5a;color:#0e4a5a;padding:6px 14px;border-radius:20px;font-weight:800">📋 Salin Kode</button></div>
+<div style="margin-top:10px;background:#eff6ff;padding:10px;border-radius:10px;text-align:center;font-size:12px">🔑 <b>Kode KTP kamu:</b><br><b id="ktpKodeBesar" style="font-size:22px;letter-spacing:3px;color:#0e4a5a">-</b><br><span style="color:#64748b">Kode ini bisa login di HP manapun!</span><br><button onclick="salinKode()" style="margin-top:6px;background:#fff;border:1px solid #0e4a5a;color:#0e4a5a;padding:6px 14px;border-radius:20px;font-weight:800;cursor:pointer">📋 Salin Kode</button></div>
 <button class="btnKTP btnAbu" onclick="keluarKTP()" style="margin-top:10px">🚪 Keluar / Ganti KTP</button>
 </div>
-<div style="margin-top:12px;text-align:center"><button onclick="showMap()" style="background:#0e4a5a;color:#fff;border:none;padding:10px 20px;border-radius:20px;font-weight:800">⬅ Kembali ke Map</button></div>
+<div style="margin-top:12px;text-align:center"><button onclick="showMap()" style="background:#0e4a5a;color:#fff;border:none;padding:10px 20px;border-radius:20px;font-weight:800;cursor:pointer">⬅ Kembali ke Map</button></div>
 </div>
 </div>
 <button id="btnMenuUtama" type="button" onclick="keluarJalan()">🏠 Menu Utama</button>
@@ -125,39 +125,38 @@ body{margin:0;font-family:Arial;background:#0f172a;color:#fff;overflow:hidden}
 <button type="button" id="navKtp" onclick="showKTP()"><span>🪪</span>KTP</button>
 </div>
 <script>
+// ===== SEMUA TOMBOL DITARO DI ATAS, BIAR GAK MATI KALAU 3D ERROR =====
 var WARGA = 0;
 var UKURAN_MAP = 500;
 var JUMLAH_POHON = 400;
 var DB_URL = "https://admin-55bc3-default-rtdb.firebaseio.com";
-// ============================================
-// 💰 SETTING UANG - UBAH DISINI AJA LEWAT CODINGAN
-// --------------------------------------------
-// KAS DESA: Cuma admin yang bisa ubah, gak ada tombolnya di game!
-// Ganti angka 0 ini sesuai kas desa lu, contoh: 5000000 = Rp 5.000.000
 var KAS_DESA = 0;
-// ============================================
 var UANG = 0;
 var AKUN_SAAT_INI = null;
-async function ambilAkunOnline(kode){
-  try{
-    let res = await fetch(DB_URL + "/akun/" + kode + ".json");
-    let data = await res.json();
-    return data;
-  }catch(e){ return null; }
-}
-async function simpanAkunOnline(akun){
-  await fetch(DB_URL + "/akun/" + akun.kode + ".json", {method:"PUT", body: JSON.stringify(akun)});
-  localStorage.setItem('longkali_kode_aktif', akun.kode);
-}
-async function refreshWarga(){
-  try{
-    let res = await fetch(DB_URL + "/akun.json");
-    let data = await res.json();
-    if(!data){ WARGA = 0; }
-    else { WARGA = Object.keys(data).length; }
-    updateWarga();
-  }catch(e){}
-}
+var BATAS_MAP = UKURAN_MAP/2 - 12;
+var BATAS_NPC = UKURAN_MAP/2 - 15;
+var yaw=0.8,pitch=0.9,dist=120;
+var joyX=0,joyY=0,isJoy=false,joyId=null,lompatY=0,isLompat=false;
+var modeJalan=false;
+var scene=null,cam=null,ren=null,pemain=null,pLimb=null,npcs=[];
+function formatUang(n){return 'Rp '+n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.');}
+function formatWarga(n){return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.');}
+function updateUang(){ var u = AKUN_SAAT_INI ? AKUN_SAAT_INI.uang : 0; var a=document.getElementById('uangBar'); if(a) a.innerText='💰 '+formatUang(u); var b=document.getElementById('uangFloatText'); if(b) b.innerText=formatUang(u); var c=document.getElementById('ktpUang'); if(c) c.innerText=formatUang(u); }
+function updateKasDesa(){ var a=document.getElementById('kasBar'); if(a) a.innerText='🏛️ Kas Desa: '+formatUang(KAS_DESA); var b=document.getElementById('kasDesaText'); if(b) b.innerText=formatUang(KAS_DESA); var c=document.getElementById('ktpKasDesa'); if(c) c.innerText=formatUang(KAS_DESA); }
+function updateWarga(){var e=document.getElementById('wargaCount'); if(e) e.innerText=formatWarga(WARGA);}
+function updateJam(){let d=new Date();let h=['Min','Sen','Sel','Rab','Kam','Jum','Sab'][d.getDay()];let b=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'][d.getMonth()];var el=document.getElementById('jam'); if(el) el.innerText=h+', '+d.getDate()+' '+b+' '+d.getFullYear()+' • '+String(d.getHours()).padStart(2,'0')+'.'+String(d.getMinutes()).padStart(2,'0')+' WIB';}
+function showKTP(){document.getElementById('ktpPage').style.display='block';document.getElementById('navMap').classList.remove('active');document.getElementById('navKtp').classList.add('active');tampilkanKTP();}
+function showMap(){document.getElementById('ktpPage').style.display='none';document.getElementById('navMap').classList.add('active');document.getElementById('navKtp').classList.remove('active');}
+function zoomIn(){dist=Math.max(15,dist-10);updateCam();}
+function zoomOut(){dist=Math.min(400,dist+10);updateCam();}
+function lompat(){if(isLompat)return;isLompat=true;lompatY=0;}
+function puterKamera(){yaw+=Math.PI/2;updateCam();}
+function updateCam(){if(!ren||!cam) return; if(!modeJalan){cam.position.set(Math.sin(yaw)*Math.cos(pitch)*dist,Math.sin(pitch)*dist,Math.cos(yaw)*Math.cos(pitch)*dist);cam.lookAt(0,0,0);}else if(pemain){cam.position.set(pemain.position.x+Math.sin(yaw)*9,pemain.position.y+5.5,pemain.position.z+Math.cos(yaw)*9);cam.lookAt(pemain.position.x,pemain.position.y+2,pemain.position.z);}}
+function masukJalan(){modeJalan=true;document.getElementById('header').style.display='none';document.getElementById('marquee').style.display='none';document.getElementById('nav').style.display='none';document.getElementById('ktpPage').style.display='none';document.getElementById('mapWrap').style.top='0';document.getElementById('mapWrap').style.bottom='0';document.getElementById('btnJalan').style.display='none';document.getElementById('card').style.display='none';document.getElementById('kasCard').style.display='none';document.getElementById('online').style.display='none';document.getElementById('uangFloat').style.display='none';document.getElementById('side').style.display='none';document.getElementById('btnMenuUtama').style.display='block';document.getElementById('modeLabel').style.display='block';document.getElementById('joystick').style.display='block';document.getElementById('btnLompat').style.display='block';document.getElementById('btnPuter').style.display='block';document.getElementById('hintPuter').style.display='block';setTimeout(()=>{document.getElementById('hintPuter').style.display='none';},4000);if(ren){ren.setSize(innerWidth,innerHeight);cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();}updateCam();}
+function keluarJalan(){modeJalan=false;joyX=0;joyY=0;document.getElementById('header').style.display='flex';document.getElementById('marquee').style.display='block';document.getElementById('nav').style.display='flex';document.getElementById('mapWrap').style.top='104px';document.getElementById('mapWrap').style.bottom='62px';document.getElementById('btnJalan').style.display='block';document.getElementById('card').style.display='block';document.getElementById('kasCard').style.display='block';document.getElementById('online').style.display='block';document.getElementById('uangFloat').style.display='block';document.getElementById('side').style.display='flex';document.getElementById('btnMenuUtama').style.display='none';document.getElementById('modeLabel').style.display='none';document.getElementById('joystick').style.display='none';document.getElementById('btnLompat').style.display='none';document.getElementById('btnPuter').style.display='none';document.getElementById('hintPuter').style.display='none';document.getElementById('npcInfo').style.display='none';if(ren){ren.setSize(innerWidth,innerHeight-144);cam.aspect=innerWidth/(innerHeight-144);cam.updateProjectionMatrix();}updateCam();}
+async function ambilAkunOnline(kode){ try{ let res = await fetch(DB_URL + "/akun/" + kode + ".json"); return await res.json(); }catch(e){ return null; } }
+async function simpanAkunOnline(akun){ await fetch(DB_URL + "/akun/" + akun.kode + ".json", {method:"PUT", body: JSON.stringify(akun)}); localStorage.setItem('longkali_kode_aktif', akun.kode); }
+async function refreshWarga(){ try{ let res = await fetch(DB_URL + "/akun.json"); let data = await res.json(); WARGA = !data ? 0 : Object.keys(data).length; updateWarga(); }catch(e){} }
 function showLoading(on){ document.getElementById('ktpLoading').style.display = on ? 'block' : 'none'; }
 function tampilError(pesan){ var e=document.getElementById('ktpError'); e.style.display='block'; e.innerText=pesan; setTimeout(()=>{e.style.display='none';},5000); }
 async function buatKTP(){
@@ -167,84 +166,14 @@ async function buatKTP(){
   if(!alamat) alamat='Jl. Longkali, Longkali';
   showLoading(true);
   var kode='';
-  for(let percobaan=0; percobaan<10; percobaan++){
-    kode=''; for(var i=0;i<10;i++){ kode+=Math.floor(Math.random()*10); }
-    if(kode[0]=='0') kode='1'+kode.substring(1);
-    let cek = await ambilAkunOnline(kode);
-    if(!cek) break;
-  }
+  for(let percobaan=0; percobaan<10; percobaan++){ kode=''; for(var i=0;i<10;i++){ kode+=Math.floor(Math.random()*10); } if(kode[0]=='0') kode='1'+kode.substring(1); let cek = await ambilAkunOnline(kode); if(!cek) break; }
   AKUN_SAAT_INI={kode:kode, nama:nama.toUpperCase(), alamat:alamat, uang:0, dibuat: Date.now()};
   await simpanAkunOnline(AKUN_SAAT_INI);
   await refreshWarga();
   UANG=0; updateUang(); updateKasDesa(); tampilkanKTP(); showLoading(false);
   document.getElementById('inputNamaBaru').value=''; document.getElementById('inputAlamatBaru').value='';
-  alert('KTP Berhasil Dibuat!\n\nNama: '+nama+'\nKode KTP: '+kode+'\nKamu warga ke-'+WARGA+' di LongkaliVerse!\n\nCATAT KODE INI! Bisa login di HP manapun!');
+  alert('KTP Berhasil Dibuat!\n\nNama: '+nama+'\nKode KTP: '+kode+'\nKamu warga ke-'+WARGA+' di LongkaliVerse!');
 }
 async function masukKTP(){
   var kode=document.getElementById('inputKodeLogin').value.trim();
-  if(kode.length!=10 || isNaN(kode)){ tampilError('Kode harus 10 digit angka!'); return; }
-  showLoading(true);
-  let akun = await ambilAkunOnline(kode);
-  showLoading(false);
-  if(!akun){ tampilError('Kode '+kode+' tidak ditemukan! Cek lagi atau buat KTP baru.'); return; }
-  AKUN_SAAT_INI=akun; localStorage.setItem('longkali_kode_aktif', kode); UANG=akun.uang; updateUang(); updateKasDesa(); tampilkanKTP(); document.getElementById('inputKodeLogin').value='';
-  await refreshWarga();
-  alert('Berhasil masuk! Halo '+akun.nama+'\nSaldo: '+formatUang(akun.uang));
-}
-function keluarKTP(){ AKUN_SAAT_INI=null; UANG=0; localStorage.removeItem('longkali_kode_aktif'); updateUang(); tampilkanKTP(); }
-// UANG PEMAIN - BISA NAMBAH
-async function tambahUang(jumlah){
-  if(!AKUN_SAAT_INI){ alert('Buat KTP / Masuk dulu!'); showKTP(); return; }
-  AKUN_SAAT_INI.uang+=jumlah;
-  await simpanAkunOnline(AKUN_SAAT_INI);
-  updateUang(); tampilkanKTP();
-}
-// UANG PEMAIN - BISA BERKURANG KALAU DIPAKAI
-async function pakaiUang(jumlah){
-  if(!AKUN_SAAT_INI){ alert('Buat KTP / Masuk dulu!'); showKTP(); return; }
-  if(AKUN_SAAT_INI.uang < jumlah){ alert('Uang kamu kurang! Sisa: '+formatUang(AKUN_SAAT_INI.uang)); return; }
-  if(!confirm('Pakai '+formatUang(jumlah)+' ? Sisa jadi '+formatUang(AKUN_SAAT_INI.uang - jumlah))){ return; }
-  AKUN_SAAT_INI.uang-=jumlah;
-  await simpanAkunOnline(AKUN_SAAT_INI);
-  updateUang(); tampilkanKTP();
-  alert('Berhasil pakai '+formatUang(jumlah)+'! Sisa: '+formatUang(AKUN_SAAT_INI.uang));
-}
-function salinKode(){ if(!AKUN_SAAT_INI) return; var t=document.createElement('textarea'); t.value=AKUN_SAAT_INI.kode; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); alert('Kode '+AKUN_SAAT_INI.kode+' tersalin!'); }
-function tampilkanKTP(){
-  if(AKUN_SAAT_INI){
-    document.getElementById('ktpKosong').style.display='none'; document.getElementById('ktpIsi').style.display='block';
-    document.getElementById('ktpKode').innerText=AKUN_SAAT_INI.kode; document.getElementById('ktpKodeBesar').innerText=AKUN_SAAT_INI.kode;
-    document.getElementById('ktpNama').innerText=AKUN_SAAT_INI.nama; document.getElementById('ktpAlamat').innerText=AKUN_SAAT_INI.alamat;
-    document.getElementById('ktpUang').innerText=formatUang(AKUN_SAAT_INI.uang);
-    document.getElementById('ktpFoto').innerText=AKUN_SAAT_INI.nama.charAt(0);
-  } else {
-    document.getElementById('ktpKosong').style.display='block'; document.getElementById('ktpIsi').style.display='none';
-  }
-  updateUang(); updateKasDesa();
-}
-(async function loadAkunAwal(){
-  await refreshWarga();
-  updateKasDesa();
-  var kodeAktif=localStorage.getItem('longkali_kode_aktif');
-  if(kodeAktif){
-    let akun = await ambilAkunOnline(kodeAktif);
-    if(akun){ AKUN_SAAT_INI=akun; UANG=akun.uang; updateUang(); tampilkanKTP(); }
-  }
-})();
-setInterval(refreshWarga, 5000);
-var BATAS_MAP = UKURAN_MAP/2 - 12;
-var BATAS_NPC = UKURAN_MAP/2 - 15;
-function formatUang(n){return 'Rp '+n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.');}
-function formatWarga(n){return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.');}
-function updateUang(){ var u = AKUN_SAAT_INI ? AKUN_SAAT_INI.uang : 0; document.getElementById('uangBar').innerText='💰 '+formatUang(u); document.getElementById('uangFloatText').innerText=formatUang(u); if(document.getElementById('ktpUang')) document.getElementById('ktpUang').innerText=formatUang(u); }
-function updateKasDesa(){ document.getElementById('kasBar').innerText='🏛️ Kas Desa: '+formatUang(KAS_DESA); document.getElementById('kasDesaText').innerText=formatUang(KAS_DESA); if(document.getElementById('ktpKasDesa')) document.getElementById('ktpKasDesa').innerText=formatUang(KAS_DESA); }
-function updateWarga(){document.getElementById('wargaCount').innerText=formatWarga(WARGA);}
-updateUang();updateKasDesa();updateWarga();tampilkanKTP();
-function showKTP(){document.getElementById('ktpPage').style.display='block';document.getElementById('navMap').classList.remove('active');document.getElementById('navKtp').classList.add('active');tampilkanKTP();}
-function showMap(){document.getElementById('ktpPage').style.display='none';document.getElementById('navMap').classList.add('active');document.getElementById('navKtp').classList.remove('active');}
-let scene=new THREE.Scene();scene.background=new THREE.Color(0x87ceeb);
-let cam=new THREE.PerspectiveCamera(55,innerWidth/(innerHeight-144),0.1,2000);
-let ren=new THREE.WebGLRenderer({antialias:true});ren.setClearColor(0x87ceeb,1);ren.setSize(innerWidth,innerHeight-144);ren.domElement.style.position='absolute';ren.domElement.style.top='0';ren.domElement.style.left='0';ren.domElement.style.zIndex='1';ren.domElement.style.touchAction='none';document.getElementById('mapWrap').prepend(ren.domElement);
-scene.add(new THREE.AmbientLight(0xffffff,0.85));
-scene.add(new THREE.HemisphereLight(0xffffff,0x2ea043,0.55));
-let dl=new THREE.DirectionalLight(0xffffff,0.65);dl.position.set(20,30,10);scene.add(dl);
+  if(kode.lengt
