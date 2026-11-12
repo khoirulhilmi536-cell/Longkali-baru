@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html><head><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TES</title></head>
+<body style="margin:0;background:black;color:white;font-family:sans-serif">
+<h2 id="hasil" style="padding:20px">LOADING...</h2>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+if(typeof THREE==='undefined'){
+  document.getElementById('hasil').innerHTML = 'GAGAL: Internet lu nge-block CDN. Bukan salah codingan!';
+}else{
+  try{
+    var s=new THREE.Scene(); s.background=new THREE.Color(0x0000ff);
+    var c=new THREE.PerspectiveCamera(75, innerWidth/innerHeight, 0.1, 1000);
+    var r=new THREE.WebGLRenderer(); r.setSize(innerWidth, innerHeight);
+    document.body.appendChild(r.domElement);
+    var b=new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshBasicMaterial({color:0xff0000}));
+    s.add(b); c.position.z=3;
+    r.render(s,c);
+    document.getElementById('hasil').innerHTML = 'BERHASIL! THREE jalan. Berarti codingan LongkaliVerse lu yang rusak, bukan internet.';
+  }catch(e){ document.getElementById('hasil').innerHTML = 'ERROR: '+e.message; }
+}
+</script></body></html>
