@@ -257,14 +257,13 @@ function buatKarakterRealistis(warnaBaju, warnaKulit, warnaRambut, cewek){
   warnaRambut = warnaRambut || 0x1f2937;
   function kaki(x){
     let grp = new THREE.Group();
-    // Pivot di pinggul, bukan di tanah
-    grp.position.set(x, 0.90, 0);
     let k = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.75, 0.32), new THREE.MeshLambertMaterial({color:0x1e293b}));
-    k.position.y = -0.42; grp.add(k);
+    k.position.y = 0.45; grp.add(k);
     let sepatu = new THREE.Mesh(new THREE.BoxGeometry(0.30, 0.18, 0.55), new THREE.MeshLambertMaterial({color:0x111827}));
-    sepatu.position.set(0, -0.81, 0.10); grp.add(sepatu);
+    sepatu.position.set(0, 0.09, 0.10); grp.add(sepatu);
+    grp.position.x = x;
     return grp;
-}
+  }
   let kakiKiri = kaki(-0.22); let kakiKanan = kaki(0.22);
   g.add(kakiKiri); g.add(kakiKanan);
   let badan = new THREE.Mesh(new THREE.BoxGeometry(0.85, 1.0, 0.45), new THREE.MeshLambertMaterial({color:warnaBaju}));
@@ -327,7 +326,7 @@ scene.add(pemain);
 function buatNPC(x,z,warnaBaju,nama,pesan){let k=buatKarakterRealistis(warnaBaju,0xfdbd8a,0x3b2314,Math.random()>0.5);let g=k.group;g.position.set(x,0,z);let topi=new THREE.Mesh(new THREE.CylinderGeometry(0.35,0.38,0.22,10),new THREE.MeshLambertMaterial({color:0x111827}));topi.position.y=2.95;g.add(topi);scene.add(g);npcs.push({g:g,nama:nama,pesan:pesan,arah:Math.random()*Math.PI*2,kecepatan:0.02+Math.random()*0.02,limb:{tanganKiri:k.tanganKiri,tanganKanan:k.tanganKanan,kakiKiri:k.kakiKiri,kakiKanan:k.kakiKanan},waktu:Math.random()*100});}
 buatNPC(8,8,0x3b82f6,'Pak RT','Halo! Saya Pak RT Longkali. Desa kita aman!');
 buatNPC(-12,-8,0xf59e0b,'Bu Sari','Selamat datang di Longkali! Jangan lupa mampir ke warung saya ya!');
-buatNPC(15,-12,0x22c55e,'Bang Udin','Woi! Lagi jalan-jalan ya?);
+buatNPC(15,-12,0x22c55e,'Bang Udin','Woi! Lagi jalan-jalan ya? Longkali sekarang udah ada Verse-nya!');
 updateCam();
 let camDrag=false,camLastX=0,camLastY=0,camId=null;
 ren.domElement.addEventListener('pointerdown',e=>{camDrag=true;camId=e.pointerId;camLastX=e.clientX;camLastY=e.clientY;});
