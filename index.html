@@ -257,13 +257,14 @@ function buatKarakterRealistis(warnaBaju, warnaKulit, warnaRambut, cewek){
   warnaRambut = warnaRambut || 0x1f2937;
   function kaki(x){
     let grp = new THREE.Group();
+    // Pivot di pinggul, bukan di tanah
+    grp.position.set(x, 0.90, 0);
     let k = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.75, 0.32), new THREE.MeshLambertMaterial({color:0x1e293b}));
-    k.position.y = 0.45; grp.add(k);
+    k.position.y = -0.42; grp.add(k);
     let sepatu = new THREE.Mesh(new THREE.BoxGeometry(0.30, 0.18, 0.55), new THREE.MeshLambertMaterial({color:0x111827}));
-    sepatu.position.set(0, 0.09, 0.10); grp.add(sepatu);
-    grp.position.x = x;
+    sepatu.position.set(0, -0.81, 0.10); grp.add(sepatu);
     return grp;
-  }
+}
   let kakiKiri = kaki(-0.22); let kakiKanan = kaki(0.22);
   g.add(kakiKiri); g.add(kakiKanan);
   let badan = new THREE.Mesh(new THREE.BoxGeometry(0.85, 1.0, 0.45), new THREE.MeshLambertMaterial({color:warnaBaju}));
