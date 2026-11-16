@@ -143,7 +143,7 @@ function animate(){
 requestAnimationFrame(animate);
 let sp=mode=='terbang'?1.2:0.35, mx=0,mz=0;
 if(keys['w']||keys['arrowup']) mz+=1; if(keys['s']||keys['arrowdown']) mz-=1; if(keys['a']||keys['arrowleft']) mx-=1; if(keys['d']||keys['arrowright']) mx+=1;
-mx+=joyX; mz+=-joyY;
+mx+=joyX; mz+=joyY;
 if(mx||mz){let len=Math.hypot(mx,mz); mx/=len; mz/=len; let sin=Math.sin(player.rot),cos=Math.cos(player.rot); player.x+=(mx*cos+mz*sin)*sp; player.z+=(-mx*sin+mz*cos)*sp;}
 if(mode=='terbang'){ if(keys[' ']) player.y+=0.5; if(keys['shift']) player.y-=0.5; }
 else player.y=2;
