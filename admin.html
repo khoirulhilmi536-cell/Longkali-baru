@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin Map - LongkaliVerse</title>
+<style>body{margin:0;font-family:Arial;background:#0f172a;color:#fff}header{padding:12px;background:#0f766e;display:flex;justify-content:space-between}button{padding:9px 13px;border:none;border-radius:8px;font-weight:700;cursor:pointer}#tools{display:flex;gap:6px;flex-wrap:wrap;padding:10px;background:#1e293b}#tools button{background:#334155;color:#fff}#tools button.on{background:#facc15;color:#000}#wrap{display:flex;flex-wrap:wrap;gap:10px;padding:10px}#mapBox{flex:1;min-width:300px;background:#4ade80;border-radius:12px;overflow:hidden;position:relative}canvas{width:100%;display:block;touch-action:none}#panel{width:300px;background:#1e293b;border-radius:12px;padding:12px}label{display:block;font-size:12px;margin:8px 0 3px;color:#cbd5e1}input,select{width:100%;padding:8px;border-radius:8px;border:none;background:#0f172a;color:#fff}input[type=color]{height:40px;padding:2px}#list div{background:#0f172a;padding:8px;border-radius:8px;margin-bottom:6px;display:flex;justify-content:space-between;font-size:13px}#out{width:100%;height:80px;background:#000;color:#4ade80;padding:8px;border-radius:8px;font-size:11px;margin-top:10px}</style></head>
+<body>
+<header><b>🛠️ ADMIN MAP - NYAMBUNG FIREBASE</b><span id="status">⏳ Menghubungkan...</span></header>
+<div id="tools">
+<button id="tRumah" class="on" onclick="setTool('rumah')">🏠 Rumah</button>
+<button id="tPohon" onclick="setTool('pohon')">🌳 Pohon</button>
+<button id="tPindah" onclick="setTool('pindah')">✋ Pindah</button>
+<button id="tHapus" onclick="setTool('hapus')">🗑️ Hapus</button>
+<button onclick="hapusSemua()" style="background:#ef4444;color:#fff">🧹 Kosongkan</button>
+</div>
+<div id="wrap">
+<div id="mapBox"><canvas id="cv" width="600" height="600"></canvas></div>
+<div id="panel">
+<h3 style="margin:0">✏️ Edit</h3>
+<p id="noSel" style="font-size:13px;color:#94a3b8">Klik di map hijau buat tambah.</p>
+<div id="editBox" style="display:none">
+<label>Nama</label><input id="inNama" oninput="upd()">
+<label>Warna</label><input type="color" id="inWarna" oninput="upd()">
+<label>Warna Atap / Batang</label><input type="color" id="inAtap" oninput="upd()">
+<label>X</label><input type="number" id="inX" oninput="upd()">
+<label>Z</label><input type="number" id="inZ" oninput="upd()">
+</div>
+<h3>📋 Daftar</h3><div id="list"></div>
+<button onclick="simpanKeFirebase()" style="background:#22c55e;width:100%;margin-top:10px;padding:14px;font-size:16px">☁️ SIMPAN KE SERVER - SEMUA HP LANGSUNG UPDATE</button>
+<button onclick="loadDariFirebase()" style="background:#0ea5e9;width:100%;margin-top:6px;padding:10px">🔄 Ambil Map Dari Server</button>
+<div id="out"></div>
+</div></div>
+<script>
+var DB_URL = "https://admin-55bc3-default-rtdb.firebaseio.com";
+let objs=[], tool='rumah', sel=-1, drag=-1;
+let cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+async function loadDariFirebase(){
+  document.getElementById('status').innerText='⏳ Mengambil map...';
+  try{
+    let r=await fetch(DB_URL+"/map.json"); let d=await r.json();
+    objs = d ? (Array.isArray(d) ? d : Object.values(d)) : [];
+    draw(); document.getElementById('status').innerText='✅ Tersambung - '+objs.length+' objek';
+  }catch(e){ document.getElementById('status').innerText='❌ Gagal sambung'; }
+}
+async function simpanKeFirebase(){
+  document.getElementById('status').innerText='⏳ Menyimpan...';
+  await fetch(DB_URL+"/map.json",{method:"PUT", body:JSON.stringify(objs)});
+  document.getElementById('status').innerText='✅ Tersimpan! Semua HP udah update';
+  alert('Berhasil! Map udah tersimpan di Firebase. Buka index.html di HP lain, langsung berubah!');
+}
+function draw(){
+  ctx.fillStyle='#4ade80';ctx.fillRect(0,0,600,600);
+  ctx.fillStyle='#334155';ctx.fillRect(280,0,40,600);ctx.fillRect(0,280,600,40);
+  objs.forEach((o,i)=>{let px=(o.x+50)*6,py=(o.z+50)*6;
+  if(o.type=='rumah'){ctx.fillStyle=o.warna;ctx.fillRect(px-22,py-22,44,44);ctx.fillStyle=o.atap;ctx.beginPath();ctx.moveTo(px,py-32);ctx.lineTo(px-30,py+5);ctx.lineTo(px+30,py+5);ctx.closePath();ctx.fill();ctx.fillStyle='#000';ctx.font='bold 11px Arial';ctx.textAlign='center';ctx.fillText(o.nama,px,py+38);}
+  else{ctx.fillStyle=o.atap;ctx.fillRect(px-3,py-5,6,20);ctx.fillStyle=o.warna;ctx.beginPath();ctx.arc(px,py-12,18,0,7);ctx.fill();}
+  if(sel==i){ctx.strokeStyle='#facc15';ctx.lineWidth=3;ctx.strokeRect(px-30,py-35,60,65);}});
+  let list=document.getElementById('list'); list.innerHTML = objs.length==0 ? '<p style="color:#94a3b8;font-size:12px">Masih kosong</p>' : '';
+  objs.forEach((o,i)=>{list.innerHTML+=`<div><span>${o.type=='rumah'?'🏠':'🌳'} <b>${o.nama}</b><br><small>${o.x}, ${o.z}</small></span><button onclick="pilih(${i})" style="background:#facc15;padding:4px 8px">Edit</button></div>`;});
+}
+function setTool(t){tool=t;['tRumah','tPohon','tPindah','tHapus'].forEach(id=>document.getElementById(id).classList.remove('on'));document.getElementById('t'+(t=='rumah'?'Rumah':t=='pohon'?'Pohon':t=='pindah'?'Pindah':'Hapus')).classList.add('on');}
+function getPos(e){let r=cv.getBoundingClientRect();let cx=(e.clientX||e.touches[0].clientX)-r.left;let cy=(e.clientY||e.touches[0].clientY)-r.top;return{x:Math.round(cx/r.width*100-50),z:Math.round(cy/r.height*100-50)};}
+function findObj(x,z){for(let i=objs.length-1;i>=0;i--){if(Math.abs(objs[i].x-x)<6&&Math.abs(objs[i].z-z)<6)return i;}return -1;}
+cv.addEventListener('pointerdown',e=>{let p=getPos(e);if(tool=='hapus'){let idx=findObj(p.x,p.z);if(idx>=0){objs.splice(idx,1);sel=-1;draw();}return;}if(tool=='pindah'){let idx=findObj(p.x,p.z);if(idx>=0){drag=idx;pilih(idx);}return;}let idx=findObj(p.x,p.z);if(idx>=0){pilih(idx);return;}let nm=tool=='rumah'?'Rumah '+(objs.filter(o=>o.type=='rumah').length+1):'Pohon '+(objs.filter(o=>o.type=='pohon').length+1);objs.push({x:p.x,z:p.z,type:tool,nama:nm,warna:tool=='rumah'?'#ffffff':'#166534',atap:tool=='rumah'?'#dc2626':'#78350f'});pilih(objs.length-1);draw();});
+cv.addEventListener('pointermove',e=>{if(drag>=0){let p=getPos(e);objs[drag].x=p.x;objs[drag].z=p.z;draw();}});
+addEventListener('pointerup',()=>drag=-1);
+function pilih(i){sel=i;document.getElementById('noSel').style.display='none';document.getElementById('editBox').style.display='block';sync();draw();}
+function sync(){if(sel<0)return;let o=objs[sel];document.getElementById('inNama').value=o.nama;document.getElementById('inWarna').value=o.warna;document.getElementById('inAtap').value=o.atap;document.getElementById('inX').value=o.x;document.getElementById('inZ').value=o.z;}
+function upd(){if(sel<0)return;let o=objs[sel];o.nama=document.getElementById('inNama').value;o.warna=document.getElementById('inWarna').value;o.atap=document.getElementById('inAtap').value;o.x=parseInt(document.getElementById('inX').value)||0;o.z=parseInt(document.getElementById('inZ').value)||0;draw();}
+function hapusSemua(){if(!confirm('Hapus semua?'))return;objs=[];sel=-1;draw();}
+loadDariFirebase(); draw();
+</script></body></html>
