@@ -348,6 +348,12 @@ async function loadMapAdmin(){
         dinding.position.y=2.5*s; g.add(dinding);
         let atap = new THREE.Mesh(new THREE.ConeGeometry(6.5*s,3*s,4), new THREE.MeshLambertMaterial({color: cA}));
         atap.position.y=6.5*s; atap.rotation.y=Math.PI/4; g.add(atap);
+let pintu = new THREE.Mesh(new THREE.BoxGeometry(1.6*s, 2.8*s, 0.2), new THREE.MeshLambertMaterial({color:0x8B4513}));
+pintu.position.set(0, 1.4*s, 4.1*s); g.add(pintu);
+let j1 = new THREE.Mesh(new THREE.BoxGeometry(1.5*s, 1.2*s, 0.2), new THREE.MeshLambertMaterial({color:0x87CEEB}));
+j1.position.set(-2.2*s, 2.8*s, 4.1*s); g.add(j1);
+let j2 = new THREE.Mesh(new THREE.BoxGeometry(1.5*s, 1.2*s, 0.2), new THREE.MeshLambertMaterial({color:0x87CEEB}));
+j2.position.set(2.2*s, 2.8*s, 4.1*s); g.add(j2);
         g.position.set(x,0,z); g.rotation.y=(o.rot||0)*Math.PI/180; scene.add(g);
       }
       if(o.type=='pohon'){
