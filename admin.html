@@ -1,234 +1,155 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Admin 3D - LongkaliVerse</title>
-<style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#0f172a;color:#fff;overflow:hidden}
-header{background:#0f766e;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;gap:8px}
-header b{font-size:15px}header span{font-size:11px;background:rgba(0,0,0,.3);padding:5px 10px;border-radius:20px}
-#tools{background:#1e293b;padding:8px;display:flex;gap:6px;flex-wrap:wrap}
-#tools button{background:#334155;color:#fff;border:none;padding:9px 11px;border-radius:10px;font-weight:800;cursor:pointer;font-size:13px}
-#tools button.on{background:#facc15;color:#000;outline:2px solid #fff}
-#tools button.save{background:#22c55e;color:#fff}
-#tools button.load{background:#0ea5e9;color:#fff}
-#tools button.clear{background:#ef4444;color:#fff}
-#wrap{display:flex;height:calc(100vh - 104px)}
-#mapBox{flex:1;position:relative;background:#87ceeb;overflow:hidden}
-#mapBox canvas{display:block}
-#hint{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.65);padding:8px 12px;border-radius:20px;font-size:12px;pointer-events:none}
-#hint2{position:absolute;bottom:10px;left:10px;background:rgba(0,0,0,.65);padding:8px 12px;border-radius:12px;font-size:11px;pointer-events:none;line-height:1.5}
-#panel{width:320px;background:#1e293b;padding:12px;overflow-y:auto}
-#panel h3{margin:8px 0 4px;font-size:14px}
-label{display:block;font-size:11px;color:#cbd5e1;margin:8px 0 3px}
-input,select{width:100%;padding:9px;border-radius:8px;border:none;background:#0f172a;color:#fff;font-size:14px}
-input[type=color]{height:42px;padding:2px}
-input[type=range]{padding:0}
-.row{display:flex;gap:6px}.row button{flex:1}
-.item{background:#0f172a;padding:8px;border-radius:8px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;font-size:13px}
-.item small{color:#94a3b8}
-.item button{padding:5px 9px;border:none;border-radius:8px;font-weight:800;cursor:pointer}
-.btnYellow{background:#facc15}.btnRed{background:#ef4444;color:#fff}
-.stat{display:flex;gap:6px;margin:6px 0}
-.stat div{flex:1;background:#0f172a;padding:8px;border-radius:10px;text-align:center;font-size:12px}
-.stat b{font-size:18px;display:block}
-@media(max-width:700px){#wrap{flex-direction:column}#panel{width:100%;height:45%;order:2}#mapBox{height:55%}}
-</style>
+<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>ADMIN LONGKALI - Jalan di Map</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-</head>
+<style>
+*{box-sizing:border-box}body{margin:0;overflow:hidden;background:#000;font-family:Arial;color:#fff}
+#game{position:fixed;inset:0}
+#top{position:fixed;top:0;left:0;right:0;background:rgba(0,0,0,.9);padding:8px;display:flex;gap:5px;flex-wrap:wrap;z-index:10;align-items:center}
+#top b{color:#facc15;font-size:13px;width:100%}
+button,select,input{padding:8px 10px;border-radius:8px;border:none;font-weight:700;font-size:13px}
+button{background:#22c55e;color:#fff}button.del{background:#ef4444}button.blue{background:#3b82f6}button.yellow{background:#eab308;color:#000}button.active{outline:3px solid #facc15}
+#panel{position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,.92);padding:10px;z-index:10;max-height:46vh;overflow:auto}
+.row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px;align-items:center}
+.row label{font-size:12px;color:#ccc}
+#joy{position:fixed;left:15px;bottom:200px;width:110px;height:110px;background:rgba(255,255,255,.15);border:2px solid #fff;border-radius:50%;z-index:9}
+#stick{position:absolute;left:35px;top:35px;width:40px;height:40px;background:#fff;border-radius:50%}
+#look{position:fixed;right:15px;bottom:200px;width:110px;height:110px;background:rgba(255,255,255,.12);border:2px solid #fff;border-radius:50%;z-index:9}
+#lookBtn{position:absolute;left:35px;top:35px;width:40px;height:40px;background:#facc15;border-radius:50%}
+#info{position:fixed;top:95px;left:10px;background:rgba(0,0,0,.7);padding:8px;border-radius:8px;font-size:12px;z-index:9}
+#cross{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);font-size:24px;z-index:8;pointer-events:none}
+</style></head>
 <body>
-<header><b>🛠️ ADMIN 3D - LONGKALIVERSE</b><span id="status">⏳ Menghubungkan...</span></header>
-<div id="tools">
-<button id="tRumah" class="on" onclick="setTool('rumah')">🏠 Rumah</button>
-<button id="tToko" onclick="setTool('toko')">🏪 Toko</button>
-<button id="tPohon" onclick="setTool('pohon')">🌳 Pohon</button>
-<button id="tNPC" onclick="setTool('npc')">👤 NPC</button>
-<button id="tJalan" onclick="setTool('jalan')">🛣️ Jalan</button>
-<button id="tLampu" onclick="setTool('lampu')">💡 Lampu</button>
-<button id="tPindah" onclick="setTool('pindah')">✋ Pindah</button>
-<button id="tHapus" onclick="setTool('hapus')">🗑️ Hapus</button>
-<button id="tKamera" onclick="setTool('kamera')">🎥 Kamera</button>
-<button class="save" onclick="simpan()">☁️ SIMPAN KE SERVER</button>
-<button class="load" onclick="loadMap()">🔄 LOAD</button>
-<button class="clear" onclick="hapusSemua()">🧹 KOSONGKAN</button>
-</div>
-<div id="wrap">
-<div id="mapBox"><div id="holder"></div>
-<div id="hint">🖱️ Klik tanah = Tambah • Seret = Puter Kamera • Scroll = Zoom<br>Mode Pindah: Seret objek buat geser</div>
-<div id="hint2">💡 <b>Tips:</b> Klik objek buat edit di kanan.<br>Putar: geser slider Rotasi • Gedein: slider Ukuran</div>
-</div>
-<div id="panel">
-<div class="stat"><div><b id="cTotal">0</b>Total</div><div><b id="cRumah">0</b>🏠 Rumah</div><div><b id="cPohon">0</b>🌳 Pohon</div><div><b id="cNPC">0</b>👤 NPC</div></div>
-<input id="search" placeholder="🔍 Cari nama... contoh: Rumah Budi" oninput="drawList()" style="margin-bottom:6px">
-<h3>✏️ Edit Objek Terpilih</h3>
-<p id="noSel" style="font-size:12px;color:#94a3b8">Belum ada yang dipilih. Klik objek di map 3D atau klik Edit di list.</p>
-<div id="editBox" style="display:none">
-<label>Nama</label><input id="inNama" oninput="upd()">
-<label>Jenis</label><select id="inType" onchange="updType()"><option value="rumah">🏠 Rumah</option><option value="toko">🏪 Toko</option><option value="pohon">🌳 Pohon</option><option value="npc">👤 NPC</option><option value="jalan">🛣️ Jalan</option><option value="lampu">💡 Lampu</option></select>
-<label>Warna Utama</label><input type="color" id="inWarna" oninput="upd()">
-<label>Warna Atap / Kedua</label><input type="color" id="inAtap" oninput="upd()">
-<label>Posisi X: <b id="vX">0</b></label><input type="range" id="inX" min="-240" max="240" oninput="upd()">
-<label>Posisi Z: <b id="vZ">0</b></label><input type="range" id="inZ" min="-240" max="240" oninput="upd()">
-<label>Putar / Rotasi: <b id="vRot">0°</b></label><input type="range" id="inRot" min="0" max="360" oninput="upd()">
-<label>Ukuran: <b id="vScale">1x</b></label><input type="range" id="inScale" min="0.5" max="3" step="0.1" oninput="upd()">
-<label>Pesan NPC (kalo NPC)</label><input id="inPesan" placeholder="Halo! Saya Pak RT..." oninput="upd()">
-<div class="row" style="margin-top:10px">
-<button class="btnYellow" onclick="duplikat()">📄 Duplikat</button>
-<button class="btnRed" onclick="hapusSel()">🗑️ Hapus Ini</button>
-</div>
-<button onclick="putar45()" style="width:100%;margin-top:6px;background:#0ea5e9;color:#fff;padding:10px;border-radius:10px;border:none;font-weight:800;cursor:pointer">🔄 Putar 45°</button>
-</div>
-<h3>📋 Daftar Objek</h3><div id="list"></div>
-<div style="background:#0f172a;padding:10px;border-radius:10px;font-size:11px;color:#94a3b8;line-height:1.6;margin-top:10px">
-<b style="color:#fff">Cara Pakai:</b><br>
-1. Pilih alat di atas, klik tanah hijau<br>
-2. Klik objek buat edit warna / nama / posisi<br>
-3. Pencet SIMPAN KE SERVER<br>
-4. Buka index.html, map langsung berubah di semua HP
-</div>
-</div></div>
-<script>
-var DB_URL = "https://admin-55bc3-default-rtdb.firebaseio.com";
-let objs=[], tool='rumah', sel=-1, dragIdx=-1;
-let scene,cam,ren, ground, groupMap=new THREE.Group();
-let yaw=0.8,pitch=0.9,dist=160, isCamDrag=false, lastX=0, lastY=0, camId=null;
-let ray=new THREE.Raycaster(), mouse=new THREE.Vector2();
+<div id="game"></div>
+<div id="cross">+</div>
+<div id="info">📍 X:0 Z:0 | Objek: <span id="cnt">0</span><br><span id="selInfo">Belum ada yang dipilih</span></div>
 
-function init3D(){
-  scene=new THREE.Scene(); scene.background=new THREE.Color(0x87ceeb);
-  let holder=document.getElementById('holder');
-  let w=document.getElementById('mapBox').clientWidth, h=document.getElementById('mapBox').clientHeight;
-  cam=new THREE.PerspectiveCamera(55,w/h,0.1,2000);
-  ren=new THREE.WebGLRenderer({antialias:true}); ren.setSize(w,h); holder.appendChild(ren.domElement);
-  scene.add(new THREE.AmbientLight(0xffffff,0.9));
-  let dl=new THREE.DirectionalLight(0xffffff,0.6); dl.position.set(30,50,20); scene.add(dl);
-  ground=new THREE.Mesh(new THREE.PlaneGeometry(500,500), new THREE.MeshLambertMaterial({color:0x2ea043}));
-  ground.rotation.x=-Math.PI/2; ground.name='ground'; scene.add(ground);
-  // grid jalan utama
-  let jalanMat=new THREE.MeshLambertMaterial({color:0x334155});
-  let j1=new THREE.Mesh(new THREE.PlaneGeometry(20,500), jalanMat); j1.rotation.x=-Math.PI/2; j1.position.y=0.05; scene.add(j1);
-  let j2=new THREE.Mesh(new THREE.PlaneGeometry(500,20), jalanMat); j2.rotation.x=-Math.PI/2; j2.position.y=0.05; scene.add(j2);
-  scene.add(groupMap);
-  updateCam();
-  // events
-  ren.domElement.addEventListener('pointerdown', onDown);
-  ren.domElement.addEventListener('pointermove', onMove);
-  addEventListener('pointerup', ()=>{isCamDrag=false; dragIdx=-1;});
-  ren.domElement.addEventListener('wheel', e=>{dist=Math.max(30,Math.min(400, dist + e.deltaY*0.2)); updateCam(); e.preventDefault();},{passive:false});
-  (function loop(){requestAnimationFrame(loop); ren.render(scene,cam);})();
+<div id="top">
+<b>🏙️ ADMIN LONGKALI - MODE JALAN | DB: admin-55bc3 ✅</b>
+<button onclick="setMode('jalan')" id="bJalan" class="active">🚶 JALAN</button>
+<button onclick="setMode('terbang')" id="bTerbang">✈️ TERBANG</button>
+<button onclick="setMode('edit')" id="bEdit" class="yellow">✏️ EDIT / PILIH</button>
+<button onclick="simpan()" style="background:#f97316">💾 SIMPAN KE GAME</button>
+</div>
+
+<div id="panel">
+<div class="row">
+<label>Tambah:</label>
+<select id="tipe"><option value="rumah">🏠 Rumah (ada pintu)</option><option value="toko">🏪 Toko</option><option value="pohon">🌲 Pohon</option><option value="jalan">🛣️ Jalan</option><option value="lampu">💡 Lampu</option><option value="npc">🧍 NPC</option></select>
+<input id="nama" placeholder="Nama (untuk NPC/Toko)" style="flex:1">
+<button onclick="tambahDiDepan()">➕ TARUH DI DEPAN SAYA</button>
+</div>
+<div class="row">
+<label>Warna:</label><input type="color" id="warna" value="#ffffff">
+<label>Atap:</label><input type="color" id="atap" value="#dc2626">
+<label>Scale:</label><input type="range" id="scale" min="0.5" max="4" step="0.1" value="1"><span id="scaleVal">1</span>
+<label>Putar:</label><button onclick="putar(-45)">↩️</button><button onclick="putar(45)">↪️</button>
+</div>
+<div class="row">
+<label>Geser yang dipilih:</label>
+<button onclick="geser(0,-1)">⬆️</button><button onclick="geser(0,1)">⬇️</button><button onclick="geser(-1,0)">⬅️</button><button onclick="geser(1,0)">➡️</button>
+<button onclick="hapusPilih()" class="del">🗑️ HAPUS</button>
+<button onclick="loadMap()" class="blue">🔄 MUAT ULANG</button>
+<button onclick="hapusSemua()" class="del">⚠️ HAPUS SEMUA</button>
+</div>
+<div class="row" style="font-size:11px;color:#aaa">Cara pakai: Mode JALAN = jalan pake joystick/WASD. Mode EDIT = klik objek buat pilih, lalu geser/puter/hapus. Mode TERBANG = kamera naik. Klik SIMPAN kalo udah selesai!</div>
+</div>
+
+<div id="joy"><div id="stick"></div></div>
+<div id="look"><div id="lookBtn"></div></div>
+
+<script>
+const DB_URL = "https://admin-55bc3-default-rtdb.firebaseio.com";
+let scene,camera,renderer,player={x:0,z:0,rot:0,y:2},keys={},objs=[],selected=null,mode='jalan',joyX=0,joyY=0;
+
+function init(){
+scene=new THREE.Scene(); scene.background=new THREE.Color(0x87ceeb); scene.fog=new THREE.Fog(0x87ceeb,80,300);
+camera=new THREE.PerspectiveCamera(75,innerWidth/innerHeight,0.1,1000);
+renderer=new THREE.WebGLRenderer({antialias:true}); renderer.setSize(innerWidth,innerHeight); document.getElementById('game').appendChild(renderer.domElement);
+scene.add(new THREE.AmbientLight(0xffffff,0.9));
+let sun=new THREE.DirectionalLight(0xffffff,0.8); sun.position.set(50,100,50); scene.add(sun);
+let g=new THREE.Mesh(new THREE.PlaneGeometry(500,500), new THREE.MeshLambertMaterial({color:0x4ade80})); g.rotation.x=-Math.PI/2; scene.add(g);
+let grid=new THREE.GridHelper(500,50,0x000000,0x000000); grid.material.transparent=true; grid.material.opacity=0.1; scene.add(grid);
+for(let i=-200;i<=200;i+=10){let j=new THREE.Mesh(new THREE.BoxGeometry(10,0.1,10), new THREE.MeshLambertMaterial({color:0x334155})); j.position.set(i,0.05,0); scene.add(j);}
+loadMap(); setupInput(); animate();
 }
-function updateCam(){
-  cam.position.set(Math.sin(yaw)*Math.cos(pitch)*dist, Math.sin(pitch)*dist, Math.cos(yaw)*Math.cos(pitch)*dist);
-  cam.lookAt(0,0,0);
+function buatObj(o){
+let s=o.scale||1,x=o.x||0,z=o.z||0,cW=o.warna?parseInt(o.warna.replace('#','0x')):0xffffff,cA=o.atap?parseInt(o.atap.replace('#','0x')):0xdc2626;
+let grp=new THREE.Group();
+if(o.type=='rumah'||o.type=='toko'){
+let d=new THREE.Mesh(new THREE.BoxGeometry(8*s,5*s,8*s), new THREE.MeshLambertMaterial({color:cW})); d.position.y=2.5*s; grp.add(d);
+let at=new THREE.Mesh(new THREE.ConeGeometry(6.5*s,3*s,4), new THREE.MeshLambertMaterial({color:cA})); at.position.y=6.5*s; at.rotation.y=Math.PI/4; grp.add(at);
+let p=new THREE.Mesh(new THREE.BoxGeometry(1.6*s,2.8*s,0.2), new THREE.MeshLambertMaterial({color:0x8B4513})); p.position.set(0,1.4*s,4.1*s); grp.add(p);
+let j1=new THREE.Mesh(new THREE.BoxGeometry(1.5*s,1.2*s,0.2), new THREE.MeshLambertMaterial({color:0x87CEEB})); j1.position.set(-2.2*s,2.8*s,4.1*s); grp.add(j1);
+let j2=j1.clone(); j2.position.x=2.2*s; grp.add(j2);
+}else if(o.type=='pohon'){
+let b=new THREE.Mesh(new THREE.CylinderGeometry(0.5*s,0.5*s,3*s,6), new THREE.MeshLambertMaterial({color:0x78350f})); b.position.y=1.5*s; grp.add(b);
+let d=new THREE.Mesh(new THREE.ConeGeometry(2.8*s,6*s,6), new THREE.MeshLambertMaterial({color:cW})); d.position.y=6*s; grp.add(d);
+}else if(o.type=='jalan'){
+let j=new THREE.Mesh(new THREE.BoxGeometry(10*s,0.2,10*s), new THREE.MeshLambertMaterial({color:0x334155})); j.position.y=0.1; grp.add(j);
+}else if(o.type=='lampu'){
+let t=new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.2,6*s,6), new THREE.MeshLambertMaterial({color:0x333333})); t.position.y=3*s; grp.add(t);
+let l=new THREE.Mesh(new THREE.SphereGeometry(0.8*s,8,8), new THREE.MeshBasicMaterial({color:0xfde047})); l.position.y=6.2*s; grp.add(l);
+}else{
+let b=new THREE.Mesh(new THREE.BoxGeometry(1,2.2,0.8), new THREE.MeshLambertMaterial({color:cW})); b.position.y=1.1; grp.add(b);
+let k=new THREE.Mesh(new THREE.SphereGeometry(0.45,10,10), new THREE.MeshLambertMaterial({color:0xfdbd8a})); k.position.y=2.6; grp.add(k);
 }
-function getGroundPos(e){
-  let r=ren.domElement.getBoundingClientRect();
-  mouse.x=((e.clientX-r.left)/r.width)*2-1; mouse.y=-((e.clientY-r.top)/r.height)*2+1;
-  ray.setFromCamera(mouse,cam);
-  let hit=ray.intersectObject(ground);
-  if(hit.length) return {x:Math.round(hit[0].point.x), z:Math.round(hit[0].point.z)};
-  return null;
+grp.position.set(x,0,z); grp.rotation.y=(o.rot||0)*Math.PI/180; grp.userData.data=o; scene.add(grp); objs.push(grp); updateCnt(); return grp;
 }
-function getObjIndex(e){
-  let r=ren.domElement.getBoundingClientRect();
-  mouse.x=((e.clientX-r.left)/r.width)*2-1; mouse.y=-((e.clientY-r.top)/r.height)*2+1;
-  ray.setFromCamera(mouse,cam);
-  let hits=ray.intersectObjects(groupMap.children, true);
-  if(!hits.length) return -1;
-  let g=hits[0].object; while(g.parent && g.parent!==groupMap) g=g.parent;
-  return parseInt(g.userData.idx);
-}
-function onDown(e){
-  if(tool=='kamera'){isCamDrag=true; camId=e.pointerId; lastX=e.clientX; lastY=e.clientY; return;}
-  let idx=getObjIndex(e);
-  if(tool=='hapus'){ if(idx>=0){objs.splice(idx,1); sel=-1; rebuild();} return; }
-  if(tool=='pindah'){ if(idx>=0){dragIdx=idx; pilih(idx);} else {isCamDrag=true; camId=e.pointerId; lastX=e.clientX; lastY=e.clientY;} return; }
-  if(idx>=0){ pilih(idx); return; }
-  let p=getGroundPos(e); if(!p) return;
-  let defaults={rumah:{warna:'#ffffff',atap:'#dc2626'},toko:{warna:'#f59e0b',atap:'#0f766e'},pohon:{warna:'#166534',atap:'#78350f'},npc:{warna:'#3b82f6',atap:'#111827'},jalan:{warna:'#334155',atap:'#334155'},lampu:{warna:'#facc15',atap:'#64748b'}};
-  let d=defaults[tool]||defaults.rumah;
-  let nm={rumah:'Rumah ',toko:'Toko ',pohon:'Pohon ',npc:'NPC ',jalan:'Jalan ',lampu:'Lampu '}[tool] + (objs.filter(o=>o.type==tool).length+1);
-  objs.push({x:p.x,z:p.z,type:tool,nama:nm,warna:d.warna,atap:d.atap,rot:0,scale:1,pesan:tool=='npc'?'Halo! Saya warga Longkali!':''});
-  pilih(objs.length-1); rebuild();
-}
-function onMove(e){
-  if(isCamDrag && e.pointerId===camId){ let dx=e.clientX-lastX, dy=e.clientY-lastY; yaw-=dx*0.008; pitch=Math.max(0.15,Math.min(1.35,pitch+dy*0.005)); lastX=e.clientX; lastY=e.clientY; updateCam(); return; }
-  if(dragIdx>=0){ let p=getGroundPos(e); if(p){objs[dragIdx].x=p.x; objs[dragIdx].z=p.z; sync(); rebuild();} }
-}
-function buatMesh(o, idx){
-  let g=new THREE.Group(); g.userData.idx=idx; g.position.set(o.x,0,o.z); g.rotation.y=(o.rot||0)*Math.PI/180; g.scale.setScalar(o.scale||1);
-  let colW=parseInt(o.warna.replace('#','0x')), colA=parseInt(o.atap.replace('#','0x'));
-  if(o.type=='rumah'||o.type=='toko'){
-    let d=new THREE.Mesh(new THREE.BoxGeometry(8,5,8), new THREE.MeshLambertMaterial({color:colW})); d.position.y=2.5; g.add(d);
-    let a=new THREE.Mesh(new THREE.ConeGeometry(6.5,3,4), new THREE.MeshLambertMaterial({color:colA})); a.position.y=6.5; a.rotation.y=Math.PI/4; g.add(a);
-    let pintu=new THREE.Mesh(new THREE.BoxGeometry(1.8,3,0.2), new THREE.MeshLambertMaterial({color:0x78350f})); pintu.position.set(0,1.5,4.1); g.add(pintu);
-    if(o.type=='toko'){ let papan=new THREE.Mesh(new THREE.BoxGeometry(7,1.2,0.3), new THREE.MeshLambertMaterial({color:0x0f172a})); papan.position.set(0,5.2,4.2); g.add(papan); }
-  } else if(o.type=='pohon'){
-    let b=new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,3,6), new THREE.MeshLambertMaterial({color:colA})); b.position.y=1.5; g.add(b);
-    let da=new THREE.Mesh(new THREE.ConeGeometry(2.8,6,6), new THREE.MeshLambertMaterial({color:colW})); da.position.y=6; g.add(da);
-  } else if(o.type=='npc'){
-    let badan=new THREE.Mesh(new THREE.BoxGeometry(0.9,1.2,0.5), new THREE.MeshLambertMaterial({color:colW})); badan.position.y=1.2; g.add(badan);
-    let kep=new THREE.Mesh(new THREE.SphereGeometry(0.45,12,12), new THREE.MeshLambertMaterial({color:0xfdbd8a})); kep.position.y=2.2; g.add(kep);
-    let topi=new THREE.Mesh(new THREE.CylinderGeometry(0.35,0.4,0.25,10), new THREE.MeshLambertMaterial({color:colA})); topi.position.y=2.65; g.add(topi);
-  } else if(o.type=='jalan'){
-    let j=new THREE.Mesh(new THREE.BoxGeometry(12,0.2,4), new THREE.MeshLambertMaterial({color:colW})); j.position.y=0.1; g.add(j);
-  } else if(o.type=='lampu'){
-    let tiang=new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.15,6,6), new THREE.MeshLambertMaterial({color:colA})); tiang.position.y=3; g.add(tiang);
-    let lamp=new THREE.Mesh(new THREE.SphereGeometry(0.6,10,10), new THREE.MeshLambertMaterial({color:colW, emissive:colW})); lamp.position.y=6.3; g.add(lamp);
-  }
-  // label nama
-  let cv=document.createElement('canvas'); cv.width=256; cv.height=48; let c=cv.getContext('2d'); c.fillStyle='white'; c.font='bold 26px Arial'; c.textAlign='center'; c.fillText(o.nama,128,32);
-  let tex=new THREE.CanvasTexture(cv); let spr=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true})); spr.position.y= o.type=='rumah'||o.type=='toko'?9: o.type=='pohon'?9.5:4; spr.scale.set(6,1.1,1); g.add(spr);
-  if(idx===sel){ let ring=new THREE.Mesh(new THREE.RingGeometry(4.5,5.2,20), new THREE.MeshBasicMaterial({color:0xfacc15, side:THREE.DoubleSide})); ring.rotation.x=-Math.PI/2; ring.position.y=0.2; g.add(ring); }
-  return g;
-}
-function rebuild(){
-  while(groupMap.children.length) groupMap.remove(groupMap.children[0]);
-  objs.forEach((o,i)=>{ groupMap.add(buatMesh(o,i)); });
-  drawList(); updateStat();
-}
-function drawList(){
-  let q=(document.getElementById('search').value||'').toLowerCase();
-  let list=document.getElementById('list'); list.innerHTML='';
-  objs.forEach((o,i)=>{
-    if(q && !o.nama.toLowerCase().includes(q)) return;
-    list.innerHTML+=`<div class="item"><span>${o.type=='rumah'?'🏠':o.type=='toko'?'🏪':o.type=='pohon'?'🌳':o.type=='npc'?'👤':o.type=='jalan'?'🛣️':'💡'} <b>${o.nama}</b><br><small>${o.x}, ${o.z} • ${o.type}</small></span><span><button class="btnYellow" onclick="pilih(${i})">Edit</button> <button class="btnRed" onclick="hapusIdx(${i})">X</button></span></div>`;
-  });
-  if(list.innerHTML=='') list.innerHTML='<p style="color:#94a3b8;font-size:12px">Belum ada / tidak ketemu</p>';
-}
-function updateStat(){
-  document.getElementById('cTotal').innerText=objs.length;
-  document.getElementById('cRumah').innerText=objs.filter(o=>o.type=='rumah').length;
-  document.getElementById('cPohon').innerText=objs.filter(o=>o.type=='pohon').length;
-  document.getElementById('cNPC').innerText=objs.filter(o=>o.type=='npc').length;
-}
-function setTool(t){ tool=t; ['tRumah','tToko','tPohon','tNPC','tJalan','tLampu','tPindah','tHapus','tKamera'].forEach(id=>document.getElementById(id).classList.remove('on')); let map={rumah:'tRumah',toko:'tToko',pohon:'tPohon',npc:'tNPC',jalan:'tJalan',lampu:'tLampu',pindah:'tPindah',hapus:'tHapus',kamera:'tKamera'}; document.getElementById(map[t]).classList.add('on'); }
-function pilih(i){ sel=i; document.getElementById('noSel').style.display='none'; document.getElementById('editBox').style.display='block'; sync(); rebuild(); }
-function sync(){
-  if(sel<0) return; let o=objs[sel];
-  document.getElementById('inNama').value=o.nama; document.getElementById('inType').value=o.type;
-  document.getElementById('inWarna').value=o.warna; document.getElementById('inAtap').value=o.atap;
-  document.getElementById('inX').value=o.x; document.getElementById('vX').innerText=o.x;
-  document.getElementById('inZ').value=o.z; document.getElementById('vZ').innerText=o.z;
-  document.getElementById('inRot').value=o.rot||0; document.getElementById('vRot').innerText=(o.rot||0)+'°';
-  document.getElementById('inScale').value=o.scale||1; document.getElementById('vScale').innerText=(o.scale||1)+'x';
-  document.getElementById('inPesan').value=o.pesan||'';
-}
-function upd(){ if(sel<0) return; let o=objs[sel]; o.nama=document.getElementById('inNama').value; o.warna=document.getElementById('inWarna').value; o.atap=document.getElementById('inAtap').value; o.x=parseInt(document.getElementById('inX').value); o.z=parseInt(document.getElementById('inZ').value); o.rot=parseInt(document.getElementById('inRot').value); o.scale=parseFloat(document.getElementById('inScale').value); o.pesan=document.getElementById('inPesan').value; sync(); rebuild(); }
-function updType(){ if(sel<0) return; objs[sel].type=document.getElementById('inType').value; rebuild(); }
-function putar45(){ if(sel<0) return; objs[sel].rot=((objs[sel].rot||0)+45)%360; sync(); rebuild(); }
-function duplikat(){ if(sel<0) return; let c={...objs[sel]}; c.x+=8; c.nama+=' Copy'; objs.push(c); pilih(objs.length-1); }
-function hapusSel(){ if(sel<0) return; objs.splice(sel,1); sel=-1; document.getElementById('editBox').style.display='none'; document.getElementById('noSel').style.display='block'; rebuild(); }
-function hapusIdx(i){ objs.splice(i,1); if(sel==i) sel=-1; rebuild(); }
-function hapusSemua(){ if(!confirm('Hapus semua map? Jadi kosong.')) return; objs=[]; sel=-1; rebuild(); }
-async function simpan(){
-  document.getElementById('status').innerText='⏳ Menyimpan...';
-  await fetch(DB_URL+"/map.json",{method:"PUT", body:JSON.stringify(objs)});
-  document.getElementById('status').innerText='✅ Tersimpan! '+objs.length+' objek';
-  alert('Berhasil! Map 3D udah tersimpan di Firebase.\nBuka index.html, semua HP langsung update!');
-}
+function updateCnt(){document.getElementById('cnt').innerText=objs.length;}
 async function loadMap(){
-  document.getElementById('status').innerText='⏳ Mengambil...';
-  try{ let r=await fetch(DB_URL+"/map.json"); let d=await r.json(); objs=d? (Array.isArray(d)?d:Object.values(d)) : []; sel=-1; rebuild(); document.getElementById('status').innerText='✅ Tersambung - '+objs.length+' objek'; }catch(e){ document.getElementById('status').innerText='❌ Gagal sambung'; }
+objs.forEach(o=>scene.remove(o)); objs=[]; selected=null;
+try{let r=await fetch(DB_URL+"/map.json"); let d=await r.json(); let arr=Array.isArray(d)?d:Object.values(d||{}); arr.forEach(o=>{if(o&&o.x!=null) buatObj(o);});}catch(e){alert('Gagal load map, cek DB_URL');}
 }
-init3D(); loadMap();
-addEventListener('resize', ()=>{ let w=document.getElementById('mapBox').clientWidth, h=document.getElementById('mapBox').clientHeight; ren.setSize(w,h); cam.aspect=w/h; cam.updateProjectionMatrix(); });
+async function simpan(){
+let arr=objs.map(g=>g.userData.data);
+try{await fetch(DB_URL+"/map.json",{method:"PUT",body:JSON.stringify(arr)}); alert('✅ TERSIMPAN! '+arr.length+' objek udah masuk game!');}catch(e){alert('Gagal simpan! Cek DB_URL');}
+}
+function tambahDiDepan(){
+let depanX=player.x+Math.sin(player.rot)*8, depanZ=player.z+Math.cos(player.rot)*8;
+let o={type:document.getElementById('tipe').value, x:Math.round(depanX), z:Math.round(depanZ), scale:parseFloat(document.getElementById('scale').value), warna:document.getElementById('warna').value, atap:document.getElementById('atap').value, rot:0, nama:document.getElementById('nama').value||''};
+let g=buatObj(o); pilih(g);
+}
+function pilih(g){
+if(selected) selected.children.forEach(c=>{if(c.material&&c.material.emissive) c.material.emissive.setHex(0x000000)});
+selected=g; if(!g){document.getElementById('selInfo').innerText='Belum ada yang dipilih';return;}
+g.children.forEach(c=>{if(c.material&&c.material.emissive) c.material.emissive.setHex(0x333333)});
+let d=g.userData.data; document.getElementById('selInfo').innerText='Dipilih: '+d.type+' | X:'+d.x+' Z:'+d.z+' | '+ (d.nama||'');
+document.getElementById('warna').value=d.warna||'#ffffff'; document.getElementById('atap').value=d.atap||'#dc2626';
+}
+function geser(dx,dz){if(!selected) return alert('Pilih dulu objeknya! Mode EDIT lalu klik objek'); let d=selected.userData.data; d.x+=dx; d.z+=dz; selected.position.x=d.x; selected.position.z=d.z; pilih(selected);}
+function putar(a){if(!selected) return alert('Pilih dulu!'); let d=selected.userData.data; d.rot=(d.rot||0)+a; selected.rotation.y=d.rot*Math.PI/180; pilih(selected);}
+function hapusPilih(){if(!selected) return; scene.remove(selected); objs=objs.filter(o=>o!==selected); selected=null; updateCnt(); document.getElementById('selInfo').innerText='Dihapus';}
+function hapusSemua(){if(!confirm('Hapus SEMUA objek?'))return; objs.forEach(o=>scene.remove(o)); objs=[]; selected=null; updateCnt();}
+function setMode(m){mode=m; ['bJalan','bTerbang','bEdit'].forEach(id=>document.getElementById(id).classList.remove('active')); document.getElementById(m=='jalan'?'bJalan':m=='terbang'?'bTerbang':'bEdit').classList.add('active');}
+document.getElementById('scale').oninput=e=>{document.getElementById('scaleVal').innerText=e.target.value; if(selected){selected.userData.data.scale=parseFloat(e.target.value); let d=selected.userData.data; scene.remove(selected); objs=objs.filter(o=>o!==selected); let ng=buatObj(d); pilih(ng);}};
+document.getElementById('warna').onchange=e=>{if(selected){selected.userData.data.warna=e.target.value; let d=selected.userData.data; scene.remove(selected); objs=objs.filter(o=>o!==selected); pilih(buatObj(d));}};
+function setupInput(){
+addEventListener('keydown',e=>keys[e.key.toLowerCase()]=true); addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
+renderer.domElement.addEventListener('click',()=>{
+if(mode!=='edit') return;
+let ray=new THREE.Raycaster(); ray.setFromCamera(new THREE.Vector2(0,0),camera);
+let hits=ray.intersectObjects(objs,true); if(hits.length){let g=hits[0].object; while(g.parent&&!objs.includes(g)) g=g.parent; pilih(g);} else pilih(null);
+});
+let joy=document.getElementById('joy'),stick=document.getElementById('stick'),dragJ=false;
+joy.addEventListener('touchstart',e=>dragJ=true); joy.addEventListener('touchmove',e=>{if(!dragJ)return; let t=e.touches[0],r=joy.getBoundingClientRect(); joyX=(t.clientX-(r.left+55))/40; joyY=(t.clientY-(r.top+55))/40; joyX=Math.max(-1,Math.min(1,joyX)); joyY=Math.max(-1,Math.min(1,joyY)); stick.style.left=(35+joyX*30)+'px'; stick.style.top=(35+joyY*30)+'px';}); joy.addEventListener('touchend',()=>{dragJ=false; joyX=joyY=0; stick.style.left='35px'; stick.style.top='35px';});
+let look=document.getElementById('look'),dragL=false,lastX=0,lastY=0;
+look.addEventListener('touchstart',e=>{dragL=true; lastX=e.touches[0].clientX; lastY=e.touches[0].clientY;});
+look.addEventListener('touchmove',e=>{if(!dragL)return; let t=e.touches[0]; player.rot-=(t.clientX-lastX)*0.01; player.y=Math.max(1,Math.min(20,player.y+(t.clientY-lastY)*0.02)); lastX=t.clientX; lastY=t.clientY;});
+look.addEventListener('touchend',()=>dragL=false);
+let md=false,lx=0,ly=0; renderer.domElement.addEventListener('mousedown',e=>{md=true; lx=e.clientX; ly=e.clientY;}); addEventListener('mousemove',e=>{if(!md)return; player.rot-=(e.clientX-lx)*0.01; player.y=Math.max(1,Math.min(30,player.y+(e.clientY-ly)*0.02)); lx=e.clientX; ly=e.clientY;}); addEventListener('mouseup',()=>md=false);
+}
+function animate(){
+requestAnimationFrame(animate);
+let sp=mode=='terbang'?1.2:0.35, mx=0,mz=0;
+if(keys['w']||keys['arrowup']) mz+=1; if(keys['s']||keys['arrowdown']) mz-=1; if(keys['a']||keys['arrowleft']) mx-=1; if(keys['d']||keys['arrowright']) mx+=1;
+mx+=joyX; mz+=-joyY;
+if(mx||mz){let len=Math.hypot(mx,mz); mx/=len; mz/=len; let sin=Math.sin(player.rot),cos=Math.cos(player.rot); player.x+=(mx*cos+mz*sin)*sp; player.z+=(-mx*sin+mz*cos)*sp;}
+if(mode=='terbang'){ if(keys[' ']) player.y+=0.5; if(keys['shift']) player.y-=0.5; }
+else player.y=2;
+camera.position.set(player.x,player.y,player.z); camera.rotation.set(0,player.rot,0); camera.rotation.order='YXZ'; camera.rotation.y=player.rot; camera.rotation.x=-0.1;
+document.getElementById('info').innerHTML='📍 X:'+Math.round(player.x)+' Z:'+Math.round(player.z)+' | Objek: '+objs.length+'<br><span id="selInfo">'+document.getElementById('selInfo').innerText+'</span>';
+renderer.render(scene,camera);
+}
+init();
 </script></body></html>
