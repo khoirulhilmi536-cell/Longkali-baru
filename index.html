@@ -509,4 +509,39 @@ function cekMisiBaru(){
   if(MISI.balai && MISI.toko && MISI.sudahJalan && MISI.tempatSelesai && !MISI.semua){ MISI.semua=true; setTimeout(()=>alert("🏆 SEMUA MISI SELESAI! Kamu Warga Teladan Longkali! Total Bonus Rp "+MISI.bonus.toLocaleString('id-ID')),500); }
 }
 setInterval(cekMisiBaru, 500);
+</script><script>
+// === BANGUNAN LONGKALI UNTUK INDEX.HTML ===
+function buatBangunanIndex(){
+  let SC = window.scene || (typeof scene!=='undefined'?scene:null);
+  if(!SC){ setTimeout(buatBangunanIndex,500); return; }
+  if(window.bangunanIndexSudah) return;
+  window.bangunanIndexSudah = true;
+  if(!window.OBJEK_MAP_GAME) window.OBJEK_MAP_GAME = [];
+
+  function gedung(x,z,w,d,h,warnaAtap,warnaDinding,nama,type){
+    let g = new THREE.Group();
+    let dinding = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), new THREE.MeshStandardMaterial({color:warnaDinding}));
+    dinding.position.y = h/2; g.add(dinding);
+    let atap = new THREE.Mesh(new THREE.ConeGeometry(Math.max(w,d)*0.75, h*0.6, 4), new THREE.MeshStandardMaterial({color:warnaAtap}));
+    atap.position.y = h + h*0.3; atap.rotation.y = Math.PI/4; g.add(atap);
+    let pintu = new THREE.Mesh(new THREE.BoxGeometry(w*0.25, h*0.5, 0.2), new THREE.MeshStandardMaterial({color:0x5C3A1A}));
+    pintu.position.set(0, h*0.25, d/2+0.1); g.add(pintu);
+    let j1 = new THREE.Mesh(new THREE.BoxGeometry(w*0.2, h*0.25, 0.2), new THREE.MeshStandardMaterial({color:0x87CEEB}));
+    j1.position.set(-w*0.3, h*0.6, d/2+0.1); g.add(j1);
+    let j2 = j1.clone(); j2.position.x = w*0.3; g.add(j2);
+    g.position.set(x,0,z);
+    SC.add(g);
+    window.OBJEK_MAP_GAME.push({x:x, z:z, type:type, nama:nama, label:nama});
+  }
+
+  gedung(0, -35, 12, 10, 6, 0xC0392B, 0xF5F5DC, 'Balai Desa', 'balai');
+  gedung(25, -5, 8, 7, 5, 0x2980B9, 0xFFFFFF, 'Toko Longkali', 'toko');
+  gedung(-25, -10, 10, 10, 7, 0x27AE60, 0xFFFFFF, 'Masjid', 'masjid');
+  gedung(-20, 30, 14, 9, 6, 0xE67E22, 0xFDEBD0, 'Sekolah', 'sekolah');
+  gedung(20, 30, 6, 6, 4, 0x8E44AD, 0xFFFFFF, 'Pos Ronda', 'pos');
+  gedung(35, -30, 8, 8, 5, 0xC0392B, 0xFADBD8, 'Rumah Warga', 'rumah');
+  gedung(-35, 5, 8, 8, 5, 0x2E86C1, 0xD6EAF8, 'Rumah Warga 2', 'rumah');
+  console.log("✅ Bangunan Index Berhasil!");
+}
+setTimeout(buatBangunanIndex, 1000);
 </script></body></html>
