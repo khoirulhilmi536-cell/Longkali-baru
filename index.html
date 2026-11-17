@@ -137,7 +137,8 @@ function nabrakGame(nx,nz){
   for(let o of OBJEK_MAP_GAME){
     if(!o || o.type=='jalan') continue;
     let s=o.scale||1, radius=0;
-    if(o.type=='rumah'||o.type=='toko') radius=4.5*s;
+    if(o.type=='toko') radius=7*s;
+    else if(o.type=='rumah') radius=5.5*s;
     else if(o.type=='pohon') radius=1.2*s;
     else if(o.type=='lampu') radius=0.8;
     else if(o.type=='npc') radius=1;
@@ -158,22 +159,22 @@ async function loadMapAdmin(){
       let s = o.scale||1;
       let g = new THREE.Group();
       if(o.type=='rumah'){
-  let dinding = new THREE.Mesh(new THREE.BoxGeometry(8*s,5*s,8*s), new THREE.MeshLambertMaterial({color: o.warna ? parseInt(o.warna.replace('#','0x')) : 0xffffff}));
-  dinding.position.y=2.5*s; g.add(dinding);
-  let atap = new THREE.Mesh(new THREE.ConeGeometry(6.5*s,3*s,4), new THREE.MeshLambertMaterial({color: o.atap ? parseInt(o.atap.replace('#','0x')) : 0xdc2626}));
-  atap.position.y=6.5*s; atap.rotation.y=Math.PI/4; g.add(atap);
-  let pintu = new THREE.Mesh(new THREE.BoxGeometry(1.6*s,2.8*s,0.2), new THREE.MeshLambertMaterial({color:0x8B4513}));
-  pintu.position.set(0,1.4*s,4.1*s); g.add(pintu);
-} else if(o.type=='toko'){
-  let dinding = new THREE.Mesh(new THREE.BoxGeometry(12*s,5*s,8*s), new THREE.MeshLambertMaterial({color: o.warna ? parseInt(o.warna.replace('#','0x')) : 0x2ea5ff}));
-  dinding.position.y=2.5*s; g.add(dinding);
-  let atapToko = new THREE.Mesh(new THREE.BoxGeometry(12.5*s,0.6*s,8.5*s), new THREE.MeshLambertMaterial({color:0x111827}));
-  atapToko.position.y=5.3*s; g.add(atapToko);
-  let papan = new THREE.Mesh(new THREE.BoxGeometry(9*s,1.8*s,0.3), new THREE.MeshLambertMaterial({color:0xfacc15}));
-  papan.position.set(0,4*s,4.2*s); g.add(papan);
-  let kaca = new THREE.Mesh(new THREE.BoxGeometry(8*s,2.5*s,0.2), new THREE.MeshLambertMaterial({color:0x99f6ff}));
-  kaca.position.set(0,1.5*s,4.1*s); g.add(kaca);
-} else if(o.type=='pohon'){
+        let dinding = new THREE.Mesh(new THREE.BoxGeometry(8*s,5*s,8*s), new THREE.MeshLambertMaterial({color: o.warna ? parseInt(o.warna.replace('#','0x')) : 0xffffff}));
+        dinding.position.y=2.5*s; g.add(dinding);
+        let atap = new THREE.Mesh(new THREE.ConeGeometry(6.5*s,3*s,4), new THREE.MeshLambertMaterial({color: o.atap ? parseInt(o.atap.replace('#','0x')) : 0xdc2626}));
+        atap.position.y=6.5*s; atap.rotation.y=Math.PI/4; g.add(atap);
+        let pintu = new THREE.Mesh(new THREE.BoxGeometry(1.6*s,2.8*s,0.2), new THREE.MeshLambertMaterial({color:0x8B4513}));
+        pintu.position.set(0,1.4*s,4.1*s); g.add(pintu);
+      } else if(o.type=='toko'){
+        let dinding = new THREE.Mesh(new THREE.BoxGeometry(12*s,5*s,8*s), new THREE.MeshLambertMaterial({color: o.warna ? parseInt(o.warna.replace('#','0x')) : 0x2ea5ff}));
+        dinding.position.y=2.5*s; g.add(dinding);
+        let atapToko = new THREE.Mesh(new THREE.BoxGeometry(12.5*s,0.6*s,8.5*s), new THREE.MeshLambertMaterial({color:0x111827}));
+        atapToko.position.y=5.3*s; g.add(atapToko);
+        let papan = new THREE.Mesh(new THREE.BoxGeometry(9*s,1.8*s,0.3), new THREE.MeshLambertMaterial({color:0xfacc15}));
+        papan.position.set(0,4*s,4.2*s); g.add(papan);
+        let kaca = new THREE.Mesh(new THREE.BoxGeometry(8*s,2.5*s,0.2), new THREE.MeshLambertMaterial({color:0x99f6ff}));
+        kaca.position.set(0,1.5*s,4.1*s); g.add(kaca);
+      } else if(o.type=='pohon'){
         let b = new THREE.Mesh(new THREE.CylinderGeometry(0.5*s,0.5*s,3*s,6), new THREE.MeshLambertMaterial({color:0x78350f})); b.position.y=1.5*s; g.add(b);
         let dd = new THREE.Mesh(new THREE.ConeGeometry(2.8*s,6*s,6), new THREE.MeshLambertMaterial({color:0x22c55e})); dd.position.y=6*s; g.add(dd);
       } else if(o.type=='lampu'){
@@ -313,14 +314,13 @@ function buatKarakterRealistis(warnaBaju, warnaKulit, warnaRambut, cewek){
   warnaRambut = warnaRambut || 0x1f2937;
   function kaki(x){
     let grp = new THREE.Group();
-    // Pivot di pinggul, bukan di tanah
     grp.position.set(x, 0.90, 0);
     let k = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.75, 0.32), new THREE.MeshLambertMaterial({color:0x1e293b}));
     k.position.y = -0.42; grp.add(k);
     let sepatu = new THREE.Mesh(new THREE.BoxGeometry(0.30, 0.18, 0.55), new THREE.MeshLambertMaterial({color:0x111827}));
     sepatu.position.set(0, -0.81, 0.10); grp.add(sepatu);
     return grp;
-}
+  }
   let kakiKiri = kaki(-0.22); let kakiKanan = kaki(0.22);
   g.add(kakiKiri); g.add(kakiKanan);
   let badan = new THREE.Mesh(new THREE.BoxGeometry(0.85, 1.0, 0.45), new THREE.MeshLambertMaterial({color:warnaBaju}));
@@ -385,8 +385,7 @@ buatNPC(8,8,0x3b82f6,'Pak RT','Halo! Saya Pak RT Longkali. Desa kita aman!');
 buatNPC(-12,-8,0xf59e0b,'Bu Sari','Selamat datang di Longkali! Jangan lupa mampir ke warung saya ya!');
 buatNPC(15,-12,0x22c55e,'Bang Udin','Woi! Lagi jalan-jalan ya? Longkali sekarang udah ada Verse-nya!');
 updateCam();
-// ===== COPY DARI SINI =====
-async function loadMapAdmin(){
+async function loadMapAdmin2(){
   try{
     let res = await fetch(DB_URL + "/map.json");
     let data = await res.json();
@@ -398,18 +397,30 @@ async function loadMapAdmin(){
       let s = o.scale || 1;
       let cW = o.warna ? parseInt(o.warna.replace('#','0x')) : 0xffffff;
       let cA = o.atap ? parseInt(o.atap.replace('#','0x')) : 0xdc2626;
-      if(o.type=='rumah' || o.type=='toko'){
+      if(o.type=='rumah'){
         let g = new THREE.Group();
         let dinding = new THREE.Mesh(new THREE.BoxGeometry(8*s,5*s,8*s), new THREE.MeshLambertMaterial({color: cW}));
         dinding.position.y=2.5*s; g.add(dinding);
         let atap = new THREE.Mesh(new THREE.ConeGeometry(6.5*s,3*s,4), new THREE.MeshLambertMaterial({color: cA}));
         atap.position.y=6.5*s; atap.rotation.y=Math.PI/4; g.add(atap);
-let pintu = new THREE.Mesh(new THREE.BoxGeometry(1.6*s, 2.8*s, 0.2), new THREE.MeshLambertMaterial({color:0x8B4513}));
-pintu.position.set(0, 1.4*s, 4.1*s); g.add(pintu);
-let j1 = new THREE.Mesh(new THREE.BoxGeometry(1.5*s, 1.2*s, 0.2), new THREE.MeshLambertMaterial({color:0x87CEEB}));
-j1.position.set(-2.2*s, 2.8*s, 4.1*s); g.add(j1);
-let j2 = new THREE.Mesh(new THREE.BoxGeometry(1.5*s, 1.2*s, 0.2), new THREE.MeshLambertMaterial({color:0x87CEEB}));
-j2.position.set(2.2*s, 2.8*s, 4.1*s); g.add(j2);
+        let pintu = new THREE.Mesh(new THREE.BoxGeometry(1.6*s, 2.8*s, 0.2), new THREE.MeshLambertMaterial({color:0x8B4513}));
+        pintu.position.set(0, 1.4*s, 4.1*s); g.add(pintu);
+        let j1 = new THREE.Mesh(new THREE.BoxGeometry(1.5*s, 1.2*s, 0.2), new THREE.MeshLambertMaterial({color:0x87CEEB}));
+        j1.position.set(-2.2*s, 2.8*s, 4.1*s); g.add(j1);
+        let j2 = new THREE.Mesh(new THREE.BoxGeometry(1.5*s, 1.2*s, 0.2), new THREE.MeshLambertMaterial({color:0x87CEEB}));
+        j2.position.set(2.2*s, 2.8*s, 4.1*s); g.add(j2);
+        g.position.set(x,0,z); g.rotation.y=(o.rot||0)*Math.PI/180; scene.add(g);
+      }
+      if(o.type=='toko'){
+        let g = new THREE.Group();
+        let dinding = new THREE.Mesh(new THREE.BoxGeometry(12*s,5*s,8*s), new THREE.MeshLambertMaterial({color: cW}));
+        dinding.position.y=2.5*s; g.add(dinding);
+        let atapToko = new THREE.Mesh(new THREE.BoxGeometry(12.5*s,0.6*s,8.5*s), new THREE.MeshLambertMaterial({color:0x111827}));
+        atapToko.position.y=5.3*s; g.add(atapToko);
+        let papan = new THREE.Mesh(new THREE.BoxGeometry(9*s,1.8*s,0.3), new THREE.MeshLambertMaterial({color:0xfacc15}));
+        papan.position.set(0,4*s,4.2*s); g.add(papan);
+        let kaca = new THREE.Mesh(new THREE.BoxGeometry(8*s,2.5*s,0.2), new THREE.MeshLambertMaterial({color:0x99f6ff}));
+        kaca.position.set(0,1.5*s,4.1*s); g.add(kaca);
         g.position.set(x,0,z); g.rotation.y=(o.rot||0)*Math.PI/180; scene.add(g);
       }
       if(o.type=='pohon'){
@@ -436,8 +447,7 @@ j2.position.set(2.2*s, 2.8*s, 4.1*s); g.add(j2);
     });
   }catch(e){ console.log('map admin gagal',e); }
 }
-loadMapAdmin();
-// ===== SAMPE SINI =====
+loadMapAdmin2();
 let camDrag=false,camLastX=0,camLastY=0,camId=null;
 ren.domElement.addEventListener('pointerdown',e=>{camDrag=true;camId=e.pointerId;camLastX=e.clientX;camLastY=e.clientY;});
 ren.domElement.addEventListener('pointermove',e=>{if(!camDrag||e.pointerId!==camId)return;let dx=e.clientX-camLastX;let dy=e.clientY-camLastY; yaw-=dx*0.008; pitch=Math.max(0.15,Math.min(1.35,pitch+dy*0.005)); camLastX=e.clientX;camLastY=e.clientY; updateCam();});
@@ -459,6 +469,5 @@ function joyStart(e){isJoy=true;joyId=e.pointerId;joyEl.setPointerCapture(e.poin
 function joyMove(e){if(!isJoy||e.pointerId!==joyId)return;let r=joyEl.getBoundingClientRect();let cx=r.left+r.width/2,cy=r.top+r.height/2;let dx=e.clientX-cx,dy=e.clientY-cy;let max=45;let len=Math.sqrt(dx*dx+dy*dy);if(len>max){dx=dx/len*max;dy=dy/len*max;}knobEl.style.transform='translate(calc(-50% + '+dx+'px), calc(-50% + '+dy+'px))';joyX=dx/max;joyY=dy/max;}
 function joyEnd(e){if(e.pointerId!==joyId)return;isJoy=false;joyX=0;joyY=0;knobEl.style.transform='translate(-50%,-50%)';}
 joyEl.addEventListener('pointerdown',joyStart);joyEl.addEventListener('pointermove',joyMove);joyEl.addEventListener('pointerup',joyEnd);joyEl.addEventListener('pointercancel',joyEnd);
-loadMapAdmin();
 addEventListener('resize',()=>{ resize3D(); });
 </script></body></html>
