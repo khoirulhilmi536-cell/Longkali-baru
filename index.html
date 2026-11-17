@@ -52,6 +52,12 @@ body{margin:0;font-family:Arial;background:#0f172a;color:#fff}
 #btnLompat{position:fixed;bottom:45px;right:20px;z-index:9999;width:70px;height:70px;border-radius:50%;background:#f59e0b;border:3px solid #fff;color:#000;font-size:28px;font-weight:900;display:none;cursor:pointer}
 #btnPuter{position:fixed;bottom:130px;right:22px;z-index:9999;width:52px;height:52px;border-radius:50%;background:#fff;border:2px solid #0e4a5a;font-size:22px;display:none;cursor:pointer}
 #hintPuter{position:fixed;bottom:195px;right:14px;z-index:9999;display:none;background:rgba(0,0,0,.6);color:#fff;font-size:11px;padding:5px 9px;border-radius:12px;pointer-events:none}
+/* MISI PANEL */
+#panelMisiFull{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:20000;display:none;justify-content:center;align-items:center;padding:16px}
+#kotakMisiFull{background:#fff;border-radius:18px;width:100%;max-width:380px;padding:18px;color:#222;max-height:85vh;overflow:auto}
+.misiItemFull{background:#FFF8E1;border:1.5px solid #FFD54F;border-radius:12px;padding:10px 12px;margin:8px 0;display:flex;justify-content:space-between;align-items:center;font-size:14px}
+.misiItemFull.selesai{background:#E8F5E9;border-color:#4CAF50}
+.btnKlaimFull{background:#16a34a;color:#fff;border:none;padding:7px 12px;border-radius:8px;font-weight:900;cursor:pointer}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
@@ -123,6 +129,16 @@ body{margin:0;font-family:Arial;background:#0f172a;color:#fff}
 <div id="nav">
 <button type="button" id="navMap" class="active" onclick="showMap()"><span>🗺️</span>Map</button>
 <button type="button" id="navKtp" onclick="showKTP()"><span>🪪</span>KTP</button>
+<button type="button" id="navMisi" onclick="bukaMisiFull()"><span>🎯</span>Misi <span id="badgeMisi" style="font-size:10px;background:red;color:#fff;border-radius:10px;padding:1px 6px;display:none">!</span></button>
+</div>
+<div id="panelMisiFull" onclick="if(event.target==this) tutupMisiFull()">
+<div id="kotakMisiFull">
+<div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:18px">🎯 MISI LONGKALI</b><button onclick="tutupMisiFull()" style="border:none;background:#eee;border-radius:50%;width:28px;height:28px;cursor:pointer">✕</button></div>
+<p style="font-size:12px;color:#888;margin:4px 0">Selesaikan misi, pencet KLAIM biar uang masuk ke KTP kamu!</p>
+<div id="listMisiFull"></div>
+<div id="totalMisiFull" style="background:#111;color:#FFC107;padding:10px;border-radius:10px;text-align:center;font-weight:800;margin-top:10px">💰 Uang Kamu: Rp 0</div>
+<button onclick="tutupMisiFull()" style="width:100%;margin-top:10px;padding:11px;border:none;background:#0e4a5a;color:#fff;border-radius:10px;font-weight:900;cursor:pointer">KEMBALI MAIN ▶</button>
+</div>
 </div>
 <script>
 var WARGA = 0;
@@ -390,9 +406,8 @@ async function loadMapAdmin2(){
     let res = await fetch(DB_URL + "/map.json");
     let data = await res.json();
     if(!data) return;
-    let arr = Array.isArray(data) ? data :
+    let arr = Array.isArray(data) ? data : Object.values(data);
     OBJEK_MAP_GAME = arr;
- Object.values(data);
     arr.forEach(o=>{
       if(!o || o.x==null || o.z==null) return;
       let x = o.x, z = o.z;
@@ -472,76 +487,95 @@ function joyMove(e){if(!isJoy||e.pointerId!==joyId)return;let r=joyEl.getBoundin
 function joyEnd(e){if(e.pointerId!==joyId)return;isJoy=false;joyX=0;joyY=0;knobEl.style.transform='translate(-50%,-50%)';}
 joyEl.addEventListener('pointerdown',joyStart);joyEl.addEventListener('pointermove',joyMove);joyEl.addEventListener('pointerup',joyEnd);joyEl.addEventListener('pointercancel',joyEnd);
 addEventListener('resize',()=>{ resize3D(); });
-</script><div id="misiBox" style="position:fixed;top:70px;left:10px;background:rgba(0,0,0,0.75);color:white;padding:10px;border-radius:12px;font-size:13px;z-index:9999;width:185px;line-height:1.6">
-<b>🎯 MISI LONGKALI</b><br>
-<span id="m1">⬜ Ke Balai Desa (+Rp5.000)</span><br>
-<span id="m2">⬜ Ke Toko (+Rp3.000)</span><br>
-<span id="m3">⬜ Jalan 200m (0/200) (+Rp10.000)</span><br>
-<span id="m4">⬜ Kunjungi 3 Tempat (+Rp7.000)</span><br>
-<b id="misiUang">💰 Bonus: Rp 0</b>
-</div>
+</script>
 <script>
-let MISI = { balai:false, toko:false, jalan:0, tempat:{}, bonus:0, lastX:0, lastZ:0, sudahJalan:false };
-function cekMisiBaru(){
-  if(!window.pemain || !window.OBJEK_MAP_GAME) return;
-  let px = pemain.position.x, pz = pemain.position.z;
-  let d = Math.abs(px-MISI.lastX)+Math.abs(pz-MISI.lastZ);
-  if(d>0 && d<5){ MISI.jalan += d; MISI.lastX=px; MISI.lastZ=pz; }
-  if(MISI.lastX==0 && MISI.lastZ==0){ MISI.lastX=px; MISI.lastZ=pz; }
-  for(let o of OBJEK_MAP_GAME){
-    if(!o || o.x==null) continue;
-    let jarak = Math.sqrt((px-o.x)*(px-o.x)+(pz-o.z)*(pz-o.z));
-    if(jarak<14){
-      let nama = ((o.type||'')+' '+(o.nama||'')+' '+(o.label||'')).toLowerCase();
-      if(nama.includes('balai') && !MISI.balai){ MISI.balai=true; MISI.bonus+=5000; alert("🎉 MISI SELESAI! Ke Balai Desa! +Rp5.000"); }
-      if(nama.includes('toko') && !MISI.toko){ MISI.toko=true; MISI.bonus+=3000; alert("🎉 MISI SELESAI! Ke Toko! +Rp3.000"); }
-      if(o.x+'_'+o.z) MISI.tempat[o.x+'_'+o.z]=true;
+// ===== LONGKALI V3 FINAL - MISI MENU + BANGUNAN JAUH + UANG FIREBASE =====
+let MISI_V3 = {balai:false,toko:false,jalan:0,tempat:{},klaim:{},bonus:0};
+try{ let s=JSON.parse(localStorage.getItem('misiV3_'+(localStorage.getItem('longkali_kode_aktif')||'umum'))||'null'); if(s) MISI_V3=s; }catch(e){}
+let lastPosV3={x:0,z:0};
+function bukaMisiFull(){ document.getElementById('panelMisiFull').style.display='flex'; renderMisiFull(); }
+function tutupMisiFull(){ document.getElementById('panelMisiFull').style.display='none'; }
+function simpanMisiV3(){ try{ localStorage.setItem('misiV3_'+(AKUN_SAAT_INI?AKUN_SAAT_INI.kode:localStorage.getItem('longkali_kode_aktif')||'umum'), JSON.stringify(MISI_V3)); }catch(e){} }
+function renderMisiFull(){
+  let jmlTempat=Object.keys(MISI_V3.tempat||{}).length;
+  let uangNow = AKUN_SAAT_INI?AKUN_SAAT_INI.uang:0;
+  let list=[
+    {id:'balai', nama:'🏛️ Ke Balai Desa', desc:'Jalan ke Balai Desa (atap merah, jauh di utara -170)', hadiah:5000, selesai:MISI_V3.balai},
+    {id:'toko', nama:'🛒 Ke Toko Longkali', desc:'Jalan ke Toko (atap biru, jauh di timur 170)', hadiah:3000, selesai:MISI_V3.toko},
+    {id:'jalan', nama:'🚶 Jalan 200m', desc:Math.floor(MISI_V3.jalan)+'/200m - Jalan pake joystick!', hadiah:10000, selesai:MISI_V3.jalan>=200},
+    {id:'tempat', nama:'🗺️ Kunjungi 3 Tempat', desc:jmlTempat+'/3 Tempat - Keliling desa!', hadiah:7000, selesai:jmlTempat>=3},
+  ];
+  let html='';
+  for(let m of list){
+    let sudahKlaim=MISI_V3.klaim && MISI_V3.klaim[m.id];
+    let btn='';
+    if(m.selesai && !sudahKlaim) btn='<button class="btnKlaimFull" onclick="klaimMisiFull(\''+m.id+'\','+m.hadiah+')">KLAIM +Rp'+m.hadiah.toLocaleString('id-ID')+'</button>';
+    else if(m.selesai && sudahKlaim) btn='✅ Sudah Klaim';
+    else btn='<span style="color:#999;font-size:12px">Belum Selesai</span>';
+    html+='<div class="misiItemFull '+(m.selesai?'selesai':'')+'"><div><b>'+m.nama+'</b><br><span style="font-size:12px;color:#666">'+m.desc+'</span></div>'+btn+'</div>';
+  }
+  document.getElementById('listMisiFull').innerHTML=html;
+  document.getElementById('totalMisiFull').innerHTML='💰 Uang Kamu (KTP): Rp '+uangNow.toLocaleString('id-ID')+'<br><span style="font-size:12px;color:#fff">Total Bonus Misi: Rp '+MISI_V3.bonus.toLocaleString('id-ID')+'</span>';
+  let belumKlaim=list.filter(m=>m.selesai && !(MISI_V3.klaim&&MISI_V3.klaim[m.id])).length;
+  let badge=document.getElementById('badgeMisi'); if(badge) badge.style.display=belumKlaim>0?'inline':'none';
+}
+async function klaimMisiFull(id,hadiah){
+  if(!AKUN_SAAT_INI){ alert('Buat KTP / Masuk dulu biar uang ke-simpan di KTP kamu!'); showKTP(); return; }
+  if(MISI_V3.klaim[id]) return;
+  MISI_V3.klaim[id]=true; MISI_V3.bonus+=hadiah;
+  AKUN_SAAT_INI.uang+=hadiah;
+  await simpanAkunOnline(AKUN_SAAT_INI);
+  updateUang(); simpanMisiV3(); renderMisiFull();
+  alert('🎉 Berhasil Klaim Rp '+hadiah.toLocaleString('id-ID')+'!\nUang KTP kamu sekarang: '+formatUang(AKUN_SAAT_INI.uang)+'\n✅ Tersimpan Online, gak ilang!');
+}
+function buatBangunanJauh(){
+  if(!window.scene) { setTimeout(buatBangunanJauh,500); return; }
+  if(window.bangunanJauhSudah) return; window.bangunanJauhSudah=true;
+  function sudahAda(nama){
+    for(let o of (window.OBJEK_MAP_GAME||[])){ let nm=((o.type||'')+' '+(o.nama||'')).toLowerCase(); if(nm.includes(nama)) return true; }
+    return false;
+  }
+  function gedung(x,z,w,d,h,atapWarna,dindingWarna,nama,type){
+    let g=new THREE.Group();
+    let dinding=new THREE.Mesh(new THREE.BoxGeometry(w,h,d), new THREE.MeshLambertMaterial({color:dindingWarna}));
+    dinding.position.y=h/2; g.add(dinding);
+    let atap=new THREE.Mesh(new THREE.ConeGeometry(Math.max(w,d)*0.75,h*0.6,4), new THREE.MeshLambertMaterial({color:atapWarna}));
+    atap.position.y=h+h*0.3; atap.rotation.y=Math.PI/4; g.add(atap);
+    let pintu=new THREE.Mesh(new THREE.BoxGeometry(w*0.25,h*0.5,0.3), new THREE.MeshLambertMaterial({color:0x8B4513}));
+    pintu.position.set(0,h*0.25,d/2+0.1); g.add(pintu);
+    g.position.set(x,0,z); scene.add(g);
+    if(window.OBJEK_MAP_GAME) window.OBJEK_MAP_GAME.push({x:x,z:z,type:type,nama:nama,label:nama});
+  }
+  if(!sudahAda('balai')) gedung(0,-170, 16,12,8, 0xC0392B,0xF5F5DC,'Balai Desa','balai');
+  if(!sudahAda('toko')) gedung(170,-30, 12,10,6, 0x2980B9,0xFFFFFF,'Toko Longkali','toko');
+  if(!sudahAda('masjid')) gedung(-170,-40, 14,14,9, 0x27AE60,0xFFFFFF,'Masjid','masjid');
+  if(!sudahAda('sekolah')) gedung(-150,150, 18,12,7, 0xE67E22,0xFDEBD0,'Sekolah','sekolah');
+  if(!sudahAda('pos')) gedung(150,150, 8,8,5, 0x8E44AD,0xFFFFFF,'Pos Ronda','pos');
+  if(!sudahAda('puskesmas')) gedung(0,170, 12,10,6, 0xFF5722,0xFFF3E0,'Puskesmas','puskesmas');
+}
+setInterval(function(){
+  if(!window.pemain) return;
+  let px=pemain.position.x, pz=pemain.position.z;
+  let d=Math.abs(px-lastPosV3.x)+Math.abs(pz-lastPosV3.z);
+  if(lastPosV3.x!=0 && d>0 && d<5) MISI_V3.jalan+=d;
+  lastPosV3.x=px; lastPosV3.z=pz;
+  let arr=window.OBJEK_MAP_GAME||[];
+  for(let o of arr){
+    if(!o||o.x==null) continue;
+    let jarak=Math.sqrt((px-o.x)*(px-o.x)+(pz-o.z)*(pz-o.z));
+    if(jarak<16){
+      let nm=((o.type||'')+' '+(o.nama||'')+' '+(o.label||'')).toLowerCase();
+      if(nm.includes('balai') && !MISI_V3.balai){ MISI_V3.balai=true; simpanMisiV3(); alert('🎉 Sampai di Balai Desa! Buka Menu MISI di bawah untuk KLAIM +Rp5.000'); }
+      if(nm.includes('toko') && !MISI_V3.toko){ MISI_V3.toko=true; simpanMisiV3(); alert('🎉 Sampai di Toko! Buka Menu MISI di bawah untuk KLAIM +Rp3.000'); }
+      MISI_V3.tempat[o.x+'_'+o.z]=true;
     }
   }
-  if(MISI.jalan>=200 && !MISI.sudahJalan){ MISI.sudahJalan=true; MISI.bonus+=10000; alert("🎉 MISI SELESAI! Jalan 200m! +Rp10.000"); }
-  let jmlTempat = Object.keys(MISI.tempat).length;
-  if(jmlTempat>=3 && !MISI.tempatSelesai){ MISI.tempatSelesai=true; MISI.bonus+=7000; alert("🎉 MISI SELESAI! Kunjungi 3 Tempat! +Rp7.000"); }
-  let e1=document.getElementById('m1'); if(e1) e1.innerHTML=(MISI.balai?'✅':'⬜')+' Ke Balai Desa (+Rp5.000)';
-  let e2=document.getElementById('m2'); if(e2) e2.innerHTML=(MISI.toko?'✅':'⬜')+' Ke Toko (+Rp3.000)';
-  let e3=document.getElementById('m3'); if(e3) e3.innerHTML=(MISI.sudahJalan?'✅':'⬜')+' Jalan 200m ('+Math.floor(MISI.jalan)+'/200) (+Rp10.000)';
-  let e4=document.getElementById('m4'); if(e4) e4.innerHTML=(MISI.tempatSelesai?'✅':'⬜')+' Kunjungi 3 Tempat ('+jmlTempat+'/3) (+Rp7.000)';
-  let e5=document.getElementById('misiUang'); if(e5) e5.innerHTML='💰 Bonus: Rp '+MISI.bonus.toLocaleString('id-ID');
-  if(MISI.balai && MISI.toko && MISI.sudahJalan && MISI.tempatSelesai && !MISI.semua){ MISI.semua=true; setTimeout(()=>alert("🏆 SEMUA MISI SELESAI! Kamu Warga Teladan Longkali! Total Bonus Rp "+MISI.bonus.toLocaleString('id-ID')),500); }
-}
-setInterval(cekMisiBaru, 500);
-</script><script>
-// === BANGUNAN LONGKALI UNTUK INDEX.HTML ===
-function buatBangunanIndex(){
-  let SC = window.scene || (typeof scene!=='undefined'?scene:null);
-  if(!SC){ setTimeout(buatBangunanIndex,500); return; }
-  if(window.bangunanIndexSudah) return;
-  window.bangunanIndexSudah = true;
-  if(!window.OBJEK_MAP_GAME) window.OBJEK_MAP_GAME = [];
-
-  function gedung(x,z,w,d,h,warnaAtap,warnaDinding,nama,type){
-    let g = new THREE.Group();
-    let dinding = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), new THREE.MeshStandardMaterial({color:warnaDinding}));
-    dinding.position.y = h/2; g.add(dinding);
-    let atap = new THREE.Mesh(new THREE.ConeGeometry(Math.max(w,d)*0.75, h*0.6, 4), new THREE.MeshStandardMaterial({color:warnaAtap}));
-    atap.position.y = h + h*0.3; atap.rotation.y = Math.PI/4; g.add(atap);
-    let pintu = new THREE.Mesh(new THREE.BoxGeometry(w*0.25, h*0.5, 0.2), new THREE.MeshStandardMaterial({color:0x5C3A1A}));
-    pintu.position.set(0, h*0.25, d/2+0.1); g.add(pintu);
-    let j1 = new THREE.Mesh(new THREE.BoxGeometry(w*0.2, h*0.25, 0.2), new THREE.MeshStandardMaterial({color:0x87CEEB}));
-    j1.position.set(-w*0.3, h*0.6, d/2+0.1); g.add(j1);
-    let j2 = j1.clone(); j2.position.x = w*0.3; g.add(j2);
-    g.position.set(x,0,z);
-    SC.add(g);
-    window.OBJEK_MAP_GAME.push({x:x, z:z, type:type, nama:nama, label:nama});
-  }
-
-  gedung(0, -35, 12, 10, 6, 0xC0392B, 0xF5F5DC, 'Balai Desa', 'balai');
-  gedung(25, -5, 8, 7, 5, 0x2980B9, 0xFFFFFF, 'Toko Longkali', 'toko');
-  gedung(-25, -10, 10, 10, 7, 0x27AE60, 0xFFFFFF, 'Masjid', 'masjid');
-  gedung(-20, 30, 14, 9, 6, 0xE67E22, 0xFDEBD0, 'Sekolah', 'sekolah');
-  gedung(20, 30, 6, 6, 4, 0x8E44AD, 0xFFFFFF, 'Pos Ronda', 'pos');
-  gedung(35, -30, 8, 8, 5, 0xC0392B, 0xFADBD8, 'Rumah Warga', 'rumah');
-  gedung(-35, 5, 8, 8, 5, 0x2E86C1, 0xD6EAF8, 'Rumah Warga 2', 'rumah');
-  console.log("✅ Bangunan Index Berhasil!");
-}
-setTimeout(buatBangunanIndex, 1000);
-</script></body></html>
+  if(MISI_V3.jalan>=200 && !MISI_V3.jalanNotif){ MISI_V3.jalanNotif=true; simpanMisiV3(); alert('🎉 Jalan 200m Selesai! Buka Menu MISI untuk KLAIM +Rp10.000'); }
+  if(Object.keys(MISI_V3.tempat).length>=3 && !MISI_V3.tempatNotif){ MISI_V3.tempatNotif=true; simpanMisiV3(); alert('🎉 Kunjungi 3 Tempat Selesai! Buka Menu MISI untuk KLAIM +Rp7.000'); }
+  simpanMisiV3();
+  if(document.getElementById('panelMisiFull').style.display!=='flex') renderMisiFull();
+},500);
+setTimeout(buatBangunanJauh, 1500);
+renderMisiFull();
+</script>
+</body></html>
