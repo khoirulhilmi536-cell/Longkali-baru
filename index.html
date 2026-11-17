@@ -472,4 +472,41 @@ function joyMove(e){if(!isJoy||e.pointerId!==joyId)return;let r=joyEl.getBoundin
 function joyEnd(e){if(e.pointerId!==joyId)return;isJoy=false;joyX=0;joyY=0;knobEl.style.transform='translate(-50%,-50%)';}
 joyEl.addEventListener('pointerdown',joyStart);joyEl.addEventListener('pointermove',joyMove);joyEl.addEventListener('pointerup',joyEnd);joyEl.addEventListener('pointercancel',joyEnd);
 addEventListener('resize',()=>{ resize3D(); });
+</script><div id="misiBox" style="position:fixed;top:70px;left:10px;background:rgba(0,0,0,0.75);color:white;padding:10px;border-radius:12px;font-size:13px;z-index:9999;width:185px;line-height:1.6">
+<b>🎯 MISI LONGKALI</b><br>
+<span id="m1">⬜ Ke Balai Desa (+Rp5.000)</span><br>
+<span id="m2">⬜ Ke Toko (+Rp3.000)</span><br>
+<span id="m3">⬜ Jalan 200m (0/200) (+Rp10.000)</span><br>
+<span id="m4">⬜ Kunjungi 3 Tempat (+Rp7.000)</span><br>
+<b id="misiUang">💰 Bonus: Rp 0</b>
+</div>
+<script>
+let MISI = { balai:false, toko:false, jalan:0, tempat:{}, bonus:0, lastX:0, lastZ:0, sudahJalan:false };
+function cekMisiBaru(){
+  if(!window.pemain || !window.OBJEK_MAP_GAME) return;
+  let px = pemain.position.x, pz = pemain.position.z;
+  let d = Math.abs(px-MISI.lastX)+Math.abs(pz-MISI.lastZ);
+  if(d>0 && d<5){ MISI.jalan += d; MISI.lastX=px; MISI.lastZ=pz; }
+  if(MISI.lastX==0 && MISI.lastZ==0){ MISI.lastX=px; MISI.lastZ=pz; }
+  for(let o of OBJEK_MAP_GAME){
+    if(!o || o.x==null) continue;
+    let jarak = Math.sqrt((px-o.x)*(px-o.x)+(pz-o.z)*(pz-o.z));
+    if(jarak<14){
+      let nama = ((o.type||'')+' '+(o.nama||'')+' '+(o.label||'')).toLowerCase();
+      if(nama.includes('balai') && !MISI.balai){ MISI.balai=true; MISI.bonus+=5000; alert("🎉 MISI SELESAI! Ke Balai Desa! +Rp5.000"); }
+      if(nama.includes('toko') && !MISI.toko){ MISI.toko=true; MISI.bonus+=3000; alert("🎉 MISI SELESAI! Ke Toko! +Rp3.000"); }
+      if(o.x+'_'+o.z) MISI.tempat[o.x+'_'+o.z]=true;
+    }
+  }
+  if(MISI.jalan>=200 && !MISI.sudahJalan){ MISI.sudahJalan=true; MISI.bonus+=10000; alert("🎉 MISI SELESAI! Jalan 200m! +Rp10.000"); }
+  let jmlTempat = Object.keys(MISI.tempat).length;
+  if(jmlTempat>=3 && !MISI.tempatSelesai){ MISI.tempatSelesai=true; MISI.bonus+=7000; alert("🎉 MISI SELESAI! Kunjungi 3 Tempat! +Rp7.000"); }
+  let e1=document.getElementById('m1'); if(e1) e1.innerHTML=(MISI.balai?'✅':'⬜')+' Ke Balai Desa (+Rp5.000)';
+  let e2=document.getElementById('m2'); if(e2) e2.innerHTML=(MISI.toko?'✅':'⬜')+' Ke Toko (+Rp3.000)';
+  let e3=document.getElementById('m3'); if(e3) e3.innerHTML=(MISI.sudahJalan?'✅':'⬜')+' Jalan 200m ('+Math.floor(MISI.jalan)+'/200) (+Rp10.000)';
+  let e4=document.getElementById('m4'); if(e4) e4.innerHTML=(MISI.tempatSelesai?'✅':'⬜')+' Kunjungi 3 Tempat ('+jmlTempat+'/3) (+Rp7.000)';
+  let e5=document.getElementById('misiUang'); if(e5) e5.innerHTML='💰 Bonus: Rp '+MISI.bonus.toLocaleString('id-ID');
+  if(MISI.balai && MISI.toko && MISI.sudahJalan && MISI.tempatSelesai && !MISI.semua){ MISI.semua=true; setTimeout(()=>alert("🏆 SEMUA MISI SELESAI! Kamu Warga Teladan Longkali! Total Bonus Rp "+MISI.bonus.toLocaleString('id-ID')),500); }
+}
+setInterval(cekMisiBaru, 500);
 </script></body></html>
