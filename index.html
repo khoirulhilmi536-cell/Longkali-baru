@@ -390,7 +390,9 @@ async function loadMapAdmin2(){
     let res = await fetch(DB_URL + "/map.json");
     let data = await res.json();
     if(!data) return;
-    let arr = Array.isArray(data) ? data : Object.values(data);
+    let arr = Array.isArray(data) ? data :
+    OBJEK_MAP_GAME = arr;
+ Object.values(data);
     arr.forEach(o=>{
       if(!o || o.x==null || o.z==null) return;
       let x = o.x, z = o.z;
