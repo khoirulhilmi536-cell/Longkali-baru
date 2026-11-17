@@ -23,7 +23,6 @@ button{background:#22c55e;color:#fff}button.del{background:#ef4444}button.blue{b
 <div id="game"></div>
 <div id="cross">+</div>
 <div id="info">📍 X:0 Z:0 | Objek: <span id="cnt">0</span><br><span id="selInfo">Belum ada yang dipilih</span></div>
-
 <div id="top">
 <b>🏙️ ADMIN LONGKALI - MODE JALAN | DB: admin-55bc3 ✅</b>
 <button onclick="setMode('jalan')" id="bJalan" class="active">🚶 JALAN</button>
@@ -31,7 +30,6 @@ button{background:#22c55e;color:#fff}button.del{background:#ef4444}button.blue{b
 <button onclick="setMode('edit')" id="bEdit" class="yellow">✏️ EDIT / PILIH</button>
 <button onclick="simpan()" style="background:#f97316">💾 SIMPAN KE GAME</button>
 </div>
-
 <div id="panel">
 <div class="row">
 <label>Tambah:</label>
@@ -54,14 +52,11 @@ button{background:#22c55e;color:#fff}button.del{background:#ef4444}button.blue{b
 </div>
 <div class="row" style="font-size:11px;color:#aaa">Cara pakai: Mode JALAN = jalan pake joystick/WASD. Mode EDIT = klik objek buat pilih, lalu geser/puter/hapus. Mode TERBANG = kamera naik. Klik SIMPAN kalo udah selesai!</div>
 </div>
-
 <div id="joy"><div id="stick"></div></div>
 <div id="look"><div id="lookBtn"></div></div>
-
 <script>
 const DB_URL = "https://admin-55bc3-default-rtdb.firebaseio.com";
 let scene,camera,renderer,player={x:0,z:0,rot:0,y:2},keys={},objs=[],selected=null,mode='jalan',joyX=0,joyY=0;
-
 function init(){
 scene=new THREE.Scene(); scene.background=new THREE.Color(0x87ceeb); scene.fog=new THREE.Fog(0x87ceeb,80,300);
 camera=new THREE.PerspectiveCamera(75,innerWidth/innerHeight,0.1,1000);
@@ -124,6 +119,23 @@ function hapusSemua(){if(!confirm('Hapus SEMUA objek?'))return; objs.forEach(o=>
 function setMode(m){mode=m; ['bJalan','bTerbang','bEdit'].forEach(id=>document.getElementById(id).classList.remove('active')); document.getElementById(m=='jalan'?'bJalan':m=='terbang'?'bTerbang':'bEdit').classList.add('active');}
 document.getElementById('scale').oninput=e=>{document.getElementById('scaleVal').innerText=e.target.value; if(selected){selected.userData.data.scale=parseFloat(e.target.value); let d=selected.userData.data; scene.remove(selected); objs=objs.filter(o=>o!==selected); let ng=buatObj(d); pilih(ng);}};
 document.getElementById('warna').onchange=e=>{if(selected){selected.userData.data.warna=e.target.value; let d=selected.userData.data; scene.remove(selected); objs=objs.filter(o=>o!==selected); pilih(buatObj(d));}};
+// ===== INI YANG BARU - TEMBOK / COLLISION =====
+function nabrak(nx,nz){
+  if(mode=='terbang') return false; // mode terbang boleh nembus, biar bisa liat dari atas
+  for(let g of objs){
+    let d=g.userData.data; if(!d) continue;
+    if(d.type=='jalan') continue; // jalan boleh diinjek
+    let s=d.scale||1, radius=0;
+    if(d.type=='rumah'||d.type=='toko') radius=4.5*s;
+    else if(d.type=='pohon') radius=1.2*s;
+    else if(d.type=='lampu') radius=0.8;
+    else if(d.type=='npc') radius=1;
+    else radius=1;
+    let dx=nx-d.x, dz=nz-d.z;
+    if(dx*dx+dz*dz < radius*radius) return true;
+  }
+  return false;
+}
 function setupInput(){
 addEventListener('keydown',e=>keys[e.key.toLowerCase()]=true); addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
 renderer.domElement.addEventListener('click',()=>{
@@ -144,7 +156,15 @@ requestAnimationFrame(animate);
 let sp=mode=='terbang'?1.2:0.35, mx=0,mz=0;
 if(keys['w']||keys['arrowup']) mz+=1; if(keys['s']||keys['arrowdown']) mz-=1; if(keys['a']||keys['arrowleft']) mx-=1; if(keys['d']||keys['arrowright']) mx+=1;
 mx+=joyX; mz+=joyY;
-if(mx||mz){let len=Math.hypot(mx,mz); mx/=len; mz/=len; let sin=Math.sin(player.rot),cos=Math.cos(player.rot); player.x+=(mx*cos+mz*sin)*sp; player.z+=(-mx*sin+mz*cos)*sp;}
+if(mx||mz){
+  let len=Math.hypot(mx,mz); mx/=len; mz/=len;
+  let sin=Math.sin(player.rot),cos=Math.cos(player.rot);
+  let nx=player.x+(mx*cos+mz*sin)*sp;
+  let nz=player.z+(-mx*sin+mz*cos)*sp;
+  // Cek dulu, kalo nabrak tembok jangan jalan!
+  if(!nabrak(nx,nz)){ player.x=nx; player.z=nz; }
+  // Kalo nabrak, diem di tempat (kehalang tembok)
+}
 if(mode=='terbang'){ if(keys[' ']) player.y+=0.5; if(keys['shift']) player.y-=0.5; }
 else player.y=2;
 camera.position.set(player.x,player.y,player.z); camera.rotation.set(0,player.rot,0); camera.rotation.order='YXZ'; camera.rotation.y=player.rot; camera.rotation.x=-0.1;
