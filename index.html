@@ -132,6 +132,53 @@ var DB_URL = "https://admin-55bc3-default-rtdb.firebaseio.com";
 var KAS_DESA = 0;
 var AKUN_SAAT_INI = null;
 var pemainLain = {};
+var OBJEK_MAP_GAME = [];
+function nabrakGame(nx,nz){
+  for(let o of OBJEK_MAP_GAME){
+    if(!o || o.type=='jalan') continue;
+    let s=o.scale||1, radius=0;
+    if(o.type=='rumah'||o.type=='toko') radius=4.5*s;
+    else if(o.type=='pohon') radius=1.2*s;
+    else if(o.type=='lampu') radius=0.8;
+    else if(o.type=='npc') radius=1;
+    else radius=1;
+    let dx=nx-o.x, dz=nz-o.z;
+    if(dx*dx+dz*dz < radius*radius) return true;
+  }
+  return false;
+}
+async function loadMapAdmin(){
+  try{
+    let r = await fetch(DB_URL + "/map.json");
+    let d = await r.json();
+    let arr = Array.isArray(d) ? d : Object.values(d||{});
+    OBJEK_MAP_GAME = arr;
+    arr.forEach(o=>{
+      if(!o || o.x==null) return;
+      let s = o.scale||1;
+      let g = new THREE.Group();
+      if(o.type=='rumah'||o.type=='toko'){
+        let dinding = new THREE.Mesh(new THREE.BoxGeometry(8*s,5*s,8*s), new THREE.MeshLambertMaterial({color: o.warna ? parseInt(o.warna.replace('#','0x')) : 0xffffff}));
+        dinding.position.y=2.5*s; g.add(dinding);
+        let atap = new THREE.Mesh(new THREE.ConeGeometry(6.5*s,3*s,4), new THREE.MeshLambertMaterial({color: o.atap ? parseInt(o.atap.replace('#','0x')) : 0xdc2626}));
+        atap.position.y=6.5*s; atap.rotation.y=Math.PI/4; g.add(atap);
+        let pintu = new THREE.Mesh(new THREE.BoxGeometry(1.6*s,2.8*s,0.2), new THREE.MeshLambertMaterial({color:0x8B4513}));
+        pintu.position.set(0,1.4*s,4.1*s); g.add(pintu);
+      } else if(o.type=='pohon'){
+        let b = new THREE.Mesh(new THREE.CylinderGeometry(0.5*s,0.5*s,3*s,6), new THREE.MeshLambertMaterial({color:0x78350f})); b.position.y=1.5*s; g.add(b);
+        let dd = new THREE.Mesh(new THREE.ConeGeometry(2.8*s,6*s,6), new THREE.MeshLambertMaterial({color:0x22c55e})); dd.position.y=6*s; g.add(dd);
+      } else if(o.type=='lampu'){
+        let t = new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.2,6*s,6), new THREE.MeshLambertMaterial({color:0x333333})); t.position.y=3*s; g.add(t);
+        let l = new THREE.Mesh(new THREE.SphereGeometry(0.8*s,8,8), new THREE.MeshBasicMaterial({color:0xfde047})); l.position.y=6.2*s; g.add(l);
+      } else if(o.type=='npc'){
+        let b = new THREE.Mesh(new THREE.BoxGeometry(1,2.2,0.8), new THREE.MeshLambertMaterial({color:0x3b82f6})); b.position.y=1.1; g.add(b);
+        let k = new THREE.Mesh(new THREE.SphereGeometry(0.45,10,10), new THREE.MeshLambertMaterial({color:0xfdbd8a})); k.position.y=2.6; g.add(k);
+      }
+      g.position.set(o.x,0,o.z); g.rotation.y=(o.rot||0)*Math.PI/180;
+      scene.add(g);
+    });
+  }catch(e){}
+}
 async function kirimPosisi(){
   if(!AKUN_SAAT_INI || !pemain) return;
   await fetch(DB_URL + "/online/" + AKUN_SAAT_INI.kode + ".json", {method:"PUT", body: JSON.stringify({nama: AKUN_SAAT_INI.nama, x: pemain.position.x, z: pemain.position.z, rot: pemain.rotation.y, waktu: Date.now()})});
@@ -394,7 +441,7 @@ if(modeJalan){
 }
 let lagiJalan = modeJalan && (Math.abs(joyX)>0.08||Math.abs(joyY)>0.08);
 if(pLimb){ if(lagiJalan){let ayun=Math.sin(waktuGlobal)*0.6; pLimb.tanganKiri.rotation.x=ayun; pLimb.tanganKanan.rotation.x=-ayun; pLimb.kakiKiri.rotation.x=-ayun; pLimb.kakiKanan.rotation.x=ayun;}else{pLimb.tanganKiri.rotation.x*=0.9; pLimb.tanganKanan.rotation.x*=0.9; pLimb.kakiKiri.rotation.x*=0.9; pLimb.kakiKanan.rotation.x*=0.9;} }
-if(pemain && modeJalan&&(Math.abs(joyX)>0.08||Math.abs(joyY)>0.08)){let sin=Math.sin(yaw),cos=Math.cos(yaw);let mx=(joyX*cos+joyY*sin)*0.38;let mz=(joyY*cos-joyX*sin)*0.38;pemain.position.x=Math.max(-BATAS_MAP,Math.min(BATAS_MAP,pemain.position.x+mx));pemain.position.z=Math.max(-BATAS_MAP,Math.min(BATAS_MAP,pemain.position.z+mz));pemain.rotation.y=Math.atan2(mx,mz);updateCam();}
+if(pemain && modeJalan&&(Math.abs(joyX)>0.08||Math.abs(joyY)>0.08)){let sin=Math.sin(yaw),cos=Math.cos(yaw);let mx=(joyX*cos+joyY*sin)*0.38;let mz=(joyY*cos-joyX*sin)*0.38;let nx=Math.max(-BATAS_MAP,Math.min(BATAS_MAP,pemain.position.x+mx));let nz=Math.max(-BATAS_MAP,Math.min(BATAS_MAP,pemain.position.z+mz));if(!nabrakGame(nx,nz)){pemain.position.x=nx;pemain.position.z=nz;}pemain.rotation.y=Math.atan2(mx,mz);updateCam();}
 if(isLompat && pemain){lompatY+=0.25;pemain.position.y=Math.sin(lompatY)*2.5;if(lompatY>=Math.PI){pemain.position.y=0;isLompat=false;}updateCam();}ren.render(scene,cam);})();
 }
 }catch(e){ console.log('3D gagal', e); }
