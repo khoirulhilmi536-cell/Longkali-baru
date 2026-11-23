@@ -1,175 +1,231 @@
 <!DOCTYPE html>
-<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>ADMIN LONGKALI - Jalan di Map</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin Map V2 - LongkaliVerse</title>
 <style>
-*{box-sizing:border-box}body{margin:0;overflow:hidden;background:#000;font-family:Arial;color:#fff}
-#game{position:fixed;inset:0}
-#top{position:fixed;top:0;left:0;right:0;background:rgba(0,0,0,.9);padding:8px;display:flex;gap:5px;flex-wrap:wrap;z-index:10;align-items:center}
-#top b{color:#facc15;font-size:13px;width:100%}
-button,select,input{padding:8px 10px;border-radius:8px;border:none;font-weight:700;font-size:13px}
-button{background:#22c55e;color:#fff}button.del{background:#ef4444}button.blue{background:#3b82f6}button.yellow{background:#eab308;color:#000}button.active{outline:3px solid #facc15}
-#panel{position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,.92);padding:10px;z-index:10;max-height:32vh;overflow:auto}
-.row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px;align-items:center}
-.row label{font-size:12px;color:#ccc}
-#joy{position:fixed;left:15px;bottom:340px;width:110px;height:110px;background:rgba(255,255,255,.2);border:2px solid #fff;border-radius:50%;z-index:99}
-#stick{position:absolute;left:35px;top:35px;width:40px;height:40px;background:#fff;border-radius:50%}
-#look{position:fixed;right:15px;bottom:340px;width:110px;height:110px;background:rgba(255,255,255,.15);border:2px solid #fff;border-radius:50%;z-index:99}
-#lookBtn{position:absolute;left:35px;top:35px;width:40px;height:40px;background:#facc15;border-radius:50%}
-#info{position:fixed;top:95px;left:10px;background:rgba(0,0,0,.7);padding:8px;border-radius:8px;font-size:12px;z-index:9}
-#cross{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);font-size:24px;z-index:8;pointer-events:none}
-</style></head>
+*{box-sizing:border-box} body{margin:0;font-family:Arial;background:#0f172a;color:#fff;padding:14px}
+h1{font-size:20px;margin:0 0 4px} p{font-size:12px;color:#94a3b8;margin:0 0 12px}
+.card{background:#fff;color:#000;border-radius:14px;padding:14px;margin-bottom:12px}
+input,select{width:100%;padding:11px;border:2px solid #cbd5e1;border-radius:10px;margin-bottom:8px;font-size:14px}
+button{width:100%;padding:12px;border:none;border-radius:10px;font-weight:900;font-size:14px;cursor:pointer;margin-bottom:8px}
+.btnSimpan{background:#16a34a;color:#fff}
+.btnEdit{background:#0e4a5a;color:#fff}
+.btnHapus{background:#dc2626;color:#fff}
+.btnKuning{background:#f59e0b;color:#000}
+.btnBatal{background:#e2e8f0;color:#000}
+#miniMap{width:100%;height:340px;background:#2ea043;border-radius:12px;position:relative;overflow:hidden;border:3px solid #0e4a5a;cursor:crosshair;touch-action:none}
+#marker{position:absolute;width:22px;height:22px;background:#f59e0b;border:3px solid #fff;border-radius:50%;transform:translate(-50%,-50%);display:none;z-index:20;pointer-events:none;box-shadow:0 0 0 4px rgba(245,158,11,.4)}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.2) 1px,transparent 1px);background-size:20% 20%;pointer-events:none}
+.bangunan-dot{position:absolute;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;transform:translate(-50%,-50%);border:2px solid #fff;cursor:pointer;z-index:5;box-shadow:0 2px 6px rgba(0,0,0,.4)}
+.bangunan-dot.selected{border:3px solid #f59e0b;transform:translate(-50%,-50%) scale(1.25);z-index:15}
+.item{background:#f1f5f9;padding:10px;border-radius:10px;margin-bottom:8px;font-size:13px}
+.item.selected{border:2px solid #f59e0b;background:#fef3c7}
+.badge{font-size:10px;padding:2px 7px;border-radius:10px;color:#fff;font-weight:900}
+</style>
+</head>
 <body>
-<div id="game"></div>
-<div id="cross">+</div>
-<div id="info">📍 X:0 Z:0 | Objek: <span id="cnt">0</span><br><span id="selInfo">Belum ada yang dipilih</span></div>
-<div id="top">
-<b>🏙️ ADMIN LONGKALI - MODE JALAN | DB: admin-55bc3 ✅</b>
-<button onclick="setMode('jalan')" id="bJalan" class="active">🚶 JALAN</button>
-<button onclick="setMode('terbang')" id="bTerbang">✈️ TERBANG</button>
-<button onclick="setMode('edit')" id="bEdit" class="yellow">✏️ EDIT / PILIH</button>
-<button onclick="simpan()" style="background:#f97316">💾 SIMPAN KE GAME</button>
+
+<h1>🗺️ ADMIN MAP V2 - Edit Posisi</h1>
+<p>Tap bangunan di peta / di daftar untuk EDIT. Geser marker / tap peta baru, lalu SIMPAN PERUBAHAN.</p>
+
+<div class="card">
+  <b id="judulForm">1. TAMBAH BANGUNAN BARU</b><br>
+  <span id="posText" style="font-size:13px;color:#0e4a5a;font-weight:800">Belum pilih posisi - Tap peta!</span>
+  <div id="miniMap">
+    <div class="grid"></div>
+    <div id="dots"></div>
+    <div id="marker"></div>
+    <div style="position:absolute;top:6px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.65);padding:4px 10px;border-radius:10px;font-size:11px;z-index:2">↑ UTARA - Balai Desa</div>
+    <div style="position:absolute;bottom:6px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.65);padding:4px 10px;border-radius:10px;font-size:11px;z-index:2">↓ SELATAN - Puskesmas</div>
+    <div style="position:absolute;top:50%;left:6px;transform:translateY(-50%);background:rgba(0,0,0,.65);padding:4px 8px;border-radius:10px;font-size:11px;z-index:2">← Masjid</div>
+    <div style="position:absolute;top:50%;right:6px;transform:translateY(-50%);background:rgba(0,0,0,.65);padding:4px 8px;border-radius:10px;font-size:11px;z-index:2">Toko →</div>
+  </div>
+  <div style="display:flex;gap:8px;margin-top:10px;text-align:center">
+    <div style="flex:1;background:#eff6ff;padding:8px;border-radius:10px">X: <b id="labelX">0</b></div>
+    <div style="flex:1;background:#eff6ff;padding:8px;border-radius:10px">Z: <b id="labelZ">0</b></div>
+    <div style="flex:1;background:#fef3c7;padding:8px;border-radius:10px">Mode: <b id="labelMode">BARU</b></div>
+  </div>
+  <div style="display:flex;gap:6px;margin-top:8px;justify-content:center">
+    <button onclick="geser(-5,0)" style="width:44px;background:#0e4a5a;color:#fff">⬅</button>
+    <button onclick="geser(0,-5)" style="width:44px;background:#0e4a5a;color:#fff">⬆</button>
+    <button onclick="geser(0,5)" style="width:44px;background:#0e4a5a;color:#fff">⬇</button>
+    <button onclick="geser(5,0)" style="width:44px;background:#0e4a5a;color:#fff">➡</button>
+    <button onclick="geser(-1,0)" style="width:44px;background:#e2e8f0;color:#000;font-size:11px">-1</button>
+    <button onclick="geser(1,0)" style="width:44px;background:#e2e8f0;color:#000;font-size:11px">+1</button>
+  </div>
+  <p style="text-align:center;margin:6px 0 0">Tombol panah buat geser halus. Tap peta buat geser jauh.</p>
 </div>
-<div id="panel">
-<div class="row">
-<label>Tambah:</label>
-<select id="tipe"><option value="rumah">🏠 Rumah (ada pintu)</option><option value="toko">🏪 Toko</option><option value="pohon">🌲 Pohon</option><option value="jalan">🛣️ Jalan</option><option value="lampu">💡 Lampu</option><option value="npc">🧍 NPC</option></select>
-<input id="nama" placeholder="Nama (untuk NPC/Toko)" style="flex:1">
-<button onclick="tambahDiDepan()">➕ TARUH DI DEPAN SAYA</button>
+
+<div class="card">
+  <b>2. DATA BANGUNAN</b>
+  <input id="namaBangunan" placeholder="Nama Bangunan (contoh: Warung Bu Tini)">
+  <select id="tipeBangunan">
+    <option value="rumah">🏠 Rumah Warga</option>
+    <option value="toko">🛒 Toko / Warung</option>
+    <option value="masjid">🕌 Masjid / Mushola</option>
+    <option value="pos">🚨 Pos Ronda</option>
+    <option value="sekolah">🏫 Sekolah / PAUD</option>
+    <option value="puskesmas">🏥 Puskesmas / Posyandu</option>
+    <option value="balai">🏛️ Balai / Kantor</option>
+  </select>
+  <div id="tombolBaru">
+    <button class="btnSimpan" onclick="simpanBangunan()">✅ SIMPAN BANGUNAN BARU</button>
+  </div>
+  <div id="tombolEdit" style="display:none">
+    <button class="btnSimpan" onclick="simpanEdit()">💾 SIMPAN PERUBAHAN POSISI</button>
+    <button class="btnBatal" onclick="batalEdit()">❌ Batal Edit / Tambah Baru</button>
+  </div>
+  <button class="btnKuning" onclick="loadData()">🔄 Refresh Daftar</button>
 </div>
-<div class="row">
-<label>Warna:</label><input type="color" id="warna" value="#ffffff">
-<label>Atap:</label><input type="color" id="atap" value="#dc2626">
-<label>Scale:</label><input type="range" id="scale" min="0.5" max="4" step="0.1" value="1"><span id="scaleVal">1</span>
-<label>Putar:</label><button onclick="putar(-45)">↩️</button><button onclick="putar(45)">↪️</button>
+
+<div class="card">
+  <b>3. DAFTAR BANGUNAN (<span id="jml">0</span>) - Tap EDIT untuk geser</b>
+  <div id="listBangunan" style="margin-top:10px">Memuat...</div>
 </div>
-<div class="row">
-<label>Geser yang dipilih:</label>
-<button onclick="geser(0,-1)">⬆️</button><button onclick="geser(0,1)">⬇️</button><button onclick="geser(-1,0)">⬅️</button><button onclick="geser(1,0)">➡️</button>
-<button onclick="hapusPilih()" class="del">🗑️ HAPUS</button>
-<button onclick="loadMap()" class="blue">🔄 MUAT ULANG</button>
-<button onclick="hapusSemua()" class="del">⚠️ HAPUS SEMUA</button>
+
+<div style="text-align:center">
+  <button onclick="location.href='index.html'" style="background:#0e4a5a;color:#fff;width:auto;padding:10px 20px">⬅ Kembali ke Game</button>
 </div>
-<div class="row" style="font-size:11px;color:#aaa">Cara pakai: Mode JALAN = jalan pake joystick/WASD. Mode EDIT = klik objek buat pilih, lalu geser/puter/hapus. Mode TERBANG = kamera naik. Klik SIMPAN kalo udah selesai!</div>
-</div>
-<div id="joy"><div id="stick"></div></div>
-<div id="look"><div id="lookBtn"></div></div>
+
 <script>
-const DB_URL = "https://admin-55bc3-default-rtdb.firebaseio.com";
-let scene,camera,renderer,player={x:0,z:0,rot:0,y:2},keys={},objs=[],selected=null,mode='jalan',joyX=0,joyY=0;
-function init(){
-scene=new THREE.Scene(); scene.background=new THREE.Color(0x87ceeb); scene.fog=new THREE.Fog(0x87ceeb,80,300);
-camera=new THREE.PerspectiveCamera(75,innerWidth/innerHeight,0.1,1000);
-renderer=new THREE.WebGLRenderer({antialias:true}); renderer.setSize(innerWidth,innerHeight); document.getElementById('game').appendChild(renderer.domElement);
-scene.add(new THREE.AmbientLight(0xffffff,0.9));
-let sun=new THREE.DirectionalLight(0xffffff,0.8); sun.position.set(50,100,50); scene.add(sun);
-let g=new THREE.Mesh(new THREE.PlaneGeometry(500,500), new THREE.MeshLambertMaterial({color:0x4ade80})); g.rotation.x=-Math.PI/2; scene.add(g);
-let grid=new THREE.GridHelper(500,50,0x000000,0x000000); grid.material.transparent=true; grid.material.opacity=0.1; scene.add(grid);
-for(let i=-200;i<=200;i+=10){let j=new THREE.Mesh(new THREE.BoxGeometry(10,0.1,10), new THREE.MeshLambertMaterial({color:0x334155})); j.position.set(i,0.05,0); scene.add(j);}
-loadMap(); setupInput(); animate();
-}
-function buatObj(o){
-let s=o.scale||1,x=o.x||0,z=o.z||0,cW=o.warna?parseInt(o.warna.replace('#','0x')):0xffffff,cA=o.atap?parseInt(o.atap.replace('#','0x')):0xdc2626;
-let grp=new THREE.Group();
-if(o.type=='rumah'||o.type=='toko'){
-let d=new THREE.Mesh(new THREE.BoxGeometry(8*s,5*s,8*s), new THREE.MeshLambertMaterial({color:cW})); d.position.y=2.5*s; grp.add(d);
-let at=new THREE.Mesh(new THREE.ConeGeometry(6.5*s,3*s,4), new THREE.MeshLambertMaterial({color:cA})); at.position.y=6.5*s; at.rotation.y=Math.PI/4; grp.add(at);
-let p=new THREE.Mesh(new THREE.BoxGeometry(1.6*s,2.8*s,0.2), new THREE.MeshLambertMaterial({color:0x8B4513})); p.position.set(0,1.4*s,4.1*s); grp.add(p);
-let j1=new THREE.Mesh(new THREE.BoxGeometry(1.5*s,1.2*s,0.2), new THREE.MeshLambertMaterial({color:0x87CEEB})); j1.position.set(-2.2*s,2.8*s,4.1*s); grp.add(j1);
-let j2=j1.clone(); j2.position.x=2.2*s; grp.add(j2);
-}else if(o.type=='pohon'){
-let b=new THREE.Mesh(new THREE.CylinderGeometry(0.5*s,0.5*s,3*s,6), new THREE.MeshLambertMaterial({color:0x78350f})); b.position.y=1.5*s; grp.add(b);
-let d=new THREE.Mesh(new THREE.ConeGeometry(2.8*s,6*s,6), new THREE.MeshLambertMaterial({color:cW})); d.position.y=6*s; grp.add(d);
-}else if(o.type=='jalan'){
-let j=new THREE.Mesh(new THREE.BoxGeometry(10*s,0.2,10*s), new THREE.MeshLambertMaterial({color:0x334155})); j.position.y=0.1; grp.add(j);
-}else if(o.type=='lampu'){
-let t=new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.2,6*s,6), new THREE.MeshLambertMaterial({color:0x333333})); t.position.y=3*s; grp.add(t);
-let l=new THREE.Mesh(new THREE.SphereGeometry(0.8*s,8,8), new THREE.MeshBasicMaterial({color:0xfde047})); l.position.y=6.2*s; grp.add(l);
-}else{
-let b=new THREE.Mesh(new THREE.BoxGeometry(1,2.2,0.8), new THREE.MeshLambertMaterial({color:cW})); b.position.y=1.1; grp.add(b);
-let k=new THREE.Mesh(new THREE.SphereGeometry(0.45,10,10), new THREE.MeshLambertMaterial({color:0xfdbd8a})); k.position.y=2.6; grp.add(k);
-}
-grp.position.set(x,0,z); grp.rotation.y=(o.rot||0)*Math.PI/180; grp.userData.data=o; scene.add(grp); objs.push(grp); updateCnt(); return grp;
-}
-function updateCnt(){document.getElementById('cnt').innerText=objs.length;}
-async function loadMap(){
-objs.forEach(o=>scene.remove(o)); objs=[]; selected=null;
-try{let r=await fetch(DB_URL+"/map.json"); let d=await r.json(); let arr=Array.isArray(d)?d:Object.values(d||{}); arr.forEach(o=>{if(o&&o.x!=null) buatObj(o);});}catch(e){alert('Gagal load map, cek DB_URL');}
-}
-async function simpan(){
-let arr=objs.map(g=>g.userData.data);
-try{await fetch(DB_URL+"/map.json",{method:"PUT",body:JSON.stringify(arr)}); alert('✅ TERSIMPAN! '+arr.length+' objek udah masuk game!');}catch(e){alert('Gagal simpan! Cek DB_URL');}
-}
-function tambahDiDepan(){
-let depanX=player.x+Math.sin(player.rot)*8, depanZ=player.z+Math.cos(player.rot)*8;
-let o={type:document.getElementById('tipe').value, x:Math.round(depanX), z:Math.round(depanZ), scale:parseFloat(document.getElementById('scale').value), warna:document.getElementById('warna').value, atap:document.getElementById('atap').value, rot:0, nama:document.getElementById('nama').value||''};
-let g=buatObj(o); pilih(g);
-}
-function pilih(g){
-if(selected) selected.children.forEach(c=>{if(c.material&&c.material.emissive) c.material.emissive.setHex(0x000000)});
-selected=g; if(!g){document.getElementById('selInfo').innerText='Belum ada yang dipilih';return;}
-g.children.forEach(c=>{if(c.material&&c.material.emissive) c.material.emissive.setHex(0x333333)});
-let d=g.userData.data; document.getElementById('selInfo').innerText='Dipilih: '+d.type+' | X:'+d.x+' Z:'+d.z+' | '+ (d.nama||'');
-document.getElementById('warna').value=d.warna||'#ffffff'; document.getElementById('atap').value=d.atap||'#dc2626';
-}
-function geser(dx,dz){if(!selected) return alert('Pilih dulu objeknya! Mode EDIT lalu klik objek'); let d=selected.userData.data; d.x+=dx; d.z+=dz; selected.position.x=d.x; selected.position.z=d.z; pilih(selected);}
-function putar(a){if(!selected) return alert('Pilih dulu!'); let d=selected.userData.data; d.rot=(d.rot||0)+a; selected.rotation.y=d.rot*Math.PI/180; pilih(selected);}
-function hapusPilih(){if(!selected) return; scene.remove(selected); objs=objs.filter(o=>o!==selected); selected=null; updateCnt(); document.getElementById('selInfo').innerText='Dihapus';}
-function hapusSemua(){if(!confirm('Hapus SEMUA objek?'))return; objs.forEach(o=>scene.remove(o)); objs=[]; selected=null; updateCnt();}
-function setMode(m){mode=m; ['bJalan','bTerbang','bEdit'].forEach(id=>document.getElementById(id).classList.remove('active')); document.getElementById(m=='jalan'?'bJalan':m=='terbang'?'bTerbang':'bEdit').classList.add('active');}
-document.getElementById('scale').oninput=e=>{document.getElementById('scaleVal').innerText=e.target.value; if(selected){selected.userData.data.scale=parseFloat(e.target.value); let d=selected.userData.data; scene.remove(selected); objs=objs.filter(o=>o!==selected); let ng=buatObj(d); pilih(ng);}};
-document.getElementById('warna').onchange=e=>{if(selected){selected.userData.data.warna=e.target.value; let d=selected.userData.data; scene.remove(selected); objs=objs.filter(o=>o!==selected); pilih(buatObj(d));}};
-// ===== INI YANG BARU - TEMBOK / COLLISION =====
-function nabrak(nx,nz){
-  if(mode=='terbang') return false; // mode terbang boleh nembus, biar bisa liat dari atas
-  for(let g of objs){
-    let d=g.userData.data; if(!d) continue;
-    if(d.type=='jalan') continue; // jalan boleh diinjek
-    let s=d.scale||1, radius=0;
-    if(d.type=='rumah'||d.type=='toko') radius=4.5*s;
-    else if(d.type=='pohon') radius=1.2*s;
-    else if(d.type=='lampu') radius=0.8;
-    else if(d.type=='npc') radius=1;
-    else radius=1;
-    let dx=nx-d.x, dz=nz-d.z;
-    if(dx*dx+dz*dz < radius*radius) return true;
-  }
-  return false;
-}
-function setupInput(){
-addEventListener('keydown',e=>keys[e.key.toLowerCase()]=true); addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
-renderer.domElement.addEventListener('click',()=>{
-if(mode!=='edit') return;
-let ray=new THREE.Raycaster(); ray.setFromCamera(new THREE.Vector2(0,0),camera);
-let hits=ray.intersectObjects(objs,true); if(hits.length){let g=hits[0].object; while(g.parent&&!objs.includes(g)) g=g.parent; pilih(g);} else pilih(null);
+var DB_URL="https://admin-55bc3-default-rtdb.firebaseio.com";
+var posX=0, posZ=0, sudahPilih=false;
+var EDIT_KEY=null;
+var DATA_MAP={};
+
+var mapEl=document.getElementById('miniMap');
+mapEl.addEventListener('pointerdown', function(e){
+  if(e.target.classList && e.target.classList.contains('bangunan-dot')) return;
+  pilihPos(e);
 });
-let joy=document.getElementById('joy'),stick=document.getElementById('stick'),dragJ=false;
-joy.addEventListener('touchstart',e=>dragJ=true); joy.addEventListener('touchmove',e=>{if(!dragJ)return; let t=e.touches[0],r=joy.getBoundingClientRect(); joyX=(t.clientX-(r.left+55))/40; joyY=(t.clientY-(r.top+55))/40; joyX=Math.max(-1,Math.min(1,joyX)); joyY=Math.max(-1,Math.min(1,joyY)); stick.style.left=(35+joyX*30)+'px'; stick.style.top=(35+joyY*30)+'px';}); joy.addEventListener('touchend',()=>{dragJ=false; joyX=joyY=0; stick.style.left='35px'; stick.style.top='35px';});
-let look=document.getElementById('look'),dragL=false,lastX=0,lastY=0;
-look.addEventListener('touchstart',e=>{dragL=true; lastX=e.touches[0].clientX; lastY=e.touches[0].clientY;});
-look.addEventListener('touchmove',e=>{if(!dragL)return; let t=e.touches[0]; player.rot-=(t.clientX-lastX)*0.01; player.y=Math.max(1,Math.min(20,player.y+(t.clientY-lastY)*0.02)); lastX=t.clientX; lastY=t.clientY;});
-look.addEventListener('touchend',()=>dragL=false);
-let md=false,lx=0,ly=0; renderer.domElement.addEventListener('mousedown',e=>{md=true; lx=e.clientX; ly=e.clientY;}); addEventListener('mousemove',e=>{if(!md)return; player.rot-=(e.clientX-lx)*0.01; player.y=Math.max(1,Math.min(30,player.y+(e.clientY-ly)*0.02)); lx=e.clientX; ly=e.clientY;}); addEventListener('mouseup',()=>md=false);
+
+function setPos(x,z){
+  posX=Math.round(x); posZ=Math.round(z); sudahPilih=true;
+  document.getElementById('labelX').innerText=posX;
+  document.getElementById('labelZ').innerText=posZ;
+  document.getElementById('posText').innerText='Posisi: X='+posX+', Z='+posZ + (EDIT_KEY ? ' (EDIT MODE)' : '');
+  var m=document.getElementById('marker');
+  m.style.display='block';
+  m.style.left=((posX+250)/500*100)+'%';
+  m.style.top=((posZ+250)/500*100)+'%';
 }
-function animate(){
-requestAnimationFrame(animate);
-let sp=mode=='terbang'?1.2:0.35, mx=0,mz=0;
-if(keys['w']||keys['arrowup']) mz+=1; if(keys['s']||keys['arrowdown']) mz-=1; if(keys['a']||keys['arrowleft']) mx-=1; if(keys['d']||keys['arrowright']) mx+=1;
-mx+=joyX; mz+=joyY;
-if(mx||mz){
-  let len=Math.hypot(mx,mz); mx/=len; mz/=len;
-  let sin=Math.sin(player.rot),cos=Math.cos(player.rot);
-  let nx=player.x+(mx*cos+mz*sin)*sp;
-  let nz=player.z+(-mx*sin+mz*cos)*sp;
-  // Cek dulu, kalo nabrak tembok jangan jalan!
-  if(!nabrak(nx,nz)){ player.x=nx; player.z=nz; }
-  // Kalo nabrak, diem di tempat (kehalang tembok)
+
+function pilihPos(e){
+  var r=mapEl.getBoundingClientRect();
+  var px=(e.clientX-r.left)/r.width;
+  var pz=(e.clientY-r.top)/r.height;
+  setPos(px*500-250, pz*500-250);
 }
-if(mode=='terbang'){ if(keys[' ']) player.y+=0.5; if(keys['shift']) player.y-=0.5; }
-else player.y=2;
-camera.position.set(player.x,player.y,player.z); camera.rotation.set(0,player.rot,0); camera.rotation.order='YXZ'; camera.rotation.y=player.rot; camera.rotation.x=-0.1;
-document.getElementById('info').innerHTML='📍 X:'+Math.round(player.x)+' Z:'+Math.round(player.z)+' | Objek: '+objs.length+'<br><span id="selInfo">'+document.getElementById('selInfo').innerText+'</span>';
-renderer.render(scene,camera);
+
+function geser(dx,dz){
+  if(!sudahPilih){ alert('Tap peta dulu!'); return; }
+  setPos(posX+dx, posZ+dz);
 }
-init();
-</script></body></html>
+
+function getEmoji(tipe){
+  tipe=(tipe||'').toLowerCase();
+  if(tipe.includes('toko')||tipe.includes('warung')) return '🛒';
+  if(tipe.includes('masjid')) return '🕌';
+  if(tipe.includes('pos')) return '🚨';
+  if(tipe.includes('sekolah')) return '🏫';
+  if(tipe.includes('puskesmas')) return '🏥';
+  if(tipe.includes('balai')) return '🏛️';
+  return '🏠';
+}
+
+async function loadData(){
+  try{
+    let r=await fetch(DB_URL+"/map.json");
+    let v=await r.json();
+    DATA_MAP=v||{};
+    let arr=Object.entries(DATA_MAP);
+    document.getElementById('jml').innerText=arr.length;
+    let html='', dots='';
+    for(let [key,item] of arr){
+      if(!item) continue;
+      let emoji=getEmoji(item.type);
+      let isSel = (key===EDIT_KEY);
+      html+='<div class="item '+(isSel?'selected':'')+'"><div><b>'+emoji+' '+(item.nama||'-')+'</b> '+(isSel?'<span class="badge" style="background:#f59e0b;color:#000">SEDANG DIEDIT</span>':'')+'<br><span style="color:#64748b">Tipe: '+(item.type||'-')+' | X:'+item.x+' Z:'+item.z+'</span></div><div style="display:flex;gap:6px;margin-top:8px"><button onclick="mulaiEdit(\''+key+'\')" style="flex:1;background:#0e4a5a;color:#fff;padding:8px">✏️ EDIT POSISI</button><button onclick="hapusBangunan(\''+key+'\')" style="flex:1;background:#dc2626;color:#fff;padding:8px">🗑️ Hapus</button></div></div>';
+      let left=((parseFloat(item.x)+250)/500*100);
+      let top=((parseFloat(item.z)+250)/500*100);
+      dots+='<div class="bangunan-dot '+(isSel?'selected':'')+'" style="left:'+left+'%;top:'+top+'%;background:'+(isSel?'#f59e0b':'#0e4a5a')+'" onclick="mulaiEdit(\''+key+'\')" title="'+(item.nama||'')+'">'+emoji+'</div>';
+    }
+    if(arr.length==0) html='<div style="text-align:center;color:#888">Belum ada bangunan admin.</div>';
+    document.getElementById('listBangunan').innerHTML=html;
+    document.getElementById('dots').innerHTML=dots;
+  }catch(e){ document.getElementById('listBangunan').innerHTML='Gagal load: '+e; }
+}
+
+function mulaiEdit(key){
+  var item=DATA_MAP[key];
+  if(!item) return;
+  EDIT_KEY=key;
+  document.getElementById('namaBangunan').value=item.nama||'';
+  document.getElementById('tipeBangunan').value=item.type||'rumah';
+  setPos(item.x, item.z);
+  document.getElementById('judulForm').innerText='1. EDIT POSISI - '+(item.nama||'');
+  document.getElementById('labelMode').innerText='EDIT';
+  document.getElementById('labelMode').style.color='#dc2626';
+  document.getElementById('tombolBaru').style.display='none';
+  document.getElementById('tombolEdit').style.display='block';
+  document.getElementById('posText').innerText='Sedang Edit: '+(item.nama||'')+' - Tap peta / pakai panah untuk geser!';
+  loadData();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function batalEdit(){
+  EDIT_KEY=null;
+  document.getElementById('namaBangunan').value='';
+  document.getElementById('judulForm').innerText='1. TAMBAH BANGUNAN BARU';
+  document.getElementById('labelMode').innerText='BARU';
+  document.getElementById('labelMode').style.color='#000';
+  document.getElementById('tombolBaru').style.display='block';
+  document.getElementById('tombolEdit').style.display='none';
+  document.getElementById('posText').innerText='Mode Tambah Baru - Tap peta untuk pilih posisi!';
+  loadData();
+}
+
+async function simpanBangunan(){
+  var nama=document.getElementById('namaBangunan').value.trim();
+  var tipe=document.getElementById('tipeBangunan').value;
+  if(!sudahPilih){ alert('Tap peta dulu!'); return; }
+  if(!nama){ alert('Isi nama dulu!'); return; }
+  var data={nama:nama, type:tipe, x:posX, z:posZ, dibuat:Date.now()};
+  try{
+    await fetch(DB_URL+"/map.json",{method:"POST",body:JSON.stringify(data)});
+    alert('✅ Berhasil! "'+nama+'" masuk ke game!');
+    document.getElementById('namaBangunan').value='';
+    loadData();
+  }catch(e){ alert('Gagal: '+e); }
+}
+
+async function simpanEdit(){
+  if(!EDIT_KEY){ alert('Gak ada yang diedit!'); return; }
+  var nama=document.getElementById('namaBangunan').value.trim();
+  var tipe=document.getElementById('tipeBangunan').value;
+  if(!nama){ alert('Isi nama dulu!'); return; }
+  var item=DATA_MAP[EDIT_KEY]||{};
+  var data={nama:nama, type:tipe, x:posX, z:posZ, dibuat:item.dibuat||Date.now(), diedit:Date.now()};
+  try{
+    await fetch(DB_URL+"/map/"+EDIT_KEY+".json",{method:"PUT",body:JSON.stringify(data)});
+    alert('✅ Posisi "'+nama+'" berhasil dipindah ke X='+posX+', Z='+posZ+'!\nBuka game, langsung pindah!');
+    batalEdit();
+  }catch(e){ alert('Gagal simpan edit: '+e); }
+}
+
+async function hapusBangunan(key){
+  if(!confirm('Yakin hapus bangunan ini?')) return;
+  try{
+    await fetch(DB_URL+"/map/"+key+".json",{method:"DELETE"});
+    if(EDIT_KEY===key) batalEdit();
+    alert('Terhapus!');
+    loadData();
+  }catch(e){ alert('Gagal hapus: '+e); }
+}
+
+loadData();
+</script>
+</body>
+</html>
