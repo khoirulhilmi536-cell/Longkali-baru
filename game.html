@@ -1,91 +1,94 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>LongkaliVerse - Game Desa Longkali</title>
+<title>LongkaliCraft - Robloxnya Desa Longkali</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{margin:0;font-family:Arial;background:#0f172a;color:#fff;overflow:hidden}
 #top{position:fixed;top:0;left:0;right:0;z-index:100;background:#0e4a5a;padding:8px 10px;display:flex;justify-content:space-between;align-items:center}
 #top b{font-size:15px}#top small{font-size:10px;color:#f59e0b}
 #top button{background:#f59e0b;border:none;padding:7px 10px;border-radius:20px;font-weight:900;font-size:11px}
-#diamondBar{position:fixed;top:52px;right:10px;z-index:999;background:#a855f7;color:#fff;padding:6px 12px;border-radius:20px;font-weight:900;font-size:13px;box-shadow:0 2px 8px rgba(0,0,0,.4)}
 #uangBar{position:fixed;top:52px;left:10px;z-index:999;background:#16a34a;color:#fff;padding:6px 12px;border-radius:20px;font-weight:900;font-size:13px}
-#holder{position:fixed;inset:0;top:44px;bottom:88px;background:#87CEEB}
+#diamondBar{position:fixed;top:52px;right:10px;z-index:999;background:#a855f7;color:#fff;padding:6px 12px;border-radius:20px;font-weight:900;font-size:13px}
+#holder{position:fixed;inset:0;top:44px;bottom:100px;background:#87CEEB}
 #marquee{position:fixed;top:84px;left:10px;right:10px;z-index:99;background:rgba(0,0,0,.65);padding:6px 10px;border-radius:20px;font-size:11px;text-align:center;white-space:nowrap;overflow:hidden}
 #card{position:fixed;top:112px;left:10px;z-index:99;background:#fff;color:#000;border-radius:12px;padding:7px 11px;border:2px solid #0ea5e9;pointer-events:none}
 #card b{font-size:20px}
-#bottom{position:fixed;bottom:0;left:0;right:0;z-index:100;background:#0f172a;padding:8px;display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
-#bottom button{flex:1;min-width:70px;background:#1e293b;color:#fff;border:none;padding:10px 4px;border-radius:12px;font-weight:900;font-size:11px}
-#bottom button.gold{background:#f59e0b;color:#000}
-#joy{position:fixed;bottom:100px;left:14px;width:110px;height:110px;background:rgba(255,255,255,.25);border:2px solid rgba(255,255,255,.6);border-radius:50%;z-index:99}
-#knob{position:absolute;left:35px;top:35px;width:40px;height:40px;background:#fff;border-radius:50%}
-#jumpBtn{position:fixed;bottom:110px;right:14px;width:62px;height:62px;border-radius:50%;background:#f59e0b;border:none;font-size:22px;font-weight:900;z-index:99}
+#bottom{position:fixed;bottom:0;left:0;right:0;z-index:100;background:#0f172a;padding:8px;display:flex;gap:5px;flex-wrap:wrap;justify-content:center}
+#bottom button{flex:1;min-width:62px;background:#1e293b;color:#fff;border:none;padding:10px 3px;border-radius:12px;font-weight:900;font-size:11px}
+#bottom button.gold{background:#f59e0b;color:#000}#bottom button.purple{background:#8b5cf6;color:#fff}#bottom button.pink{background:#ec4899;color:#fff}
+#joy{position:fixed;bottom:115px;left:14px;width:105px;height:105px;background:rgba(255,255,255,.25);border:2px solid rgba(255,255,255,.6);border-radius:50%;z-index:99}
+#knob{position:absolute;left:32px;top:32px;width:40px;height:40px;background:#fff;border-radius:50%}
+#jumpBtn{position:fixed;bottom:120px;right:14px;width:60px;height:60px;border-radius:50%;background:#f59e0b;border:none;font-size:22px;font-weight:900;z-index:99}
+#panelBangun{position:fixed;bottom:100px;left:10px;right:10px;z-index:999;background:#fff;color:#000;padding:10px;border-radius:14px;display:none}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:50000;display:none;justify-content:center;align-items:center;padding:14px}
 .modal>div{background:#fff;color:#000;border-radius:18px;width:100%;max-width:400px;padding:16px;max-height:88vh;overflow:auto}
-.modal h3{margin:0 0 8px}.modal p{font-size:12px;color:#555}
 label{font-size:11px;font-weight:800;color:#64748b}input,select{width:100%;padding:11px;border:2px solid #cbd5e1;border-radius:10px;margin:4px 0 8px;font-size:13px}
 .btn{width:100%;padding:12px;border:none;border-radius:11px;font-weight:900;margin-top:6px}
 .btnBlue{background:#0e4a5a;color:#fff}.btnGreen{background:#16a34a;color:#fff}.btnPurple{background:#a855f7;color:#fff}.btnGray{background:#e2e8f0}
 .kitem{display:flex;justify-content:space-between;align-items:center;background:#f1f5f9;border-radius:12px;padding:10px;margin:7px 0}
 .kitem b{font-size:13px}.kitem small{color:#666}
-.kbtn{border:none;padding:8px 12px;border-radius:10px;font-weight:900;color:#fff}
+.kbtn{border:none;padding:8px 12px;border-radius:10px;font-weight:900;color:#fff;font-size:12px}
+.pbtn{flex:1;padding:9px;border:none;border-radius:9px;font-weight:900;font-size:12px}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
-<div id="top"><div><b>🌾 LongkaliVerse</b><br><small id="namaTop">Warga Longkali</small></div><div><button onclick="bukaKTP()">🪪 KTP</button> <button onclick="location.href='admin.html'">⚙️ ADMIN</button></div></div>
+<div id="top"><div><b>🧱 LongkaliCraft</b><br><small id="namaTop">Robloxnya Desa Longkali</small></div><div><button onclick="bukaKTP()">🪪 KTP</button> <button onclick="location.href='admin.html'">⚙️ ADMIN</button></div></div>
 <div id="uangBar">💰 Rp <span id="uangText">0</span></div>
 <div id="diamondBar">💎 <span id="diamondText">0</span> • <span onclick="bukaTopUp()" style="text-decoration:underline">TOP UP</span></div>
 <div id="holder"></div>
-<div id="marquee">📣 Selamat Datang di Desa Longkali! • Top Up Diamond buat Ganti Karakter Sultan! • Bikin KTP dulu biar bisa main!</div>
-<div id="card"><small style="letter-spacing:2px;color:#0ea5e9;font-weight:900">WARGA</small><br><b id="jmlWarga">1</b><p style="margin:2px 0 0;font-size:11px;color:#64748b">warga online</p></div>
+<div id="marquee">📣 Selamat Datang di LongkaliCraft! • Mode BANGUN: Bikin Rumah Sendiri Kayak Roblox! • Top Up Diamond Buat Karakter Sultan!</div>
+<div id="card"><small style="letter-spacing:2px;color:#0ea5e9;font-weight:900">WARGA ONLINE</small><br><b id="jmlWarga">1</b><p style="margin:2px 0 0;font-size:11px;color:#64748b">di LongkaliCraft</p></div>
 <div id="joy"><div id="knob"></div></div>
 <button id="jumpBtn" onclick="lompat()">⬆️</button>
+<div id="panelBangun">
+<b>🧱 MODE BANGUN - Pilih Balok & Warna:</b>
+<div style="display:flex;gap:6px;margin:6px 0">
+<button class="pbtn" onclick="setBentuk('kotak')">⬛ Kotak</button>
+<button class="pbtn" onclick="setBentuk('bola')">⚪ Bola</button>
+<button class="pbtn" onclick="setBentuk('tabung')">🛢️ Tabung</button>
+<button class="pbtn" onclick="setBentuk('atap')">🔺 Atap</button>
+<button class="pbtn" style="background:#dc2626;color:#fff" onclick="setBentuk('hapus')">❌ Hapus</button>
+</div>
+<div style="display:flex;gap:5px">
+<button onclick="setWarna(0xef4444)" style="flex:1;background:#ef4444;color:#fff;padding:9px;border:none;border-radius:8px;font-weight:900">Merah</button>
+<button onclick="setWarna(0x22c55e)" style="flex:1;background:#22c55e;color:#fff;padding:9px;border:none;border-radius:8px;font-weight:900">Hijau</button>
+<button onclick="setWarna(0x3b82f6)" style="flex:1;background:#3b82f6;color:#fff;padding:9px;border:none;border-radius:8px;font-weight:900">Biru</button>
+<button onclick="setWarna(0xf59e0b)" style="flex:1;background:#f59e0b;padding:9px;border:none;border-radius:8px;font-weight:900">Kuning</button>
+<button onclick="setWarna(0xec4899)" style="flex:1;background:#ec4899;color:#fff;padding:9px;border:none;border-radius:8px;font-weight:900">Pink</button>
+<button onclick="setWarna(0xffffff)" style="flex:1;background:#fff;padding:9px;border:1px solid #ccc;border-radius:8px;font-weight:900">Putih</button>
+</div>
+<p style="font-size:11px;color:#666;margin:6px 0 0">👆 Tap tanah = naroh balok • Tap balok = hapus (kalau mode Hapus) • Bangunan kesimpen, gak hilang pas refresh!</p>
+</div>
 <div id="bottom">
 <button onclick="bukaWarung()">🛒 WARUNG</button>
 <button onclick="bukaMisi()">🎯 MISI</button>
+<button class="purple" onclick="bukaModeBangun()">🧱 BANGUN</button>
 <button class="gold" onclick="bukaTopUp()">💎 TOP UP</button>
-<button onclick="bukaKarakter()">👤 KARAKTER</button>
-<button onclick="bukaKas()">🏦 KAS DESA</button>
+<button class="pink" onclick="bukaKarakter()">👤 KARAKTER</button>
+<button onclick="bukaKas()">🏦 KAS</button>
 </div>
-
-<!-- KTP -->
-<div id="modalKTP" class="modal"><div><h3>🪪 Buat KTP Longkali</h3><p>Isi nama lu, langsung jadi warga!</p><label>Nama Lengkap</label><input id="inNama" placeholder="Contoh: Budi Longkali"><label>Pilih RT</label><select id="inRT"><option>RT 01</option><option>RT 02</option><option>RT 03</option><option>RT 04</option></select><label>Umur</label><input id="inUmur" type="number" value="17"><button class="btn btnGreen" onclick="buatKTP()">✅ JADI WARGA</button><button class="btn btnGray" onclick="tutupSemua()">TUTUP</button></div></div>
-<!-- WARUNG -->
+<div id="modalKTP" class="modal"><div><h3>🪪 Buat KTP LongkaliCraft</h3><p>Isi nama lu, langsung jadi warga + builder!</p><label>Nama Lengkap</label><input id="inNama" placeholder="Contoh: Budi Longkali"><label>Pilih RT</label><select id="inRT"><option>RT 01</option><option>RT 02</option><option>RT 03</option><option>RT 04</option></select><label>Umur</label><input id="inUmur" type="number" value="17"><button class="btn btnGreen" onclick="buatKTP()">✅ JADI WARGA</button><button class="btn btnGray" onclick="tutupSemua()">TUTUP</button></div></div>
 <div id="modalWarung" class="modal"><div><h3>🛒 Warung Bu Sari</h3><p>Uang Kamu: <b id="uangWarung">0</b></p><div id="listWarung"></div><button class="btn btnGray" onclick="tutupSemua()">TUTUP</button></div></div>
-<!-- MISI -->
 <div id="modalMisi" class="modal"><div><h3>🎯 Misi Harian</h3><div id="listMisi"></div><button class="btn btnGray" onclick="tutupSemua()">TUTUP</button></div></div>
-<!-- KAS -->
 <div id="modalKas" class="modal"><div><h3>🏦 Kas Desa</h3><p>Saldo Kas: <b id="kasText">Rp 0</b></p><label>Jumlah Donasi</label><input id="inDonasi" type="number" value="1000"><button class="btn btnGreen" onclick="donasiKas()">💰 DONASI KE KAS</button><button class="btn btnGray" onclick="tutupSemua()">TUTUP</button></div></div>
-<!-- TOP UP -->
-<div id="panelTopUp" class="modal"><div><div style="display:flex;justify-content:space-between"><b>💎 TOP UP DIAMOND</b><button onclick="tutupSemua()" style="border:none;background:#eee;border-radius:50%;width:28px;height:28px">✕</button></div><p>Diamond cuma buat beli karakter sultan! Bukan uang.</p><div style="background:#f3e8ff;border:2px solid #a855f7;padding:10px;border-radius:12px;text-align:center">💎 Diamond Kamu: <b id="diamondTopUp" style="font-size:20px;color:#a855f7">0</b><br><button onclick="bukaKarakter()" class="btn btnPurple">👤 GANTI KARAKTER</button></div><div id="listTopUp"></div><div style="margin-top:12px;background:#fef3c7;padding:10px;border-radius:10px"><b style="font-size:13px">🎟️ Punya Kode Voucher?</b><br><span style="font-size:11px;color:#666">Beli di Saweria / ke Admin, dapet kode, masukin di sini</span><input id="inputVoucher" placeholder="Contoh: LK-100"><button onclick="tukarVoucher()" class="btn btnGreen">✅ TUKAR KODE</button><p style="font-size:11px">Kode Demo Buat Ngetes: <b>LK-DEMO</b> = 50 Diamond • <b>LK-100</b> = 100 Diamond</p></div><button class="btn btnGray" onclick="tutupSemua()">TUTUP</button></div></div>
-<!-- KARAKTER -->
+<div id="panelTopUp" class="modal"><div><div style="display:flex;justify-content:space-between"><b>💎 TOP UP DIAMOND</b><button onclick="tutupSemua()" style="border:none;background:#eee;border-radius:50%;width:28px;height:28px">✕</button></div><p>Diamond cuma buat beli karakter sultan! Bukan uang.</p><div style="background:#f3e8ff;border:2px solid #a855f7;padding:10px;border-radius:12px;text-align:center">💎 Diamond Kamu: <b id="diamondTopUp" style="font-size:20px;color:#a855f7">0</b><br><button onclick="bukaKarakter()" class="btn btnPurple">👤 GANTI KARAKTER</button></div><div id="listTopUp"></div><div style="margin-top:12px;background:#fef3c7;padding:10px;border-radius:10px"><b style="font-size:13px">🎟️ Punya Kode Voucher?</b><br><span style="font-size:11px;color:#666">Beli di Saweria / ke Admin, dapet kode, masukin di sini</span><input id="inputVoucher" placeholder="Contoh: LK-100"><button onclick="tukarVoucher()" class="btn btnGreen">✅ TUKAR KODE</button><p style="font-size:11px">Kode Demo: <b>LK-DEMO</b> = 50 Diamond • <b>LK-100</b> = 100 Diamond • <b>LK-BANGUN</b> = 200 Diamond</p></div><button class="btn btnGray" onclick="tutupSemua()">TUTUP</button></div></div>
 <div id="panelKarakter" class="modal"><div><div style="display:flex;justify-content:space-between"><b>👤 GANTI KARAKTER</b><button onclick="tutupSemua()" style="border:none;background:#eee;border-radius:50%;width:28px;height:28px">✕</button></div><p>Beli pake 💎 Diamond. Sekali beli, selamanya punya!</p><div style="background:#f3e8ff;padding:10px;border-radius:10px;text-align:center">💎 Diamond Kamu: <b id="diamondKarakter" style="color:#a855f7">0</b> • <span onclick="bukaTopUp()" style="color:#0e4a5a;font-weight:900;text-decoration:underline">Top Up 💎</span></div><div id="listKarakter"></div><button class="btn btnGray" onclick="tutupSemua()">TUTUP</button></div></div>
-
 <script>
 var DB_URL="https://admin-55bc3-default-rtdb.firebaseio.com";
-var AKUN=null, scene,cam,ren,pemain,ground;
-var keys={}, joyX=0, joyY=0, speed=0.25, isJump=false, velY=0;
-var WARUNG=[
-{nama:"🍞 Roti",harga:2000,desc:"Nambah tenaga"},
-{nama:"🥤 Es Teh",harga:3000,desc:"Seger banget"},
-{nama:"🍜 Mie Goreng",harga:5000,desc:"Kenyang 1 hari"},
-{nama:"☕ Kopi Hitam",harga:4000,desc:"Biar gak ngantuk"},
-{nama:"🍬 Permen",harga:1000,desc:"Manis"},
-{nama:"🏠 Sewa Rumah",harga:20000,desc:"Punya rumah 1 hari"},
-];
-var MISI=[
-{nama:"🌾 Keliling Desa",desc:"Jalan 10 detik di desa",hadiah:5000,selesai:false},
-{nama:"🛒 Belanja di Warung",desc:"Beli 1 barang di warung",hadiah:3000,selesai:false},
-{nama:"🏦 Donasi Kas Desa",desc:"Donasi 1000 ke kas desa",hadiah:2000,selesai:false},
-{nama:"💎 Top Up Diamond",desc:"Top Up / tukar kode voucher",hadiah:5000,selesai:false},
-];
+var AKUN=null, scene,cam,ren,pemain,ground,ray=new THREE.Raycaster(),mouse=new THREE.Vector2();
+var keys={}, joyX=0, joyY=0, speed=0.28, isJump=false, velY=0;
+var MODE_BANGUN=false, BLOK_DIPILIH="kotak", WARNA_DIPILIH=0xef4444;
+var WARUNG=[{nama:"🍞 Roti",harga:2000,desc:"Nambah tenaga"},{nama:"🥤 Es Teh",harga:3000,desc:"Seger banget"},{nama:"🍜 Mie Goreng",harga:5000,desc:"Kenyang 1 hari"},{nama:"☕ Kopi Hitam",harga:4000,desc:"Biar gak ngantuk"},{nama:"🍬 Permen",harga:1000,desc:"Manis"},{nama:"🧱 Paket Balok 10x",harga:10000,desc:"Buat bangun, dapet uang balik"}];
+var MISI=[{nama:"🌾 Keliling Desa",desc:"Jalan 10 detik di desa",hadiah:5000,selesai:false},{nama:"🛒 Belanja di Warung",desc:"Beli 1 barang di warung",hadiah:3000,selesai:false},{nama:"🏦 Donasi Kas Desa",desc:"Donasi 1000 ke kas desa",hadiah:2000,selesai:false},{nama:"🧱 Bangun 1 Balok",desc:"Aktifin Mode Bangun + taroh 1 balok",hadiah:5000,selesai:false},{nama:"💎 Top Up Diamond",desc:"Top Up / tukar kode voucher",hadiah:5000,selesai:false}];
 var KARAKTER_LIST=[
 {id:"biasa",nama:"🧑 Warga Biasa",baju:0xef4444,harga:0,desc:"Gratis - Buat semua warga"},
-{id:"sultan",nama:"👑 Sultan Longkali",baju:0xf59e0b,harga:50,desc:"Baju Emas + Sultan"},
+{id:"sultan",nama:"👑 Sultan Longkali",baju:0xf59e0b,harga:50,desc:"Baju Emas + Mahkota"},
 {id:"polisi",nama:"👮 Polisi Desa",baju:0x1e40af,harga:80,desc:"Baju Polisi Biru"},
 {id:"petani",nama:"👨‍🌾 Petani Keren",baju:0x22c55e,harga:100,desc:"Baju Ijo Petani"},
 {id:"ninja",nama:"🥷 Ninja Hitam",baju:0x111827,harga:150,desc:"Serba Hitam, Sangar!"},
 {id:"putri",nama:"👸 Putri Desa",baju:0xec4899,harga:200,desc:"Baju Pink Putri"},
 {id:"robot",nama:"🤖 Robot Longkali",baju:0x06b6d4,harga:300,desc:"Paling Langka! Cyan"},
+{id:"builder",nama:"🧱 Master Builder",baju:0x8b5cf6,harga:250,desc:"Baju Ungu Builder Pro!"},
 ];
 var PAKET_TOPUP=[
 {nominal:10000,diamond:100,bonus:0,label:"💎 100 Diamond",desc:"Rp 10.000 - Buat pemula"},
@@ -95,217 +98,63 @@ var PAKET_TOPUP=[
 ];
 function tutupSemua(){document.querySelectorAll('.modal').forEach(m=>m.style.display='none');}
 function showKTP(){document.getElementById('modalKTP').style.display='flex';}
-function bukaKTP(){
-  if(!AKUN){showKTP();return;}
-  alert("🪪 KTP KAMU\nNama: "+AKUN.nama+"\nRT: "+AKUN.rt+"\nUmur: "+AKUN.umur+"\nUang: Rp "+(AKUN.uang||0).toLocaleString('id-ID')+"\nDiamond: "+(AKUN.diamond||0)+" 💎\nKarakter: "+(AKUN.karakterAktif||'biasa'));
-}
+function bukaKTP(){if(!AKUN){showKTP();return;}alert("🪪 KTP KAMU\nNama: "+AKUN.nama+"\nRT: "+AKUN.rt+"\nUmur: "+AKUN.umur+"\nUang: Rp "+(AKUN.uang||0).toLocaleString('id-ID')+"\nDiamond: "+(AKUN.diamond||0)+" 💎\nKarakter: "+(AKUN.karakterAktif||'biasa')+"\nBalok Dibangun: "+(JSON.parse(localStorage.getItem('bangunanPlayer')||'[]').length));}
 async function buatKTP(){
-  var nama=document.getElementById('inNama').value.trim();
-  if(!nama){alert('Isi nama dulu!');return;}
-  var akun={}; akun.nama=nama; akun.rt=document.getElementById('inRT').value; akun.umur=document.getElementById('inUmur').value||17; akun.uang=10000; akun.diamond=0; akun.karakterBeli=['biasa']; akun.karakterAktif='biasa'; akun.waktu=Date.now();
-  var id='warga_'+nama.replace(/\s+/g,'_')+'_'+Date.now();
-  akun.id=id; AKUN=akun; localStorage.setItem('akunLongkali',JSON.stringify(akun));
+  var nama=document.getElementById('inNama').value.trim(); if(!nama){alert('Isi nama dulu!');return;}
+  var akun={}; akun.nama=nama; akun.rt=document.getElementById('inRT').value; akun.umur=document.getElementById('inUmur').value||17; akun.uang=15000; akun.diamond=0; akun.karakterBeli=['biasa']; akun.karakterAktif='biasa'; akun.waktu=Date.now();
+  var id='warga_'+nama.replace(/\s+/g,'_')+'_'+Date.now(); akun.id=id; AKUN=akun; localStorage.setItem('akunLongkali',JSON.stringify(akun));
   try{await fetch(DB_URL+"/warga/"+id+".json",{method:"PUT",body:JSON.stringify(akun)});}catch(e){}
-  tutupSemua(); updateUang(); alert("✅ Selamat Datang, "+nama+"!\nKamu dapet Rp 10.000 modal awal!\nCoba Top Up Diamond buat ganti karakter!");
-  document.getElementById('namaTop').innerText=nama+" • "+akun.rt;
+  tutupSemua(); updateUang(); alert("✅ Selamat Datang di LongkaliCraft, "+nama+"!\nKamu dapet Rp 15.000 + Bisa Bangun!\nCoba pencet tombol BANGUN di bawah!");
+  document.getElementById('namaTop').innerText=nama+" • "+akun.rt+" • Builder";
 }
-async function simpanAkun(a){
-  localStorage.setItem('akunLongkali',JSON.stringify(a));
-  try{await fetch(DB_URL+"/warga/"+a.id+".json",{method:"PUT",body:JSON.stringify(a)});}catch(e){}
-}
+async function simpanAkun(a){localStorage.setItem('akunLongkali',JSON.stringify(a)); try{await fetch(DB_URL+"/warga/"+a.id+".json",{method:"PUT",body:JSON.stringify(a)});}catch(e){}}
 function getDiamond(){return AKUN?(AKUN.diamond||0):0;}
-function updateDiamond(){
-  var d=getDiamond();
-  var els=['diamondText','diamondTopUp','diamondKarakter'];
-  els.forEach(id=>{var e=document.getElementById(id); if(e) e.innerText=d;});
+function updateDiamond(){var d=getDiamond(); ['diamondText','diamondTopUp','diamondKarakter'].forEach(id=>{var e=document.getElementById(id); if(e) e.innerText=d;});}
+function updateUang(){if(!AKUN) return; document.getElementById('uangText').innerText=(AKUN.uang||0).toLocaleString('id-ID'); var w=document.getElementById('uangWarung'); if(w) w.innerText="Rp "+(AKUN.uang||0).toLocaleString('id-ID'); updateDiamond();}
+function bukaWarung(){if(!AKUN){alert('Buat KTP dulu!');showKTP();return;} document.getElementById('modalWarung').style.display='flex'; updateUang(); var h=''; WARUNG.forEach((w,i)=>{h+='<div class="kitem"><div><b>'+w.nama+'</b><br><small>'+w.desc+' • Rp '+w.harga.toLocaleString('id-ID')+'</small></div><button class="kbtn" style="background:#16a34a" onclick="beliBarang('+i+')">BELI</button></div>';}); document.getElementById('listWarung').innerHTML=h;}
+async function beliBarang(i){var w=WARUNG[i]; if((AKUN.uang||0)<w.harga){alert('Uang kurang!');return;} AKUN.uang-=w.harga; MISI[1].selesai=true; await simpanAkun(AKUN); updateUang(); bukaWarung(); alert("✅ Beli "+w.nama+" berhasil!");}
+function bukaMisi(){document.getElementById('modalMisi').style.display='flex'; var h=''; MISI.forEach((m,i)=>{h+='<div class="kitem"><div><b>'+m.nama+'</b><br><small>'+m.desc+' • Hadiah Rp '+m.harga.toLocaleString('id-ID')+'</small></div>'+(m.selesai?'<button class="kbtn" style="background:#16a34a" onclick="klaimMisi('+i+')">KLAIM</button>':'<span style="font-size:12px;color:#888">Belum Selesai</span>')+'</div>';}); document.getElementById('listMisi').innerHTML=h;}
+async function klaimMisi(i){if(!AKUN){alert('Buat KTP dulu!');return;} AKUN.uang=(AKUN.uang||0)+MISI[i].harga; MISI[i].selesai=false; await simpanAkun(AKUN); updateUang(); bukaMisi(); alert("✅ Dapet Rp "+MISI[i].harga.toLocaleString('id-ID')+"!");}
+function bukaKas(){document.getElementById('modalKas').style.display='flex'; fetch(DB_URL+"/kas.json").then(r=>r.json()).then(v=>{document.getElementById('kasText').innerText="Rp "+(v&&v.total?v.total:0).toLocaleString('id-ID');});}
+async function donasiKas(){if(!AKUN){alert('Buat KTP dulu!');return;} var j=parseInt(document.getElementById('inDonasi').value)||0; if(j<=0||(AKUN.uang||0)<j){alert('Uang kurang!');return;} AKUN.uang-=j; MISI[2].selesai=true; var r=await fetch(DB_URL+"/kas.json").then(r=>r.json()).catch(()=>null); var total=(r&&r.total?r.total:0)+j; await fetch(DB_URL+"/kas.json",{method:"PUT",body:JSON.stringify({total:total})}); await simpanAkun(AKUN); updateUang(); bukaKas(); alert("✅ Donasi Rp "+j.toLocaleString('id-ID')+" ke Kas Desa!");}
+function bukaTopUp(){if(!AKUN){alert('Buat KTP dulu biar bisa Top Up!');showKTP();return;} document.getElementById('panelTopUp').style.display='flex'; updateDiamond(); var html=''; PAKET_TOPUP.forEach((p,i)=>{html+='<div class="kitem" style="background:#f3e8ff;border:2px solid #a855f7"><div><b>'+p.label+'</b><br><small>'+p.desc+'</small><br><small style="color:#16a34a;font-weight:800">'+(p.bonus>0?'🎁 Bonus +'+p.bonus+' Diamond!':'')+'</small></div><button class="kbtn" style="background:#a855f7" onclick="pilihPaket('+i+')">BELI<br>Rp '+p.nominal.toLocaleString('id-ID')+'</button></div>';}); document.getElementById('listTopUp').innerHTML=html;}
+function pilihPaket(i){var p=PAKET_TOPUP[i]; var kode='LK-'+p.diamond+'-'+Math.floor(1000+Math.random()*9000); alert("Mau Top Up "+p.label+"?\n\n1. Transfer / Saweria ke:\nSAWERIA: saweria.co/namalu\n(GANTI SAMA LINK SAWERIA LU!)\n\n2. Nominal: Rp "+p.nominal.toLocaleString('id-ID')+"\n3. Di pesan Saweria, tulis: "+kode+" + Nama KTP lu\n\n4. Abis transfer, Admin kasih Kode Voucher.\nMasukin kode itu di bawah buat dapet Diamond!"); document.getElementById('inputVoucher').focus();}
+async function tukarVoucher(){if(!AKUN){alert('Buat KTP dulu!');return;} var kode=document.getElementById('inputVoucher').value.trim().toUpperCase(); if(!kode){alert('Masukin kode voucher dulu!');return;} var demo={}; demo['LK-DEMO']=50; demo['LK-100']=100; demo['LK-250']=250; demo['LK-BANGUN']=200; if(demo[kode]){AKUN.diamond=(AKUN.diamond||0)+demo[kode]; MISI[4].selesai=true; if(!AKUN.karakterBeli) AKUN.karakterBeli=['biasa']; await simpanAkun(AKUN); updateDiamond(); updateUang(); alert("✅ Berhasil! +"+demo[kode]+" 💎 Diamond!\nDiamond Kamu: "+AKUN.diamond); document.getElementById('inputVoucher').value=''; return;} try{var r=await fetch(DB_URL+"/voucher/"+kode+".json"); var v=await r.json(); if(!v||v.pakai){alert('Kode salah / udah dipakai!');return;} AKUN.diamond=(AKUN.diamond||0)+v.diamond; MISI[4].selesai=true; await simpanAkun(AKUN); await fetch(DB_URL+"/voucher/"+kode+".json",{method:"PUT",body:JSON.stringify({diamond:v.diamond,pakai:true,pemakai:AKUN.nama,waktu:Date.now()})}); updateDiamond(); alert("✅ Berhasil! +"+v.diamond+" 💎 Diamond!"); document.getElementById('inputVoucher').value='';}catch(e){alert('Gagal tukar! Cek internet!');}}
+function bukaKarakter(){if(!AKUN){alert('Buat KTP dulu!');showKTP();return;} tutupSemua(); document.getElementById('panelKarakter').style.display='flex'; if(!AKUN.karakterBeli) AKUN.karakterBeli=['biasa']; if(!AKUN.karakterAktif) AKUN.karakterAktif='biasa'; updateDiamond(); var html=''; KARAKTER_LIST.forEach(k=>{var punya=AKUN.karakterBeli.includes(k.id); var aktif=AKUN.karakterAktif==k.id; var warna='#'+k.baju.toString(16).padStart(6,'0'); var btn=''; if(aktif) btn='<span style="background:#16a34a;color:#fff;padding:8px 12px;border-radius:10px;font-weight:900;font-size:12px">✅ DIPAKAI</span>'; else if(punya) btn='<button class="kbtn" style="background:#0e4a5a" onclick="pakaiKarakter(\''+k.id+'\')">PAKAI</button>'; else btn='<button class="kbtn" style="background:#a855f7" onclick="beliKarakter(\''+k.id+'\','+k.harga+')">BELI 💎 '+k.harga+'</button>'; html+='<div class="kitem" style="border:2px solid '+(aktif?'#16a34a':'#e2e8f0')+'"><div style="display:flex;gap:10px;align-items:center"><div style="width:36px;height:36px;border-radius:50%;background:'+warna+';border:2px solid #000;display:flex;align-items:center;justify-content:center;font-size:18px">🧑</div><div><b>'+k.nama+'</b><br><small>'+k.desc+'</small></div></div>'+btn+'</div>';}); document.getElementById('listKarakter').innerHTML=html;}
+async function beliKarakter(id,harga){if(!AKUN) return; if((AKUN.diamond||0)<harga){alert('Diamond kurang! Diamond Kamu: '+(AKUN.diamond||0)+'\nButuh: '+harga+' 💎\nTop Up dulu yuk!');tutupSemua();bukaTopUp();return;} if(!confirm('Beli karakter ini seharga '+harga+' 💎?'))return; AKUN.diamond-=harga; if(!AKUN.karakterBeli) AKUN.karakterBeli=['biasa']; AKUN.karakterBeli.push(id); AKUN.karakterAktif=id; await simpanAkun(AKUN); updateDiamond(); gantiBajuKarakter(); alert('✅ Karakter dibeli! Sekarang lu pake karakter baru!'); bukaKarakter();}
+async function pakaiKarakter(id){AKUN.karakterAktif=id; await simpanAkun(AKUN); gantiBajuKarakter(); bukaKarakter();}
+function gantiBajuKarakter(){if(!pemain||!AKUN) return; var k=KARAKTER_LIST.find(x=>x.id==(AKUN.karakterAktif||'biasa'))||KARAKTER_LIST[0]; try{pemain.traverse(o=>{if(o.isMesh && o.geometry && o.geometry.type=='BoxGeometry' && o.position.y==1.35){o.material.color.setHex(k.baju);}}); var lama=pemain.getObjectByName('mahkota'); if(lama) pemain.remove(lama); if(k.id=='sultan'){var mk=new THREE.Mesh(new THREE.CylinderGeometry(0.35,0.4,0.3,8),new THREE.MeshLambertMaterial({color:0xFFD700}));mk.position.y=3.05;mk.name='mahkota';pemain.add(mk);} if(k.id=='ninja'){var tp=new THREE.Mesh(new THREE.BoxGeometry(0.7,0.25,0.1),new THREE.MeshLambertMaterial({color:0x000000}));tp.position.set(0,2.5,0.4);tp.name='mahkota';pemain.add(tp);} if(k.id=='robot'){var at=new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,0.6,6),new THREE.MeshLambertMaterial({color:0xFF0000}));at.position.y=3.1;at.name='mahkota';pemain.add(at);} if(k.id=='builder'){var hm=new THREE.Mesh(new THREE.CylinderGeometry(0.45,0.5,0.35,8),new THREE.MeshLambertMaterial({color:0xF59E0B}));hm.position.y=3.05;hm.name='mahkota';pemain.add(hm);}}catch(e){}}
+// ===== MODE BANGUN KAYAK ROBLOX =====
+function bukaModeBangun(){if(!AKUN){alert('Buat KTP dulu biar bisa Bangun!');showKTP();return;} MODE_BANGUN=!MODE_BANGUN; document.getElementById('panelBangun').style.display=MODE_BANGUN?'block':'none'; if(MODE_BANGUN){alert("🧱 MODE BANGUN AKTIF!\n\n- Tap tanah buat naroh balok\n- Pilih bentuk & warna dulu\n- Tap balok + pilih Hapus buat hapus\n- Bangunan kesimpen otomatis!\n\nKlik tombol BANGUN lagi buat matiin!");}}
+function setBentuk(b){BLOK_DIPILIH=b; alert("Bentuk dipilih: "+b.toUpperCase());}
+function setWarna(w){WARNA_DIPILIH=w;}
+function buatBalok(bentuk,warna,x,z){
+  var blok;
+  if(bentuk=='kotak'){blok=new THREE.Mesh(new THREE.BoxGeometry(4,4,4),new THREE.MeshLambertMaterial({color:warna}));blok.position.set(x,2,z);}
+  else if(bentuk=='bola'){blok=new THREE.Mesh(new THREE.SphereGeometry(2.5,12,10),new THREE.MeshLambertMaterial({color:warna}));blok.position.set(x,2.5,z);}
+  else if(bentuk=='tabung'){blok=new THREE.Mesh(new THREE.CylinderGeometry(2,2,4,8),new THREE.MeshLambertMaterial({color:warna}));blok.position.set(x,2,z);}
+  else if(bentuk=='atap'){blok=new THREE.Mesh(new THREE.ConeGeometry(3,4,4),new THREE.MeshLambertMaterial({color:warna}));blok.position.set(x,2,z);blok.rotation.y=Math.PI/4;}
+  else return null;
+  blok.name='blokPlayer'; blok.userData={bentuk:bentuk,warna:warna,x:x,z:z}; scene.add(blok); return blok;
 }
-function updateUang(){
-  if(!AKUN) return;
-  document.getElementById('uangText').innerText=(AKUN.uang||0).toLocaleString('id-ID');
-  var w=document.getElementById('uangWarung'); if(w) w.innerText="Rp "+(AKUN.uang||0).toLocaleString('id-ID');
-  updateDiamond();
-}
-function bukaWarung(){
-  if(!AKUN){alert('Buat KTP dulu!');showKTP();return;}
-  document.getElementById('modalWarung').style.display='flex'; updateUang();
-  var h='';
-  WARUNG.forEach((w,i)=>{h+='<div class="kitem"><div><b>'+w.nama+'</b><br><small>'+w.desc+' • Rp '+w.harga.toLocaleString('id-ID')+'</small></div><button class="kbtn" style="background:#16a34a" onclick="beliBarang('+i+')">BELI</button></div>';});
-  document.getElementById('listWarung').innerHTML=h;
-}
-async function beliBarang(i){
-  var w=WARUNG[i];
-  if((AKUN.uang||0)<w.harga){alert('Uang kurang!');return;}
-  AKUN.uang-=w.harga; MISI[1].selesai=true;
-  await simpanAkun(AKUN); updateUang(); bukaWarung();
-  alert("✅ Beli "+w.nama+" berhasil!\nSisa Uang: Rp "+AKUN.uang.toLocaleString('id-ID'));
-}
-function bukaMisi(){
-  document.getElementById('modalMisi').style.display='flex';
-  var h='';
-  MISI.forEach((m,i)=>{h+='<div class="kitem"><div><b>'+m.nama+'</b><br><small>'+m.desc+' • Hadiah Rp '+m.harga.toLocaleString('id-ID')+'</small></div>'+(m.selesai?'<button class="kbtn" style="background:#16a34a" onclick="klaimMisi('+i+')">KLAIM</button>':'<span style="font-size:12px;color:#888">Belum Selesai</span>')+'</div>';});
-  document.getElementById('listMisi').innerHTML=h;
-}
-async function klaimMisi(i){
-  if(!AKUN){alert('Buat KTP dulu!');return;}
-  AKUN.uang=(AKUN.uang||0)+MISI[i].harga; MISI[i].selesai=false;
-  await simpanAkun(AKUN); updateUang(); bukaMisi(); alert("✅ Dapet Rp "+MISI[i].harga.toLocaleString('id-ID')+"!");
-}
-function bukaKas(){
-  document.getElementById('modalKas').style.display='flex';
-  fetch(DB_URL+"/kas.json").then(r=>r.json()).then(v=>{document.getElementById('kasText').innerText="Rp "+(v&&v.total?v.total:0).toLocaleString('id-ID');});
-}
-async function donasiKas(){
-  if(!AKUN){alert('Buat KTP dulu!');return;}
-  var j=parseInt(document.getElementById('inDonasi').value)||0;
-  if(j<=0||(AKUN.uang||0)<j){alert('Uang kurang!');return;}
-  AKUN.uang-=j; MISI[2].selesai=true;
-  var r=await fetch(DB_URL+"/kas.json").then(r=>r.json()).catch(()=>null);
-  var total=(r&&r.total?r.total:0)+j;
-  await fetch(DB_URL+"/kas.json",{method:"PUT",body:JSON.stringify({total:total})});
-  await simpanAkun(AKUN); updateUang(); bukaKas(); alert("✅ Donasi Rp "+j.toLocaleString('id-ID')+" ke Kas Desa! Makasih warga baik!");
-}
-// ===== TOP UP =====
-function bukaTopUp(){
-  if(!AKUN){alert('Buat KTP dulu biar bisa Top Up!');showKTP();return;}
-  document.getElementById('panelTopUp').style.display='flex'; updateDiamond();
-  var html='';
-  PAKET_TOPUP.forEach((p,i)=>{
-    html+='<div class="kitem" style="background:#f3e8ff;border:2px solid #a855f7"><div><b>'+p.label+'</b><br><small>'+p.desc+'</small><br><small style="color:#16a34a;font-weight:800">'+(p.bonus>0?'🎁 Bonus +'+p.bonus+' Diamond!':'')+'</small></div><button class="kbtn" style="background:#a855f7" onclick="pilihPaket('+i+')">BELI<br>Rp '+p.nominal.toLocaleString('id-ID')+'</button></div>';
-  });
-  document.getElementById('listTopUp').innerHTML=html;
-}
-function pilihPaket(i){
-  var p=PAKET_TOPUP[i];
-  var kode='LK-'+p.diamond+'-'+Math.floor(1000+Math.random()*9000);
-  alert("Mau Top Up "+p.label+"?\n\n1. Transfer / Saweria ke:\nSAWERIA: saweria.co/namalu\n(GANTI SAMA LINK SAWERIA LU!)\n\n2. Nominal: Rp "+p.nominal.toLocaleString('id-ID')+"\n3. Di pesan Saweria, tulis: "+kode+" + Nama KTP lu\n\n4. Abis transfer, Admin kasih Kode Voucher.\nMasukin kode itu di bawah buat dapet Diamond!");
-  document.getElementById('inputVoucher').focus();
-}
-async function tukarVoucher(){
-  if(!AKUN){alert('Buat KTP dulu!');return;}
-  var kode=document.getElementById('inputVoucher').value.trim().toUpperCase();
-  if(!kode){alert('Masukin kode voucher dulu!');return;}
-  var demo={}; demo['LK-DEMO']=50; demo['LK-100']=100; demo['LK-250']=250;
-  if(demo[kode]){
-    AKUN.diamond=(AKUN.diamond||0)+demo[kode]; MISI[3].selesai=true;
-    if(!AKUN.karakterBeli) AKUN.karakterBeli=['biasa'];
-    await simpanAkun(AKUN); updateDiamond(); updateUang();
-    alert("✅ Berhasil! +"+demo[kode]+" 💎 Diamond!\nDiamond Kamu: "+AKUN.diamond);
-    document.getElementById('inputVoucher').value=''; return;
-  }
-  try{
-    var r=await fetch(DB_URL+"/voucher/"+kode+".json"); var v=await r.json();
-    if(!v||v.pakai){alert('Kode salah / udah dipakai!');return;}
-    AKUN.diamond=(AKUN.diamond||0)+v.diamond; MISI[3].selesai=true;
-    await simpanAkun(AKUN);
-    await fetch(DB_URL+"/voucher/"+kode+".json",{method:"PUT",body:JSON.stringify({diamond:v.diamond,pakai:true,pemakai:AKUN.nama,waktu:Date.now()})});
-    updateDiamond(); alert("✅ Berhasil! +"+v.diamond+" 💎 Diamond!\nDiamond Kamu: "+AKUN.diamond);
-    document.getElementById('inputVoucher').value='';
-  }catch(e){alert('Gagal tukar! Cek internet!');}
-}
-// ===== KARAKTER =====
-function bukaKarakter(){
-  if(!AKUN){alert('Buat KTP dulu!');showKTP();return;}
-  tutupSemua(); document.getElementById('panelKarakter').style.display='flex';
-  if(!AKUN.karakterBeli) AKUN.karakterBeli=['biasa'];
-  if(!AKUN.karakterAktif) AKUN.karakterAktif='biasa';
-  updateDiamond();
-  var html='';
-  KARAKTER_LIST.forEach(k=>{
-    var punya=AKUN.karakterBeli.includes(k.id);
-    var aktif=AKUN.karakterAktif==k.id;
-    var warna='#'+k.baju.toString(16).padStart(6,'0');
-    var btn='';
-    if(aktif) btn='<span style="background:#16a34a;color:#fff;padding:8px 12px;border-radius:10px;font-weight:900;font-size:12px">✅ DIPAKAI</span>';
-    else if(punya) btn='<button class="kbtn" style="background:#0e4a5a" onclick="pakaiKarakter(\''+k.id+'\')">PAKAI</button>';
-    else btn='<button class="kbtn" style="background:#a855f7" onclick="beliKarakter(\''+k.id+'\','+k.harga+')">BELI 💎 '+k.harga+'</button>';
-    html+='<div class="kitem" style="border:2px solid '+(aktif?'#16a34a':'#e2e8f0')+'"><div style="display:flex;gap:10px;align-items:center"><div style="width:36px;height:36px;border-radius:50%;background:'+warna+';border:2px solid #000;display:flex;align-items:center;justify-content:center;font-size:18px">🧑</div><div><b>'+k.nama+'</b><br><small>'+k.desc+'</small></div></div>'+btn+'</div>';
-  });
-  document.getElementById('listKarakter').innerHTML=html;
-}
-async function beliKarakter(id,harga){
-  if(!AKUN) return;
-  if((AKUN.diamond||0)<harga){alert('Diamond kurang! Diamond Kamu: '+(AKUN.diamond||0)+'\nButuh: '+harga+' 💎\nTop Up dulu yuk!');tutupSemua();bukaTopUp();return;}
-  if(!confirm('Beli karakter ini seharga '+harga+' 💎?'))return;
-  AKUN.diamond-=harga;
-  if(!AKUN.karakterBeli) AKUN.karakterBeli=['biasa'];
-  AKUN.karakterBeli.push(id); AKUN.karakterAktif=id;
-  await simpanAkun(AKUN); updateDiamond(); gantiBajuKarakter();
-  alert('✅ Karakter dibeli! Sekarang lu pake karakter baru!'); bukaKarakter();
-}
-async function pakaiKarakter(id){
-  AKUN.karakterAktif=id; await simpanAkun(AKUN); gantiBajuKarakter(); bukaKarakter();
-}
-function gantiBajuKarakter(){
-  if(!pemain||!AKUN) return;
-  var k=KARAKTER_LIST.find(x=>x.id==(AKUN.karakterAktif||'biasa'))||KARAKTER_LIST[0];
-  try{
-    pemain.traverse(o=>{if(o.isMesh && o.geometry && o.geometry.type=='BoxGeometry' && o.position.y==1.35){o.material.color.setHex(k.baju);}});
-    // Mahkota buat Sultan
-    var lama=pemain.getObjectByName('mahkota'); if(lama) pemain.remove(lama);
-    if(k.id=='sultan'){var mk=new THREE.Mesh(new THREE.CylinderGeometry(0.35,0.4,0.3,8),new THREE.MeshLambertMaterial({color:0xFFD700}));mk.position.y=3.05;mk.name='mahkota';pemain.add(mk);}
-    if(k.id=='ninja'){var tp=new THREE.Mesh(new THREE.BoxGeometry(0.7,0.25,0.1),new THREE.MeshLambertMaterial({color:0x000000}));tp.position.set(0,2.5,0.4);tp.name='mahkota';pemain.add(tp);}
-    if(k.id=='robot'){var at=new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,0.6,6),new THREE.MeshLambertMaterial({color:0xFF0000}));at.position.y=3.1;at.name='mahkota';pemain.add(at);}
-  }catch(e){}
-}
-// ===== 3D GAME =====
-function papanNama(g,teks,y,lebar){
-  var c=document.createElement('canvas');c.width=512;c.height=96;var ctx=c.getContext('2d');ctx.fillStyle='#FFC107';ctx.fillRect(0,0,512,96);ctx.fillStyle='#000';ctx.font='bold 38px Arial';ctx.textAlign='center';ctx.fillText(teks.substring(0,18),256,62);var tex=new THREE.CanvasTexture(c);var p=new THREE.Mesh(new THREE.BoxGeometry(lebar||12,2.2,0.4),new THREE.MeshLambertMaterial({map:tex}));p.position.y=y;g.add(p);
-}
-function tambahDetail(g,warnaKaca){
-  var pintu=new THREE.Mesh(new THREE.BoxGeometry(3,4.5,0.3),new THREE.MeshLambertMaterial({color:0x6B4226}));pintu.position.set(0,2.25,7.25);g.add(pintu);
-  [-6,6].forEach(jx=>{var b=new THREE.Mesh(new THREE.BoxGeometry(3.2,3.2,0.2),new THREE.MeshLambertMaterial({color:0xFFFFFF}));b.position.set(jx,3.5,7.15);g.add(b);var k=new THREE.Mesh(new THREE.BoxGeometry(2.6,2.6,0.3),new THREE.MeshLambertMaterial({color:warnaKaca}));k.position.set(jx,3.5,7.25);g.add(k);});
-  var teras=new THREE.Mesh(new THREE.BoxGeometry(14,0.3,4),new THREE.MeshLambertMaterial({color:0xD1D5DB}));teras.position.set(0,0.15,9);g.add(teras);
-}
+function simpanBalok(){var list=[]; scene.traverse(o=>{if(o.name=='blokPlayer'){list.push(o.userData);}}); localStorage.setItem('bangunanPlayer',JSON.stringify(list)); try{fetch(DB_URL+"/bangunanPlayer.json",{method:"PUT",body:JSON.stringify(list)});}catch(e){}}
+function loadBalok(){var list=JSON.parse(localStorage.getItem('bangunanPlayer')||'[]'); list.forEach(b=>{buatBalok(b.bentuk,b.warna,b.x,b.z);}); fetch(DB_URL+"/bangunanPlayer.json").then(r=>r.json()).then(v=>{if(v&&Array.isArray(v)&&v.length>list.length){v.forEach(b=>{if(b) buatBalok(b.bentuk,b.warna,b.x,b.z);});}}).catch(()=>{});}
+// ===== 3D =====
+function papanNama(g,teks,y,lebar){var c=document.createElement('canvas');c.width=512;c.height=96;var ctx=c.getContext('2d');ctx.fillStyle='#FFC107';ctx.fillRect(0,0,512,96);ctx.fillStyle='#000';ctx.font='bold 38px Arial';ctx.textAlign='center';ctx.fillText(teks.substring(0,18),256,62);var tex=new THREE.CanvasTexture(c);var p=new THREE.Mesh(new THREE.BoxGeometry(lebar||12,2.2,0.4),new THREE.MeshLambertMaterial({map:tex}));p.position.y=y;g.add(p);}
+function tambahDetail(g,warnaKaca){var pintu=new THREE.Mesh(new THREE.BoxGeometry(3,4.5,0.3),new THREE.MeshLambertMaterial({color:0x6B4226}));pintu.position.set(0,2.25,7.25);g.add(pintu); [-6,6].forEach(jx=>{var b=new THREE.Mesh(new THREE.BoxGeometry(3.2,3.2,0.2),new THREE.MeshLambertMaterial({color:0xFFFFFF}));b.position.set(jx,3.5,7.15);g.add(b);var k=new THREE.Mesh(new THREE.BoxGeometry(2.6,2.6,0.3),new THREE.MeshLambertMaterial({color:warnaKaca}));k.position.set(jx,3.5,7.25);g.add(k);}); var teras=new THREE.Mesh(new THREE.BoxGeometry(14,0.3,4),new THREE.MeshLambertMaterial({color:0xD1D5DB}));teras.position.set(0,0.15,9);g.add(teras);}
 function buatMeshBangunan(tipe,nama){
   var g=new THREE.Group();
-  if(tipe=='masjid'){
-    var d=new THREE.Mesh(new THREE.BoxGeometry(14,7,14),new THREE.MeshLambertMaterial({color:0xA7F3D0}));d.position.y=3.5;g.add(d);
-    var ku=new THREE.Mesh(new THREE.SphereGeometry(6,16,12,0,Math.PI*2,0,Math.PI/2),new THREE.MeshLambertMaterial({color:0x27AE60}));ku.position.y=7;g.add(ku);
-    [-9,9].forEach(mx=>{var me=new THREE.Mesh(new THREE.CylinderGeometry(0.8,1,18,8),new THREE.MeshLambertMaterial({color:0xD1FAE5}));me.position.set(mx,9,0);g.add(me);var uj=new THREE.Mesh(new THREE.ConeGeometry(1.2,3,8),new THREE.MeshLambertMaterial({color:0x27AE60}));uj.position.set(mx,19.5,0);g.add(uj);});
-    papanNama(g,'🕌 '+nama.toUpperCase(),22); tambahDetail(g,0xA7F3D0);
-  }else if(tipe=='toko'){
-    var d2=new THREE.Mesh(new THREE.BoxGeometry(18,6,10),new THREE.MeshLambertMaterial({color:0xFDE68A}));d2.position.y=3;g.add(d2);
-    var a2=new THREE.Mesh(new THREE.BoxGeometry(19,0.8,11),new THREE.MeshLambertMaterial({color:0x111827}));a2.position.y=6.4;g.add(a2);
-    papanNama(g,'🛒 '+nama.toUpperCase(),8.5,16); tambahDetail(g,0xFEF08A);
-  }else if(tipe=='pos'){
-    var d3=new THREE.Mesh(new THREE.BoxGeometry(8,3,8),new THREE.MeshLambertMaterial({color:0xFCA5A5}));d3.position.y=1.5;g.add(d3);
-    var a3=new THREE.Mesh(new THREE.ConeGeometry(7,4,4),new THREE.MeshLambertMaterial({color:0x8E44AD}));a3.position.y=8;a3.rotation.y=Math.PI/4;g.add(a3);
-    papanNama(g,'🚨 '+nama.toUpperCase(),10.5);
-  }else if(tipe=='sekolah'){
-    var d4=new THREE.Mesh(new THREE.BoxGeometry(28,6,10),new THREE.MeshLambertMaterial({color:0xFDBA74}));d4.position.y=3;g.add(d4);
-    var a4=new THREE.Mesh(new THREE.BoxGeometry(29,1,11),new THREE.MeshLambertMaterial({color:0xE67E22}));a4.position.y=6.5;g.add(a4);
-    papanNama(g,'🏫 '+nama.toUpperCase(),8.5,20); tambahDetail(g,0xBFDBFE);
-  }else if(tipe=='puskesmas'){
-    var d5=new THREE.Mesh(new THREE.BoxGeometry(16,6,10),new THREE.MeshLambertMaterial({color:0xBFDBFE}));d5.position.y=3;g.add(d5);
-    var a5=new THREE.Mesh(new THREE.BoxGeometry(17,0.8,11),new THREE.MeshLambertMaterial({color:0xFF5722}));a5.position.y=6.4;g.add(a5);
-    papanNama(g,'🏥 '+nama.toUpperCase(),10,14); tambahDetail(g,0xBFDBFE);
-  }else{
-    var warna=0xFEF9C3; if(nama.indexOf('Warung')>=0) warna=0xFDE68A;
-    var d6=new THREE.Mesh(new THREE.BoxGeometry(12,6,10),new THREE.MeshLambertMaterial({color:warna}));d6.position.y=3;g.add(d6);
-    var a6=new THREE.Mesh(new THREE.ConeGeometry(9,4,4),new THREE.MeshLambertMaterial({color:0xC0392B}));a6.position.y=8;a6.rotation.y=Math.PI/4;g.add(a6);
-    papanNama(g,'🏠 '+nama.toUpperCase(),11);
-  }
+  if(tipe=='masjid'){var d=new THREE.Mesh(new THREE.BoxGeometry(14,7,14),new THREE.MeshLambertMaterial({color:0xA7F3D0}));d.position.y=3.5;g.add(d);var ku=new THREE.Mesh(new THREE.SphereGeometry(6,16,12,0,Math.PI*2,0,Math.PI/2),new THREE.MeshLambertMaterial({color:0x27AE60}));ku.position.y=7;g.add(ku); [-9,9].forEach(mx=>{var me=new THREE.Mesh(new THREE.CylinderGeometry(0.8,1,18,8),new THREE.MeshLambertMaterial({color:0xD1FAE5}));me.position.set(mx,9,0);g.add(me);var uj=new THREE.Mesh(new THREE.ConeGeometry(1.2,3,8),new THREE.MeshLambertMaterial({color:0x27AE60}));uj.position.set(mx,19.5,0);g.add(uj);}); papanNama(g,'🕌 '+nama.toUpperCase(),22); tambahDetail(g,0xA7F3D0);}
+  else if(tipe=='toko'){var d2=new THREE.Mesh(new THREE.BoxGeometry(18,6,10),new THREE.MeshLambertMaterial({color:0xFDE68A}));d2.position.y=3;g.add(d2);var a2=new THREE.Mesh(new THREE.BoxGeometry(19,0.8,11),new THREE.MeshLambertMaterial({color:0x111827}));a2.position.y=6.4;g.add(a2); papanNama(g,'🛒 '+nama.toUpperCase(),8.5,16); tambahDetail(g,0xFEF08A);}
+  else if(tipe=='pos'){var d3=new THREE.Mesh(new THREE.BoxGeometry(8,3,8),new THREE.MeshLambertMaterial({color:0xFCA5A5}));d3.position.y=1.5;g.add(d3);var a3=new THREE.Mesh(new THREE.ConeGeometry(7,4,4),new THREE.MeshLambertMaterial({color:0x8E44AD}));a3.position.y=8;a3.rotation.y=Math.PI/4;g.add(a3); papanNama(g,'🚨 '+nama.toUpperCase(),10.5);}
+  else if(tipe=='sekolah'){var d4=new THREE.Mesh(new THREE.BoxGeometry(28,6,10),new THREE.MeshLambertMaterial({color:0xFDBA74}));d4.position.y=3;g.add(d4);var a4=new THREE.Mesh(new THREE.BoxGeometry(29,1,11),new THREE.MeshLambertMaterial({color:0xE67E22}));a4.position.y=6.5;g.add(a4); papanNama(g,'🏫 '+nama.toUpperCase(),8.5,20); tambahDetail(g,0xBFDBFE);}
+  else if(tipe=='puskesmas'){var d5=new THREE.Mesh(new THREE.BoxGeometry(16,6,10),new THREE.MeshLambertMaterial({color:0xBFDBFE}));d5.position.y=3;g.add(d5);var a5=new THREE.Mesh(new THREE.BoxGeometry(17,0.8,11),new THREE.MeshLambertMaterial({color:0xFF5722}));a5.position.y=6.4;g.add(a5); papanNama(g,'🏥 '+nama.toUpperCase(),10,14); tambahDetail(g,0xBFDBFE);}
+  else{var warna=0xFEF9C3; if(nama.indexOf('Warung')>=0) warna=0xFDE68A; var d6=new THREE.Mesh(new THREE.BoxGeometry(12,6,10),new THREE.MeshLambertMaterial({color:warna}));d6.position.y=3;g.add(d6);var a6=new THREE.Mesh(new THREE.ConeGeometry(9,4,4),new THREE.MeshLambertMaterial({color:0xC0392B}));a6.position.y=8;a6.rotation.y=Math.PI/4;g.add(a6); papanNama(g,'🏠 '+nama.toUpperCase(),11);}
   return g;
 }
-function buatKarakter3D(warna){
-  var g=new THREE.Group();
-  var kakiK=new THREE.Mesh(new THREE.BoxGeometry(0.35,0.7,0.35),new THREE.MeshLambertMaterial({color:0x111827}));kakiK.position.set(-0.25,0.35,0);g.add(kakiK);
-  var kaki2=new THREE.Mesh(new THREE.BoxGeometry(0.35,0.7,0.35),new THREE.MeshLambertMaterial({color:0x111827}));kaki2.position.set(0.25,0.35,0);g.add(kaki2);
-  var bd=new THREE.Mesh(new THREE.BoxGeometry(0.85,1,0.45),new THREE.MeshLambertMaterial({color:warna}));bd.position.y=1.35;g.add(bd);
-  var kp=new THREE.Mesh(new THREE.SphereGeometry(0.42,16,16),new THREE.MeshLambertMaterial({color:0xfdbd8a}));kp.position.y=2.45;g.add(kp);
-  var rm=new THREE.Mesh(new THREE.SphereGeometry(0.44,16,16),new THREE.MeshLambertMaterial({color:0x111827}));rm.position.y=2.65;rm.scale.set(0.92,0.75,0.92);g.add(rm);
-  return g;
-}
-function pohon(x,z,besar){
-  var g=new THREE.Group();var bt=new THREE.Mesh(new THREE.CylinderGeometry(0.35*besar,0.5*besar,4*besar,8),new THREE.MeshLambertMaterial({color:0x7C4A21}));bt.position.y=2*besar;g.add(bt);
-  var d1=new THREE.Mesh(new THREE.SphereGeometry(3*besar,12,10),new THREE.MeshLambertMaterial({color:0x166534}));d1.position.y=5.5*besar;g.add(d1);
-  var d2=new THREE.Mesh(new THREE.SphereGeometry(2*besar,12,10),new THREE.MeshLambertMaterial({color:0x22C55E}));d2.position.set(0.8*besar,7*besar,0.5*besar);g.add(d2);
-  g.position.set(x,0,z);scene.add(g);
-}
-function lampu(x,z){
-  var g=new THREE.Group();var tg=new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.2,8,6),new THREE.MeshLambertMaterial({color:0x374151}));tg.position.y=4;g.add(tg);
-  var kp=new THREE.Mesh(new THREE.SphereGeometry(0.6,10,8),new THREE.MeshLambertMaterial({color:0xFDE047}));kp.position.y=8.2;g.add(kp);g.position.set(x,0,z);scene.add(g);
-}
+function buatKarakter3D(warna){var g=new THREE.Group();var k1=new THREE.Mesh(new THREE.BoxGeometry(0.35,0.7,0.35),new THREE.MeshLambertMaterial({color:0x111827}));k1.position.set(-0.25,0.35,0);g.add(k1);var k2=new THREE.Mesh(new THREE.BoxGeometry(0.35,0.7,0.35),new THREE.MeshLambertMaterial({color:0x111827}));k2.position.set(0.25,0.35,0);g.add(k2);var bd=new THREE.Mesh(new THREE.BoxGeometry(0.85,1,0.45),new THREE.MeshLambertMaterial({color:warna}));bd.position.y=1.35;g.add(bd);var kp=new THREE.Mesh(new THREE.SphereGeometry(0.42,16,16),new THREE.MeshLambertMaterial({color:0xfdbd8a}));kp.position.y=2.45;g.add(kp);var rm=new THREE.Mesh(new THREE.SphereGeometry(0.44,16,16),new THREE.MeshLambertMaterial({color:0x111827}));rm.position.y=2.65;rm.scale.set(0.92,0.75,0.92);g.add(rm);return g;}
+function pohon(x,z,besar){var g=new THREE.Group();var bt=new THREE.Mesh(new THREE.CylinderGeometry(0.35*besar,0.5*besar,4*besar,8),new THREE.MeshLambertMaterial({color:0x7C4A21}));bt.position.y=2*besar;g.add(bt);var d1=new THREE.Mesh(new THREE.SphereGeometry(3*besar,12,10),new THREE.MeshLambertMaterial({color:0x166534}));d1.position.y=5.5*besar;g.add(d1);var d2=new THREE.Mesh(new THREE.SphereGeometry(2*besar,12,10),new THREE.MeshLambertMaterial({color:0x22C55E}));d2.position.set(0.8*besar,7*besar,0.5*besar);g.add(d2);g.position.set(x,0,z);scene.add(g);}
+function lampu(x,z){var g=new THREE.Group();var tg=new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.2,8,6),new THREE.MeshLambertMaterial({color:0x374151}));tg.position.y=4;g.add(tg);var kp=new THREE.Mesh(new THREE.SphereGeometry(0.6,10,8),new THREE.MeshLambertMaterial({color:0xFDE047}));kp.position.y=8.2;g.add(kp);g.position.set(x,0,z);scene.add(g);}
 function init3D(){
   scene=new THREE.Scene();scene.background=new THREE.Color(0xBFE3FF);
   var holder=document.getElementById('holder');
@@ -314,50 +163,49 @@ function init3D(){
   scene.add(new THREE.AmbientLight(0xffffff,0.85));scene.add(new THREE.HemisphereLight(0xffffff,0x2ea043,0.55));
   var dl=new THREE.DirectionalLight(0xffffff,0.65);dl.position.set(20,30,10);scene.add(dl);
   ground=new THREE.Mesh(new THREE.PlaneGeometry(500,500),new THREE.MeshLambertMaterial({color:0x2ea043}));ground.rotation.x=-Math.PI/2;scene.add(ground);
-  // Jalan default salib
   var j1=new THREE.Mesh(new THREE.PlaneGeometry(500,10),new THREE.MeshLambertMaterial({color:0x374151}));j1.rotation.x=-Math.PI/2;j1.position.y=0.05;scene.add(j1);
   var j2=new THREE.Mesh(new THREE.PlaneGeometry(10,500),new THREE.MeshLambertMaterial({color:0x374151}));j2.rotation.x=-Math.PI/2;j2.position.y=0.05;scene.add(j2);
-  // Bangunan default persis game
   var g1=new THREE.Group();var d1=new THREE.Mesh(new THREE.BoxGeometry(20,8,14),new THREE.MeshLambertMaterial({color:0xFFE8B0}));d1.position.y=4;g1.add(d1);var a1=new THREE.Mesh(new THREE.ConeGeometry(16,6,4),new THREE.MeshLambertMaterial({color:0xC0392B}));a1.position.y=11;a1.rotation.y=Math.PI/4;g1.add(a1);papanNama(g1,'🏛️ BALAI DESA',14.5,16);tambahDetail(g1,0xBFDBFE);g1.position.set(0,0,-170);scene.add(g1);
   var b2=buatMeshBangunan('masjid','Masjid');b2.position.set(-170,0,-40);scene.add(b2);
   var b3=buatMeshBangunan('toko','Toko Longkali');b3.position.set(170,0,-30);scene.add(b3);
   var b4=buatMeshBangunan('sekolah','Sekolah');b4.position.set(-150,0,150);scene.add(b4);
   var b5=buatMeshBangunan('pos','Pos Ronda');b5.position.set(150,0,150);scene.add(b5);
   var b6=buatMeshBangunan('puskesmas','Puskesmas');b6.position.set(0,0,170);scene.add(b6);
-  [[60,60,0xFBCFE8],[-60,-100,0xC4B5FD],[100,100,0xFEF08A],[-100,60,0x86EFAC]].forEach(r=>{
-    var gr=new THREE.Group();var dr=new THREE.Mesh(new THREE.BoxGeometry(8,5,8),new THREE.MeshLambertMaterial({color:r[2]}));dr.position.y=2.5;gr.add(dr);var ar=new THREE.Mesh(new THREE.ConeGeometry(6.5,3,4),new THREE.MeshLambertMaterial({color:0xC0392B}));ar.position.y=6.5;ar.rotation.y=Math.PI/4;gr.add(ar);gr.position.set(r[0],0,r[1]);scene.add(gr);
-  });
+  [[60,60,0xFBCFE8],[-60,-100,0xC4B5FD],[100,100,0xFEF08A],[-100,60,0x86EFAC]].forEach(r=>{var gr=new THREE.Group();var dr=new THREE.Mesh(new THREE.BoxGeometry(8,5,8),new THREE.MeshLambertMaterial({color:r[2]}));dr.position.y=2.5;gr.add(dr);var ar=new THREE.Mesh(new THREE.ConeGeometry(6.5,3,4),new THREE.MeshLambertMaterial({color:0xC0392B}));ar.position.y=6.5;ar.rotation.y=Math.PI/4;gr.add(ar);gr.position.set(r[0],0,r[1]);scene.add(gr);});
   pohon(25,25,1.2);pohon(-25,30,1);pohon(30,-25,1.1);pohon(-30,-30,0.9);pohon(60,-60,1.3);pohon(-60,80,1);pohon(90,40,1.1);pohon(-90,-80,1);pohon(20,120,1);pohon(-20,-120,1.2);
   lampu(10,8);lampu(-10,8);lampu(10,-8);lampu(-10,-8);lampu(60,8);lampu(-60,8);
   var lap=new THREE.Mesh(new THREE.PlaneGeometry(40,25),new THREE.MeshLambertMaterial({color:0x4ADE80}));lap.rotation.x=-Math.PI/2;lap.position.set(0,0.07,60);scene.add(lap);
   var gw1=new THREE.Mesh(new THREE.BoxGeometry(0.3,2.5,7),new THREE.MeshLambertMaterial({color:0xFFFFFF}));gw1.position.set(-20,1.25,60);scene.add(gw1);
   var gw2=new THREE.Mesh(new THREE.BoxGeometry(0.3,2.5,7),new THREE.MeshLambertMaterial({color:0xFFFFFF}));gw2.position.set(20,1.25,60);scene.add(gw2);
-  // Pemain
   var k=AKUN? (KARAKTER_LIST.find(x=>x.id==(AKUN.karakterAktif||'biasa'))||KARAKTER_LIST[0]) : KARAKTER_LIST[0];
   pemain=buatKarakter3D(k.baju); pemain.position.set(0,0,0); scene.add(pemain);
-  // NPC
   var n1=buatKarakter3D(0x3b82f6); n1.position.set(8,0,8); scene.add(n1);
   var n2=buatKarakter3D(0xf59e0b); n2.position.set(-12,0,-8); scene.add(n2);
-  loadDariAdmin();
+  loadDariAdmin(); loadBalok();
+  ren.domElement.addEventListener('click',function(e){
+    if(!MODE_BANGUN) return;
+    var rect=ren.domElement.getBoundingClientRect();
+    mouse.x=((e.clientX-rect.left)/rect.width)*2-1; mouse.y=-((e.clientY-rect.top)/rect.height)*2+1;
+    ray.setFromCamera(mouse,cam);
+    if(BLOK_DIPILIH=='hapus'){
+      var hits=ray.intersectObjects(scene.children.filter(o=>o.name=='blokPlayer'),true);
+      if(hits.length>0){var target=hits[0].object; while(target.parent && target.name!='blokPlayer') target=target.parent; scene.remove(target); simpanBalok(); return;}
+      return;
+    }
+    var hit=ray.intersectObject(ground);
+    if(hit.length>0){
+      var p=hit[0].point; var x=Math.round(p.x/4)*4, z=Math.round(p.z/4)*4;
+      buatBalok(BLOK_DIPILIH,WARNA_DIPILIH,x,z); MISI[3].selesai=true; simpanBalok();
+    }
+  });
   (function loop(){
     requestAnimationFrame(loop);
     var mx=0,mz=0;
-    if(keys['w']||keys['arrowup']) mz-=1;
-    if(keys['s']||keys['arrowdown']) mz+=1;
-    if(keys['a']||keys['arrowleft']) mx-=1;
-    if(keys['d']||keys['arrowright']) mx+=1;
+    if(keys['w']||keys['arrowup']) mz-=1; if(keys['s']||keys['arrowdown']) mz+=1; if(keys['a']||keys['arrowleft']) mx-=1; if(keys['d']||keys['arrowright']) mx+=1;
     mx+=joyX; mz+=joyY;
-    if(mx!=0||mz!=0){
-      var len=Math.sqrt(mx*mx+mz*mz); mx/=len; mz/=len;
-      pemain.position.x+=mx*speed; pemain.position.z+=mz*speed;
-      pemain.position.x=Math.max(-240,Math.min(240,pemain.position.x));
-      pemain.position.z=Math.max(-240,Math.min(240,pemain.position.z));
-      pemain.rotation.y=Math.atan2(mx,mz);
-      MISI[0].selesai=true;
-    }
+    if(mx!=0||mz!=0){var len=Math.sqrt(mx*mx+mz*mz); mx/=len; mz/=len; pemain.position.x+=mx*speed; pemain.position.z+=mz*speed; pemain.position.x=Math.max(-240,Math.min(240,pemain.position.x)); pemain.position.z=Math.max(-240,Math.min(240,pemain.position.z)); pemain.rotation.y=Math.atan2(mx,mz); MISI[0].selesai=true;}
     if(isJump){velY+=0.02; pemain.position.y-=velY; if(pemain.position.y<=0){pemain.position.y=0;isJump=false;velY=0;}}
-    cam.position.set(pemain.position.x,18,pemain.position.z+18);
-    cam.lookAt(pemain.position.x,1,pemain.position.z);
+    cam.position.set(pemain.position.x,18,pemain.position.z+18); cam.lookAt(pemain.position.x,1,pemain.position.z);
     ren.render(scene,cam);
   })();
 }
@@ -367,25 +215,19 @@ async function loadDariAdmin(){
     if(v){var arr=Array.isArray(v)?v:Object.values(v); arr.forEach(it=>{if(it&&it.x!=null){var t=it.type||it.tipe||'rumah';var m=buatMeshBangunan(t,it.nama||'Bangunan');m.position.set(it.x,0,it.z);scene.add(m);}});}
     var r2=await fetch(DB_URL+"/jalan.json"); var v2=await r2.json();
     if(v2){var arr2=Array.isArray(v2)?v2:Object.values(v2); arr2.forEach(it=>{if(it){var geo=it.arah=='vertical'?new THREE.PlaneGeometry(it.lebar||10,it.panjang||200):new THREE.PlaneGeometry(it.panjang||200,it.lebar||10);var mm=new THREE.Mesh(geo,new THREE.MeshLambertMaterial({color:0x374151}));mm.rotation.x=-Math.PI/2;mm.position.set(it.x,0.06,it.z);scene.add(mm);}});}
-    var r3=await fetch(DB_URL+"/warga.json"); var v3=await r3.json(); if(v3){var n=Object.keys(v3).length; document.getElementById('jmlWarga').innerText=n;}
+    var r3=await fetch(DB_URL+"/warga.json"); var v3=await r3.json(); if(v3){document.getElementById('jmlWarga').innerText=Object.keys(v3).length;}
   }catch(e){}
 }
 function lompat(){if(!isJump){isJump=true;velY=-0.45;}}
 window.addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true; if(e.key==' '){lompat();}});
 window.addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=false;});
 var joy=document.getElementById('joy'), knob=document.getElementById('knob'), joyAktif=false;
-joy.addEventListener('touchstart',e=>{joyAktif=true;}, {passive:true});
-joy.addEventListener('touchmove',e=>{
-  if(!joyAktif) return; var t=e.touches[0]; var rect=joy.getBoundingClientRect();
-  var dx=t.clientX-(rect.left+55); var dy=t.clientY-(rect.top+55);
-  dx=Math.max(-35,Math.min(35,dx)); dy=Math.max(-35,Math.min(35,dy));
-  knob.style.left=(35+dx)+'px'; knob.style.top=(35+dy)+'px';
-  joyX=dx/35; joyY=dy/35;
-},{passive:true});
-joy.addEventListener('touchend',()=>{joyAktif=false;joyX=0;joyY=0;knob.style.left='35px';knob.style.top='35px';});
+joy.addEventListener('touchstart',e=>{joyAktif=true;},{passive:true});
+joy.addEventListener('touchmove',e=>{if(!joyAktif) return; var t=e.touches[0]; var rect=joy.getBoundingClientRect(); var dx=t.clientX-(rect.left+52); var dy=t.clientY-(rect.top+52); dx=Math.max(-35,Math.min(35,dx)); dy=Math.max(-35,Math.min(35,dy)); knob.style.left=(32+dx)+'px'; knob.style.top=(32+dy)+'px'; joyX=dx/35; joyY=dy/35;},{passive:true});
+joy.addEventListener('touchend',()=>{joyAktif=false;joyX=0;joyY=0;knob.style.left='32px';knob.style.top='32px';});
 window.addEventListener('load',()=>{
   var saved=localStorage.getItem('akunLongkali');
-  if(saved){try{AKUN=JSON.parse(saved); document.getElementById('namaTop').innerText=AKUN.nama+" • "+AKUN.rt; updateUang();}catch(e){}}
+  if(saved){try{AKUN=JSON.parse(saved); document.getElementById('namaTop').innerText=AKUN.nama+" • "+AKUN.rt+" • Builder"; updateUang();}catch(e){}}
   init3D(); if(AKUN) gantiBajuKarakter();
   if(!AKUN){setTimeout(()=>{showKTP();},600);}
 });
