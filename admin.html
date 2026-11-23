@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Admin 3D - LongkaliVerse</title>
+<title>Admin 3D Mirip Game - LongkaliVerse</title>
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:Arial;background:#0f172a;color:#fff}
-#top{background:#0e4a5a;padding:10px 12px}
-#top h1{margin:0;font-size:19px}#top h1 span{font-size:10px;background:#f59e0b;color:#000;padding:3px 7px;border-radius:6px}
-#top p{margin:4px 0 0;font-size:11px;color:#cbd5e1}
+#top{background:#0e4a5a;padding:10px 12px;display:flex;justify-content:space-between;align-items:center}
+#top h1{margin:0;font-size:18px}#top h1 span{font-size:10px;background:#f59e0b;color:#000;padding:3px 7px;border-radius:6px}
+#top p{margin:3px 0 0;font-size:11px;color:#cbd5e1}
 #tabs{display:flex;gap:8px;padding:10px}
 #tabs button{flex:1;padding:12px;border:none;border-radius:12px;font-weight:900;font-size:13px;background:#1e293b;color:#fff}
 #tabs button.active{background:#f59e0b;color:#000}
@@ -16,59 +16,65 @@
 #tools .row button.on{background:#0e4a5a;color:#fff;border-color:#0e4a5a}
 #tools .row button.onJalan{background:#f59e0b;color:#000;border-color:#f59e0b}
 label{font-size:11px;font-weight:800;color:#64748b}
-input,select{width:100%;padding:10px;border:2px solid #cbd5e1;border-radius:10px;font-size:13px;margin:3px 0 6px}
-#wrap{position:relative;margin:0 10px;height:calc(100vh - 340px);min-height:340px;background:#2ea043;border-radius:14px;overflow:hidden}
+input{width:100%;padding:10px;border:2px solid #cbd5e1;border-radius:10px;font-size:13px;margin:3px 0 6px}
+#wrap{position:relative;margin:0 10px;height:calc(100vh - 350px);min-height:340px;background:#2ea043;border-radius:14px;overflow:hidden}
 #holder{position:absolute;inset:0}
 #hint{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.7);padding:8px 12px;border-radius:20px;font-size:11px;pointer-events:none}
 #pos{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:#000;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:900;white-space:nowrap}
-#list{margin:10px;background:#fff;color:#000;border-radius:14px;padding:12px;max-height:220px;overflow:auto}
+#card{position:absolute;top:46px;left:10px;background:#fff;color:#000;border-radius:14px;padding:8px 12px;border:2px solid #0ea5e9;pointer-events:none}
+#card b{font-size:22px}
+#list{margin:10px;background:#fff;color:#000;border-radius:14px;padding:12px;max-height:200px;overflow:auto}
 .item{display:flex;justify-content:space-between;align-items:center;background:#f1f5f9;padding:8px 10px;border-radius:10px;margin:6px 0}
-.item b{font-size:13px}.item small{color:#64748b}
+.item b{font-size:13px}
 .item button{padding:7px 10px;border:none;border-radius:8px;font-weight:900}
 .btn{width:100%;padding:12px;border:none;border-radius:12px;font-weight:900;margin-top:6px}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
-<div id="top"><h1>Admin 3D <span>V3 - 3D</span></h1><p>Tap tanah di 3D buat naroh bangunan / jalan • Geser buat puter kamera</p></div>
+<div id="top"><div><h1>Admin 3D Mirip Game <span>LIVE PREVIEW</span></h1><p>Persis kayak di game - Balai, Masjid, Toko, Sekolah, dll semua ada</p></div><button onclick="location.href='index.html'" style="background:#f59e0b;border:none;padding:10px 14px;border-radius:20px;font-weight:900">▶️ LIAT GAME</button></div>
 <div id="tabs">
 <button id="tMap" class="active" onclick="setMode('map')">🏠 BANGUNAN</button>
 <button id="tJalan" onclick="setMode('jalan')">🛣️ JALAN</button>
-<button onclick="location.href='admin.html'">📋 Admin Lama</button>
+<button onclick="location.href='admin.html'">📋 Admin Angka</button>
 </div>
 <div id="tools">
 <div id="toolsMap">
-<b>🏠 Pilih Bangunan, Terus TAP TANAH di 3D:</b>
+<b>🏠 Pilih, Terus TAP TANAH:</b>
 <div class="row">
-<button data-type="rumah" class="on" onclick="pilihType(this,'rumah')">🏠 Rumah</button>
-<button data-type="toko" onclick="pilihType(this,'toko')">🛒 Toko</button>
-<button data-type="masjid" onclick="pilihType(this,'masjid')">🕌 Masjid</button>
-<button data-type="pos" onclick="pilihType(this,'pos')">🚨 Pos</button>
+<button class="on" onclick="pilihType(this,'rumah')">🏠 Rumah</button>
+<button onclick="pilihType(this,'toko')">🛒 Toko</button>
+<button onclick="pilihType(this,'masjid')">🕌 Masjid</button>
+<button onclick="pilihType(this,'pos')">🚨 Pos</button>
+<button onclick="pilihType(this,'sekolah')">🏫 Sekolah</button>
+<button onclick="pilihType(this,'puskesmas')">🏥 Puskes</button>
 </div>
 <label>Nama Bangunan</label>
-<input id="namaMap" placeholder="Contoh: Warung Bu Sari" value="Warung Baru">
+<input id="namaMap" value="Warung Baru">
 </div>
 <div id="toolsJalan" style="display:none">
-<b>🛣️ Pilih Arah, Terus TAP TANAH di 3D:</b>
+<b>🛣️ Pilih Arah, Terus TAP TANAH:</b>
 <div class="row">
-<button data-arah="horizontal" class="onJalan" onclick="pilihArah(this,'horizontal')">↔️ Horizontal</button>
-<button data-arah="vertical" onclick="pilihArah(this,'vertical')">↕️ Vertical</button>
+<button class="onJalan" onclick="pilihArah(this,'horizontal')">↔️ Horizontal</button>
+<button onclick="pilihArah(this,'vertical')">↕️ Vertical</button>
 </div>
 <div style="display:flex;gap:8px"><div style="flex:1"><label>Panjang</label><input id="panjangJalan" type="number" value="200"></div><div style="flex:1"><label>Lebar</label><input id="lebarJalan" type="number" value="10"></div></div>
 </div>
 <button class="btn" style="background:#16a34a;color:#fff" onclick="simpanSemua()">💾 SIMPAN SEMUA KE GAME</button>
-<button class="btn" style="background:#e2e8f0" onclick="resetDefault()">🔄 Reset Jalan Default (Salib)</button>
 </div>
-<div id="wrap"><div id="holder"></div><div id="hint">👆 Tap tanah = taroh | Drag = puter kamera | Tap bangunan = hapus</div><div id="pos">X: 0 • Z: 0</div></div>
-<div id="list"><b>📋 Daftar di 3D ini (belum tersimpan kalau belum pencet SIMPAN):</b><div id="listIsi">Loading...</div></div>
-
+<div id="wrap"><div id="holder"></div>
+<div id="hint">👆 Tap tanah = taroh | Tap bangunan admin = hapus | Drag = puter kamera</div>
+<div id="card"><small style="letter-spacing:2px;color:#0ea5e9;font-weight:900">WARGA</small><br><b>1</b><p style="margin:2px 0 0;font-size:11px;color:#64748b">warga online di LongkaliVerse</p></div>
+<div id="pos">X: 0 - Z: 0</div></div>
+<div id="list"><b>📋 Yang Bisa Dihapus / Diedit (Bangunan Admin + Jalan):</b><div id="listIsi">Loading...</div></div>
 <script>
 var DB_URL="https://admin-55bc3-default-rtdb.firebaseio.com";
 var mode='map', pilih='rumah', arahJalan='horizontal';
 var scene,cam,ren,ray=new THREE.Raycaster(),mouse=new THREE.Vector2();
-var yaw=0.8,pitch=0.9,dist=180;
+var yaw=0.8,pitch=0.9,dist=140;
 var items=[];
 var preview=null;
+var OBJEK=[];
 
 function setMode(m){
   mode=m;
@@ -80,21 +86,65 @@ function setMode(m){
 }
 function pilihType(btn,t){pilih=t;document.querySelectorAll('#toolsMap .row button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');updatePreview();}
 function pilihArah(btn,a){arahJalan=a;document.querySelectorAll('#toolsJalan .row button').forEach(b=>b.classList.remove('onJalan'));btn.classList.add('onJalan');updatePreview();}
-function warnaType(t){
-  if(t=='masjid')return 0xA7F3D0; if(t=='toko')return 0xFDE68A; if(t=='pos')return 0xFCA5A5; return 0xFEF9C3;
+function buatDataMap(nama,tipe,x,z){
+  var d={}; d.nama=nama; d.tipe=tipe; d.x=x; d.z=z; return d;
 }
-function buatMeshBangunan(type,nama){
-  let g=new THREE.Group();
-  let d=new THREE.Mesh(new THREE.BoxGeometry(12,6,10),new THREE.MeshLambertMaterial({color:warnaType(type)}));d.position.y=3;g.add(d);
-  let a=new THREE.Mesh(new THREE.ConeGeometry(9,4,4),new THREE.MeshLambertMaterial({color:0xC0392B}));a.position.y=8;a.rotation.y=Math.PI/4;g.add(a);
-  let c=document.createElement('canvas');c.width=512;c.height=96;let ctx=c.getContext('2d');ctx.fillStyle='#FFC107';ctx.fillRect(0,0,512,96);ctx.fillStyle='#000';ctx.font='bold 38px Arial';ctx.textAlign='center';ctx.fillText((nama||'BANGUNAN').substring(0,14).toUpperCase(),256,62);
-  let tex=new THREE.CanvasTexture(c);let p=new THREE.Mesh(new THREE.BoxGeometry(12,2.2,0.4),new THREE.MeshLambertMaterial({map:tex}));p.position.y=11;g.add(p);
+function buatDataJalan(x,z,pj,lb,ar){
+  var d={}; d.x=x; d.z=z; d.panjang=pj; d.lebar=lb; d.arah=ar; return d;
+}
+function papanNama(g,teks,y){
+  var c=document.createElement('canvas');c.width=512;c.height=96;var ctx=c.getContext('2d');ctx.fillStyle='#FFC107';ctx.fillRect(0,0,512,96);ctx.fillStyle='#000';ctx.font='bold 44px Arial';ctx.textAlign='center';ctx.fillText(teks,256,62);var tex=new THREE.CanvasTexture(c);var p=new THREE.Mesh(new THREE.BoxGeometry(12,2.2,0.4),new THREE.MeshLambertMaterial({map:tex}));p.position.y=y;g.add(p);
+}
+function tambahDetail(g,warnaKaca){
+  var pintu=new THREE.Mesh(new THREE.BoxGeometry(3,4.5,0.3),new THREE.MeshLambertMaterial({color:0x6B4226}));pintu.position.set(0,2.25,7.25);g.add(pintu);
+  for(var jx of [-6,6]){
+    var bingkai=new THREE.Mesh(new THREE.BoxGeometry(3.2,3.2,0.2),new THREE.MeshLambertMaterial({color:0xFFFFFF}));bingkai.position.set(jx,3.5,7.15);g.add(bingkai);
+    var kaca=new THREE.Mesh(new THREE.BoxGeometry(2.6,2.6,0.3),new THREE.MeshLambertMaterial({color:warnaKaca}));kaca.position.set(jx,3.5,7.25);g.add(kaca);
+  }
+  var teras=new THREE.Mesh(new THREE.BoxGeometry(14,0.3,4),new THREE.MeshLambertMaterial({color:0xD1D5DB}));teras.position.set(0,0.15,9);g.add(teras);
+}
+function buatMeshBangunan(tipe,nama){
+  var g=new THREE.Group();
+  if(tipe=='masjid'){
+    var d=new THREE.Mesh(new THREE.BoxGeometry(14,7,14),new THREE.MeshLambertMaterial({color:0xA7F3D0}));d.position.y=3.5;g.add(d);
+    var ku=new THREE.Mesh(new THREE.SphereGeometry(6,16,12,0,Math.PI*2,0,Math.PI/2),new THREE.MeshLambertMaterial({color:0x27AE60}));ku.position.y=7;g.add(ku);
+    for(var mx of [-9,9]){var me=new THREE.Mesh(new THREE.CylinderGeometry(0.8,1,18,8),new THREE.MeshLambertMaterial({color:0xD1FAE5}));me.position.set(mx,9,0);g.add(me);var uj=new THREE.Mesh(new THREE.ConeGeometry(1.2,3,8),new THREE.MeshLambertMaterial({color:0x27AE60}));uj.position.set(mx,19.5,0);g.add(uj);}
+    papanNama(g,'🕌 '+nama.toUpperCase(),22); tambahDetail(g,0xA7F3D0);
+  } else if(tipe=='toko'){
+    var d2=new THREE.Mesh(new THREE.BoxGeometry(18,6,10),new THREE.MeshLambertMaterial({color:0xFDE68A}));d2.position.y=3;g.add(d2);
+    var a2=new THREE.Mesh(new THREE.BoxGeometry(19,0.8,11),new THREE.MeshLambertMaterial({color:0x111827}));a2.position.y=6.4;g.add(a2);
+    var ka=new THREE.Mesh(new THREE.BoxGeometry(14,3,0.3),new THREE.MeshLambertMaterial({color:0x99F6FF}));ka.position.set(0,2,5.1);g.add(ka);
+    papanNama(g,'🛒 '+nama.toUpperCase(),8.5); tambahDetail(g,0xFEF08A);
+  } else if(tipe=='pos'){
+    var d3=new THREE.Mesh(new THREE.BoxGeometry(8,3,8),new THREE.MeshLambertMaterial({color:0xFCA5A5}));d3.position.y=1.5;g.add(d3);
+    var a3=new THREE.Mesh(new THREE.ConeGeometry(7,4,4),new THREE.MeshLambertMaterial({color:0x8E44AD}));a3.position.y=8;a3.rotation.y=Math.PI/4;g.add(a3);
+    papanNama(g,'🚨 '+nama.toUpperCase(),10.5);
+  } else if(tipe=='sekolah'){
+    var d4=new THREE.Mesh(new THREE.BoxGeometry(28,6,10),new THREE.MeshLambertMaterial({color:0xFDBA74}));d4.position.y=3;g.add(d4);
+    var a4=new THREE.Mesh(new THREE.BoxGeometry(29,1,11),new THREE.MeshLambertMaterial({color:0xE67E22}));a4.position.y=6.5;g.add(a4);
+    papanNama(g,'🏫 '+nama.toUpperCase(),8.5); tambahDetail(g,0xBFDBFE);
+  } else if(tipe=='puskesmas'){
+    var d5=new THREE.Mesh(new THREE.BoxGeometry(16,6,10),new THREE.MeshLambertMaterial({color:0xBFDBFE}));d5.position.y=3;g.add(d5);
+    var a5=new THREE.Mesh(new THREE.BoxGeometry(17,0.8,11),new THREE.MeshLambertMaterial({color:0xFF5722}));a5.position.y=6.4;g.add(a5);
+    papanNama(g,'🏥 '+nama.toUpperCase(),10); tambahDetail(g,0xBFDBFE);
+  } else {
+    var warna=0xFEF9C3; if(nama.indexOf('Warung')>=0) warna=0xFDE68A;
+    var d6=new THREE.Mesh(new THREE.BoxGeometry(12,6,10),new THREE.MeshLambertMaterial({color:warna}));d6.position.y=3;g.add(d6);
+    var a6=new THREE.Mesh(new THREE.ConeGeometry(9,4,4),new THREE.MeshLambertMaterial({color:0xC0392B}));a6.position.y=8;a6.rotation.y=Math.PI/4;g.add(a6);
+    papanNama(g,'🏠 '+nama.toUpperCase(),11);
+  }
   return g;
 }
 function buatMeshJalan(panjang,lebar,arah){
-  let g=new THREE.Group();
-  let geo = arah=='vertical'?new THREE.PlaneGeometry(lebar,panjang):new THREE.PlaneGeometry(panjang,lebar);
-  let m=new THREE.Mesh(geo,new THREE.MeshLambertMaterial({color:0x374151}));m.rotation.x=-Math.PI/2;m.position.y=0.05;g.add(m);
+  var g=new THREE.Group();
+  var geo = arah=='vertical'?new THREE.PlaneGeometry(lebar,panjang):new THREE.PlaneGeometry(panjang,lebar);
+  var m=new THREE.Mesh(geo,new THREE.MeshLambertMaterial({color:0x374151}));m.rotation.x=-Math.PI/2;m.position.y=0.05;g.add(m);
+  for(var i=-panjang/2;i<panjang/2;i+=12){
+    var gg=new THREE.Mesh(new THREE.PlaneGeometry(arah=='vertical'?0.4:4,arah=='vertical'?4:0.4),new THREE.MeshLambertMaterial({color:0xFFFFFF}));
+    gg.rotation.x=-Math.PI/2;
+    if(arah=='vertical') gg.position.set(0,0.1,i); else gg.position.set(i,0.1,0);
+    g.add(gg);
+  }
   return g;
 }
 function updatePreview(){
@@ -106,10 +156,10 @@ function updatePreview(){
   scene.add(preview);
 }
 function renderList(){
-  let h='';
-  if(items.length==0) h='<div style="color:#888;padding:10px;text-align:center">Belum ada apa-apa di 3D. Tap tanah buat nambah!</div>';
+  var h='';
+  if(items.length==0) h='<div style="color:#888;padding:10px;text-align:center">Belum ada bangunan admin / jalan. Tap tanah buat nambah!</div>';
   items.forEach((it,i)=>{
-    let label = it.kind=='map' ? '🏠 '+(it.data.nama||'')+' - '+it.data.type+' - X:'+Math.round(it.data.x)+' Z:'+Math.round(it.data.z) : '🛣️ Jalan - '+it.data.arah+' - X:'+Math.round(it.data.x)+' Z:'+Math.round(it.data.z)+' - P:'+it.data.panjang;
+    var label = it.kind=='map' ? '🏠 '+it.data.nama+' - '+it.data.tipe+' - X:'+Math.round(it.data.x)+' Z:'+Math.round(it.data.z) : '🛣️ Jalan - '+it.data.arah+' - X:'+Math.round(it.data.x)+' Z:'+Math.round(it.data.z)+' - P:'+it.data.panjang;
     h+='<div class="item"><div><b>'+label+'</b></div><button style="background:#dc2626;color:#fff" onclick="hapusItem('+i+')">HAPUS</button></div>';
   });
   document.getElementById('listIsi').innerHTML=h;
@@ -118,58 +168,88 @@ function hapusItem(i){
   if(!confirm('Hapus ini?'))return;
   scene.remove(items[i].mesh); items.splice(i,1); renderList();
 }
+function buatBangunanGamePersis(){
+  // INI PERSIS KAYAK DI GAME - JANGAN DIHAPUS, BIAR MIRIP
+  function satu(g,x,z,nama,tipe){g.position.set(x,0,z);scene.add(g);OBJEK.push({x:x,z:z,tipe:tipe,nama:nama});}
+  var g1=new THREE.Group();var d1=new THREE.Mesh(new THREE.BoxGeometry(20,8,14),new THREE.MeshLambertMaterial({color:0xFFE8B0}));d1.position.y=4;g1.add(d1);var a1=new THREE.Mesh(new THREE.ConeGeometry(16,6,4),new THREE.MeshLambertMaterial({color:0xC0392B}));a1.position.y=11;a1.rotation.y=Math.PI/4;g1.add(a1);papanNama(g1,'🏛️ BALAI DESA',14.5);tambahDetail(g1,0xBFDBFE);satu(g1,0,-170,'Balai Desa','balai');
+  var g2=buatMeshBangunan('masjid','Masjid');satu(g2,-170,-40,'Masjid','masjid');
+  var g3=buatMeshBangunan('toko','Toko Longkali');satu(g3,170,-30,'Toko Longkali','toko');
+  var g4=buatMeshBangunan('sekolah','Sekolah');satu(g4,-150,150,'Sekolah','sekolah');
+  var g5=buatMeshBangunan('pos','Pos Ronda');satu(g5,150,150,'Pos Ronda','pos');
+  var g6=buatMeshBangunan('puskesmas','Puskesmas');satu(g6,0,170,'Puskesmas','puskesmas');
+  var rumahs=[[60,60,0xFBCFE8],[-60,-100,0xC4B5FD],[100,100,0xFEF08A],[-100,60,0x86EFAC]];
+  rumahs.forEach(r=>{
+    var gr=new THREE.Group();var dr=new THREE.Mesh(new THREE.BoxGeometry(8,5,8),new THREE.MeshLambertMaterial({color:r[2]}));dr.position.y=2.5;gr.add(dr);var ar=new THREE.Mesh(new THREE.ConeGeometry(6.5,3,4),new THREE.MeshLambertMaterial({color:0xC0392B}));ar.position.y=6.5;ar.rotation.y=Math.PI/4;gr.add(ar);var pr=new THREE.Mesh(new THREE.BoxGeometry(2,3,0.2),new THREE.MeshLambertMaterial({color:0x6B4226}));pr.position.set(0,1.5,4.1);gr.add(pr);satu(gr,r[0],r[1],'Rumah Warga','rumah');
+  });
+  // Pohon persis game
+  function pohon(x,z,besar){var g=new THREE.Group();var bt=new THREE.Mesh(new THREE.CylinderGeometry(0.35*besar,0.5*besar,4*besar,8),new THREE.MeshLambertMaterial({color:0x7C4A21}));bt.position.y=2*besar;g.add(bt);var dd1=new THREE.Mesh(new THREE.SphereGeometry(3*besar,12,10),new THREE.MeshLambertMaterial({color:0x166534}));dd1.position.y=5.5*besar;g.add(dd1);var dd2=new THREE.Mesh(new THREE.SphereGeometry(2*besar,12,10),new THREE.MeshLambertMaterial({color:0x22C55E}));dd2.position.set(0.8*besar,7*besar,0.5*besar);g.add(dd2);g.position.set(x,0,z);scene.add(g);}
+  pohon(25,25,1.2);pohon(-25,30,1);pohon(30,-25,1.1);pohon(-30,-30,0.9);pohon(60,-60,1.3);pohon(-60,80,1);pohon(90,40,1.1);pohon(-90,-80,1);pohon(20,120,1);pohon(-20,-120,1.2);
+  // Lampu jalan persis game
+  function lampu(x,z){var g=new THREE.Group();var tg=new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.2,8,6),new THREE.MeshLambertMaterial({color:0x374151}));tg.position.y=4;g.add(tg);var kp=new THREE.Mesh(new THREE.SphereGeometry(0.6,10,8),new THREE.MeshLambertMaterial({color:0xFDE047}));kp.position.y=8.2;g.add(kp);g.position.set(x,0,z);scene.add(g);}
+  lampu(10,8);lampu(-10,8);lampu(10,-8);lampu(-10,-8);lampu(60,8);lampu(-60,8);
+  // Lapangan persis game
+  var lap=new THREE.Mesh(new THREE.PlaneGeometry(40,25),new THREE.MeshLambertMaterial({color:0x4ADE80}));lap.rotation.x=-Math.PI/2;lap.position.set(0,0.07,60);scene.add(lap);
+  var gl=new THREE.Mesh(new THREE.PlaneGeometry(40,0.4),new THREE.MeshLambertMaterial({color:0xFFFFFF}));gl.rotation.x=-Math.PI/2;gl.position.set(0,0.1,60);scene.add(gl);
+  var gw1=new THREE.Mesh(new THREE.BoxGeometry(0.3,2.5,7),new THREE.MeshLambertMaterial({color:0xFFFFFF}));gw1.position.set(-20,1.25,60);scene.add(gw1);
+  var gw2=new THREE.Mesh(new THREE.BoxGeometry(0.3,2.5,7),new THREE.MeshLambertMaterial({color:0xFFFFFF}));gw2.position.set(20,1.25,60);scene.add(gw2);
+  // Trotoar
+  var tr1=new THREE.Mesh(new THREE.PlaneGeometry(500,2),new THREE.MeshLambertMaterial({color:0x9CA3AF}));tr1.rotation.x=-Math.PI/2;tr1.position.set(0,0.06,6);scene.add(tr1);
+  var tr2=new THREE.Mesh(new THREE.PlaneGeometry(500,2),new THREE.MeshLambertMaterial({color:0x9CA3AF}));tr2.rotation.x=-Math.PI/2;tr2.position.set(0,0.06,-6);scene.add(tr2);
+  // Karakter persis game
+  function karakter(warna){
+    var g=new THREE.Group();var bd=new THREE.Mesh(new THREE.BoxGeometry(0.85,1,0.45),new THREE.MeshLambertMaterial({color:warna}));bd.position.y=1.35;g.add(bd);var kp2=new THREE.Mesh(new THREE.SphereGeometry(0.42,16,16),new THREE.MeshLambertMaterial({color:0xfdbd8a}));kp2.position.y=2.45;g.add(kp2);var rm=new THREE.Mesh(new THREE.SphereGeometry(0.44,16,16),new THREE.MeshLambertMaterial({color:0x111827}));rm.position.y=2.65;rm.scale.set(0.92,0.75,0.92);g.add(rm);return g;
+  }
+  var p1=karakter(0xef4444);p1.position.set(0,0,0);scene.add(p1);
+  var n1=karakter(0x3b82f6);n1.position.set(8,0,8);scene.add(n1);
+  var n2=karakter(0xf59e0b);n2.position.set(-12,0,-8);scene.add(n2);
+}
 async function loadAwal(){
   try{
-    let r1=await fetch(DB_URL+"/map.json"); let v1=await r1.json();
+    var r1=await fetch(DB_URL+"/map.json"); var v1=await r1.json();
     if(v1){
-      let arr=Array.isArray(v1)?v1:Object.values(v1);
+      var arr=Array.isArray(v1)?v1:Object.values(v1);
       arr.forEach(it=>{
         if(it && it.x!=null){
-          let m=buatMeshBangunan(it.type||'rumah',it.nama||'Bangunan');
+          var tipe=it.type||it.tipe||'rumah';
+          var m=buatMeshBangunan(tipe,it.nama||'Bangunan');
           m.position.set(it.x,0,it.z); scene.add(m);
-          items.push({mesh:m,kind:'map',data:{nama:it.nama||'Bangunan',type:it.type||'rumah',x:it.x,z:it.z}});
+          items.push({mesh:m,kind:'map',data:buatDataMap(it.nama||'Bangunan',tipe,it.x,it.z)});
         }
       });
     }
-    let r2=await fetch(DB_URL+"/jalan.json"); let v2=await r2.json();
+    var r2=await fetch(DB_URL+"/jalan.json"); var v2=await r2.json();
     if(v2){
-      let arr=Array.isArray(v2)?v2:Object.values(v2);
-      arr.forEach(it=>{
+      var arr2=Array.isArray(v2)?v2:Object.values(v2);
+      arr2.forEach(it=>{
         if(it){
-          let m=buatMeshJalan(it.panjang||200,it.lebar||10,it.arah||'horizontal');
-          m.position.set(it.x,0,it.z); scene.add(m);
-          items.push({mesh:m,kind:'jalan',data:{x:it.x,z:it.z,panjang:it.panjang||200,lebar:it.lebar||10,arah:it.arah||'horizontal'}});
+          var m2=buatMeshJalan(it.panjang||200,it.lebar||10,it.arah||'horizontal');
+          m2.position.set(it.x,0,it.z); scene.add(m2);
+          items.push({mesh:m2,kind:'jalan',data:buatDataJalan(it.x,it.z,it.panjang||200,it.lebar||10,it.arah||'horizontal')});
         }
       });
     } else {
-      let defs=[[0,0,500,10,'horizontal'],[0,0,10,500,'vertical']];
+      var defs=[[0,0,500,10,'horizontal'],[0,0,10,500,'vertical']];
       defs.forEach(a=>{
-        let m=buatMeshJalan(a[2],a[3],a[4]); m.position.set(a[0],0,a[1]); scene.add(m);
-        items.push({mesh:m,kind:'jalan',data:{x:a[0],z:a[1],panjang:a[2],lebar:a[3],arah:a[4]}});
+        var mm=buatMeshJalan(a[2],a[3],a[4]); mm.position.set(a[0],0,a[1]); scene.add(mm);
+        items.push({mesh:mm,kind:'jalan',data:buatDataJalan(a[0],a[1],a[2],a[3],a[4])});
       });
     }
   }catch(e){console.log(e);}
   renderList(); updatePreview();
 }
 async function simpanSemua(){
-  if(!confirm('Simpan semua yang ada di 3D ini ke game?'))return;
+  if(!confirm('Simpan semua ke game?'))return;
   try{
-    let maps=items.filter(i=>i.kind=='map').map(i=>i.data);
-    let jalans=items.filter(i=>i.kind=='jalan').map(i=>i.data);
+    var maps=items.filter(i=>i.kind=='map').map(i=>{
+      var o={}; o.nama=i.data.nama; o.type=i.data.tipe; o.x=i.data.x; o.z=i.data.z; return o;
+    });
+    var jalans=items.filter(i=>i.kind=='jalan').map(i=>{
+      var o2={}; o2.x=i.data.x; o2.z=i.data.z; o2.panjang=i.data.panjang; o2.lebar=i.data.lebar; o2.arah=i.data.arah; return o2;
+    });
     await fetch(DB_URL+"/map.json",{method:"PUT",body:JSON.stringify(maps)});
     await fetch(DB_URL+"/jalan.json",{method:"PUT",body:JSON.stringify(jalans)});
     alert('✅ Tersimpan! Buka game + Refresh!');
   }catch(e){alert('Gagal simpan '+e);}
-}
-async function resetDefault(){
-  if(!confirm('Reset jalan jadi salib?'))return;
-  items=items.filter(it=>{if(it.kind=='jalan'){scene.remove(it.mesh);return false;}return true;});
-  let defs=[[0,0,500,10,'horizontal'],[0,0,10,500,'vertical']];
-  defs.forEach(a=>{
-    let m=buatMeshJalan(a[2],a[3],a[4]); m.position.set(a[0],0,a[1]); scene.add(m);
-    items.push({mesh:m,kind:'jalan',data:{x:a[0],z:a[1],panjang:a[2],lebar:a[3],arah:a[4]}});
-  });
-  renderList();
 }
 function updateCam(){
   cam.position.set(Math.sin(yaw)*Math.cos(pitch)*dist,Math.sin(pitch)*dist,Math.cos(yaw)*Math.cos(pitch)*dist);
@@ -177,55 +257,53 @@ function updateCam(){
 }
 function init3D(){
   scene=new THREE.Scene();scene.background=new THREE.Color(0xBFE3FF);
-  let holder=document.getElementById('holder');
+  var holder=document.getElementById('holder');
   cam=new THREE.PerspectiveCamera(55,holder.clientWidth/holder.clientHeight,0.1,2000);
   ren=new THREE.WebGLRenderer({antialias:true});ren.setSize(holder.clientWidth,holder.clientHeight);holder.appendChild(ren.domElement);
-  scene.add(new THREE.AmbientLight(0xffffff,0.9));
-  let ground=new THREE.Mesh(new THREE.PlaneGeometry(500,500),new THREE.MeshLambertMaterial({color:0x2ea043}));ground.rotation.x=-Math.PI/2;ground.name='ground';scene.add(ground);
-  for(let i=-250;i<=250;i+=50){
-    let l1=new THREE.Mesh(new THREE.PlaneGeometry(500,0.3),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.2}));l1.rotation.x=-Math.PI/2;l1.position.set(0,0.02,i);scene.add(l1);
-    let l2=new THREE.Mesh(new THREE.PlaneGeometry(0.3,500),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.2}));l2.rotation.x=-Math.PI/2;l2.position.set(i,0.02,0);scene.add(l2);
-  }
+  scene.add(new THREE.AmbientLight(0xffffff,0.85));scene.add(new THREE.HemisphereLight(0xffffff,0x2ea043,0.55));
+  var dl=new THREE.DirectionalLight(0xffffff,0.65);dl.position.set(20,30,10);scene.add(dl);
+  var ground=new THREE.Mesh(new THREE.PlaneGeometry(500,500),new THREE.MeshLambertMaterial({color:0x2ea043}));ground.rotation.x=-Math.PI/2;ground.name='ground';scene.add(ground);
+  buatBangunanGamePersis();
   updateCam();
-  let drag=false,lastX=0,lastY=0,downX=0,downY=0,downTime=0;
+  var drag=false,lastX=0,lastY=0,downX=0,downY=0,downTime=0;
   ren.domElement.addEventListener('pointerdown',e=>{drag=true;lastX=e.clientX;lastY=e.clientY;downX=e.clientX;downY=e.clientY;downTime=Date.now();});
   ren.domElement.addEventListener('pointermove',e=>{
-    let rect=ren.domElement.getBoundingClientRect();
+    var rect=ren.domElement.getBoundingClientRect();
     mouse.x=((e.clientX-rect.left)/rect.width)*2-1; mouse.y=-((e.clientY-rect.top)/rect.height)*2+1;
     ray.setFromCamera(mouse,cam);
-    let hit=ray.intersectObject(ground);
+    var hit=ray.intersectObject(ground);
     if(hit.length>0){
-      let p=hit[0].point; document.getElementById('pos').innerText='X: '+Math.round(p.x)+' - Z: '+Math.round(p.z)+' - Tap buat taroh';
+      var p=hit[0].point; document.getElementById('pos').innerText='X: '+Math.round(p.x)+' - Z: '+Math.round(p.z)+' - Tap buat taroh';
       if(preview) preview.position.set(Math.round(p.x),0,Math.round(p.z));
     }
-    if(drag){let dx=e.clientX-lastX,dy=e.clientY-lastY; yaw-=dx*0.008; pitch=Math.max(0.15,Math.min(1.35,pitch+dy*0.005)); lastX=e.clientX;lastY=e.clientY; updateCam();}
+    if(drag){var dx=e.clientX-lastX,dy=e.clientY-lastY; yaw-=dx*0.008; pitch=Math.max(0.15,Math.min(1.35,pitch+dy*0.005)); lastX=e.clientX;lastY=e.clientY; updateCam();}
   });
   ren.domElement.addEventListener('pointerup',e=>{
     drag=false;
-    let moved=Math.hypot(e.clientX-downX,e.clientY-downY);
+    var moved=Math.hypot(e.clientX-downX,e.clientY-downY);
     if(moved<10 && Date.now()-downTime<400){
-      let rect=ren.domElement.getBoundingClientRect();
+      var rect=ren.domElement.getBoundingClientRect();
       mouse.x=((e.clientX-rect.left)/rect.width)*2-1; mouse.y=-((e.clientY-rect.top)/rect.height)*2+1;
       ray.setFromCamera(mouse,cam);
-      let meshes=items.map(i=>i.mesh);
-      let hitItem=ray.intersectObjects(meshes,true);
+      var meshes=items.map(i=>i.mesh);
+      var hitItem=ray.intersectObjects(meshes,true);
       if(hitItem.length>0){
-        let root=hitItem[0].object; while(root.parent && !items.some(i=>i.mesh==root)) root=root.parent;
-        let idx=items.findIndex(i=>i.mesh==root);
+        var root=hitItem[0].object; while(root.parent && !items.some(i=>i.mesh==root)) root=root.parent;
+        var idx=items.findIndex(i=>i.mesh==root);
         if(idx>=0){hapusItem(idx);return;}
       }
-      let hit=ray.intersectObject(ground);
+      var hit=ray.intersectObject(ground);
       if(hit.length>0){
-        let p=hit[0].point; let x=Math.round(p.x),z=Math.round(p.z);
+        var p=hit[0].point; var x=Math.round(p.x),z=Math.round(p.z);
         if(mode=='map'){
-          let nama=document.getElementById('namaMap').value.trim()||'Bangunan Baru';
-          let m=buatMeshBangunan(pilih,nama); m.position.set(x,0,z); scene.add(m);
-          items.push({mesh:m,kind:'map',data:{nama:nama,type:pilih,x:x,z:z}});
+          var nama=document.getElementById('namaMap').value.trim()||'Bangunan Baru';
+          var m=buatMeshBangunan(pilih,nama); m.position.set(x,0,z); scene.add(m);
+          items.push({mesh:m,kind:'map',data:buatDataMap(nama,pilih,x,z)});
         }else{
-          let pj=parseFloat(document.getElementById('panjangJalan').value)||200;
-          let lb=parseFloat(document.getElementById('lebarJalan').value)||10;
-          let m=buatMeshJalan(pj,lb,arahJalan); m.position.set(x,0,z); scene.add(m);
-          items.push({mesh:m,kind:'jalan',data:{x:x,z:z,panjang:pj,lebar:lb,arah:arahJalan}});
+          var pj=parseFloat(document.getElementById('panjangJalan').value)||200;
+          var lb=parseFloat(document.getElementById('lebarJalan').value)||10;
+          var m2=buatMeshJalan(pj,lb,arahJalan); m2.position.set(x,0,z); scene.add(m2);
+          items.push({mesh:m2,kind:'jalan',data:buatDataJalan(x,z,pj,lb,arahJalan)});
         }
         renderList();
       }
