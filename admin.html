@@ -59,7 +59,7 @@ input,select{width:100%;padding:10px;border:2px solid #cbd5e1;border-radius:10px
 <button class="btn" style="background:#16a34a;color:#fff" onclick="simpanSemua()">💾 SIMPAN SEMUA KE GAME</button>
 <button class="btn" style="background:#e2e8f0" onclick="resetDefault()">🔄 Reset Jalan Default (Salib)</button>
 </div>
-<div id="wrap"><div id="holder"></div><div id="hint">👆 Tap tanah = taroh &nbsp;|&nbsp; Drag = puter kamera &nbsp;|&nbsp; Tap bangunan = hapus</div><div id="pos">X: 0 • Z: 0</div></div>
+<div id="wrap"><div id="holder"></div><div id="hint">👆 Tap tanah = taroh | Drag = puter kamera | Tap bangunan = hapus</div><div id="pos">X: 0 • Z: 0</div></div>
 <div id="list"><b>📋 Daftar di 3D ini (belum tersimpan kalau belum pencet SIMPAN):</b><div id="listIsi">Loading...</div></div>
 
 <script>
@@ -67,7 +67,7 @@ var DB_URL="https://admin-55bc3-default-rtdb.firebaseio.com";
 var mode='map', pilih='rumah', arahJalan='horizontal';
 var scene,cam,ren,ray=new THREE.Raycaster(),mouse=new THREE.Vector2();
 var yaw=0.8,pitch=0.9,dist=180;
-var items=[]; // {mesh, data, kind}
+var items=[];
 var preview=null;
 
 function setMode(m){
@@ -80,7 +80,6 @@ function setMode(m){
 }
 function pilihType(btn,t){pilih=t;document.querySelectorAll('#toolsMap .row button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');updatePreview();}
 function pilihArah(btn,a){arahJalan=a;document.querySelectorAll('#toolsJalan .row button').forEach(b=>b.classList.remove('onJalan'));btn.classList.add('onJalan');updatePreview();}
-
 function warnaType(t){
   if(t=='masjid')return 0xA7F3D0; if(t=='toko')return 0xFDE68A; if(t=='pos')return 0xFCA5A5; return 0xFEF9C3;
 }
@@ -110,7 +109,7 @@ function renderList(){
   let h='';
   if(items.length==0) h='<div style="color:#888;padding:10px;text-align:center">Belum ada apa-apa di 3D. Tap tanah buat nambah!</div>';
   items.forEach((it,i)=>{
-    let label = it.kind=='map' ? '🏠 '+(it.data.nama||'')+' • '+it.data.type+' • X:'+Math.round(it.data.x)+' Z:'+Math.round(it.data.z) : '🛣️ Jalan • '+it.data.arah+' • X:'+Math.round(it.data.x)+' Z:'+Math.round(it.data.z)+' • P:'+it.data.panjang;
+    let label = it.kind=='map' ? '🏠 '+(it.data.nama||'')+' - '+it.data.type+' - X:'+Math.round(it.data.x)+' Z:'+Math.round(it.data.z) : '🛣️ Jalan - '+it.data.arah+' - X:'+Math.round(it.data.x)+' Z:'+Math.round(it.data.z)+' - P:'+it.data.panjang;
     h+='<div class="item"><div><b>'+label+'</b></div><button style="background:#dc2626;color:#fff" onclick="hapusItem('+i+')">HAPUS</button></div>';
   });
   document.getElementById('listIsi').innerHTML=h;
@@ -122,12 +121,32 @@ function hapusItem(i){
 async function loadAwal(){
   try{
     let r1=await fetch(DB_URL+"/map.json"); let v1=await r1.json();
-    if(v1){let arr=Array.isArray(v1)?v1:Object.values(v1); arr.forEach(it=>{ if(it&&it.x!=null){ let m=buatMeshBangunan(it.type||'rumah',it.nama||'Bangunan'); m.position.set(it.x,0,it.z); scene.add(m); items.push({mesh:m,kind:'map',data:{nama:it.nama,type:it.type,x:it.x,z:it.z}}); }});}
+    if(v1){
+      let arr=Array.isArray(v1)?v1:Object.values(v1);
+      arr.forEach(it=>{
+        if(it && it.x!=null){
+          let m=buatMeshBangunan(it.type||'rumah',it.nama||'Bangunan');
+          m.position.set(it.x,0,it.z); scene.add(m);
+          items.push({mesh:m,kind:'map',data:{nama:it.nama||'Bangunan',type:it.type||'rumah',x:it.x,z:it.z}});
+        }
+      });
+    }
     let r2=await fetch(DB_URL+"/jalan.json"); let v2=await r2.json();
-    if(v2){let arr=Array.isArray(v2)?v2:Object.values(v2); arr.forEach(it=>{ if(it){ let m=buatMeshJalan(it.panjang||200,it.lebar||10,it.arah||'horizontal'); m.position.set(it.x,0,it.z); scene.add(m); items.push({mesh:m,kind:'jalan',data:{x:it.x,z:it.z,panjang:it.panjang,lebar:it.lebar,arah:it.arah}}); }});}
-    else{
-      // default salib kalau kosong
-      [[0,0,500,10,'horizontal'],[0,0,10,500,'vertical']].forEach(a=>{let m=buatMeshJalan(a[2],a[3],a[4]);m.position.set(a[0],0,a[1]);scene.add(m);items.push({mesh:m,kind:'jalan',data:{x:a[0],z:a[1],panjang:a[2],lebar:a[3],arah:a[4]}});});
+    if(v2){
+      let arr=Array.isArray(v2)?v2:Object.values(v2);
+      arr.forEach(it=>{
+        if(it){
+          let m=buatMeshJalan(it.panjang||200,it.lebar||10,it.arah||'horizontal');
+          m.position.set(it.x,0,it.z); scene.add(m);
+          items.push({mesh:m,kind:'jalan',data:{x:it.x,z:it.z,panjang:it.panjang||200,lebar:it.lebar||10,arah:it.arah||'horizontal'}});
+        }
+      });
+    } else {
+      let defs=[[0,0,500,10,'horizontal'],[0,0,10,500,'vertical']];
+      defs.forEach(a=>{
+        let m=buatMeshJalan(a[2],a[3],a[4]); m.position.set(a[0],0,a[1]); scene.add(m);
+        items.push({mesh:m,kind:'jalan',data:{x:a[0],z:a[1],panjang:a[2],lebar:a[3],arah:a[4]}});
+      });
     }
   }catch(e){console.log(e);}
   renderList(); updatePreview();
@@ -145,7 +164,11 @@ async function simpanSemua(){
 async function resetDefault(){
   if(!confirm('Reset jalan jadi salib?'))return;
   items=items.filter(it=>{if(it.kind=='jalan'){scene.remove(it.mesh);return false;}return true;});
-  [[0,0,500,10,'horizontal'],[0,0,10,500,'vertical']].forEach(a=>{let m=buatMeshJalan(a[2],a[3],a[4]);m.position.set(a[0],0,a[1]);scene.add(m);items.push({mesh:m,kind:'jalan',data:{x:a[0],z:a[1],panjang:a[2],lebar:a[3],arah:a[4]}});});
+  let defs=[[0,0,500,10,'horizontal'],[0,0,10,500,'vertical']];
+  defs.forEach(a=>{
+    let m=buatMeshJalan(a[2],a[3],a[4]); m.position.set(a[0],0,a[1]); scene.add(m);
+    items.push({mesh:m,kind:'jalan',data:{x:a[0],z:a[1],panjang:a[2],lebar:a[3],arah:a[4]}});
+  });
   renderList();
 }
 function updateCam(){
@@ -159,7 +182,6 @@ function init3D(){
   ren=new THREE.WebGLRenderer({antialias:true});ren.setSize(holder.clientWidth,holder.clientHeight);holder.appendChild(ren.domElement);
   scene.add(new THREE.AmbientLight(0xffffff,0.9));
   let ground=new THREE.Mesh(new THREE.PlaneGeometry(500,500),new THREE.MeshLambertMaterial({color:0x2ea043}));ground.rotation.x=-Math.PI/2;ground.name='ground';scene.add(ground);
-  // garis grid bantu
   for(let i=-250;i<=250;i+=50){
     let l1=new THREE.Mesh(new THREE.PlaneGeometry(500,0.3),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.2}));l1.rotation.x=-Math.PI/2;l1.position.set(0,0.02,i);scene.add(l1);
     let l2=new THREE.Mesh(new THREE.PlaneGeometry(0.3,500),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.2}));l2.rotation.x=-Math.PI/2;l2.position.set(i,0.02,0);scene.add(l2);
@@ -173,7 +195,7 @@ function init3D(){
     ray.setFromCamera(mouse,cam);
     let hit=ray.intersectObject(ground);
     if(hit.length>0){
-      let p=hit[0].point; document.getElementById('pos').innerText='X: '+Math.round(p.x)+' • Z: '+Math.round(p.z)+' • Tap buat taroh';
+      let p=hit[0].point; document.getElementById('pos').innerText='X: '+Math.round(p.x)+' - Z: '+Math.round(p.z)+' - Tap buat taroh';
       if(preview) preview.position.set(Math.round(p.x),0,Math.round(p.z));
     }
     if(drag){let dx=e.clientX-lastX,dy=e.clientY-lastY; yaw-=dx*0.008; pitch=Math.max(0.15,Math.min(1.35,pitch+dy*0.005)); lastX=e.clientX;lastY=e.clientY; updateCam();}
@@ -182,11 +204,9 @@ function init3D(){
     drag=false;
     let moved=Math.hypot(e.clientX-downX,e.clientY-downY);
     if(moved<10 && Date.now()-downTime<400){
-      // TAP = taroh / hapus
       let rect=ren.domElement.getBoundingClientRect();
       mouse.x=((e.clientX-rect.left)/rect.width)*2-1; mouse.y=-((e.clientY-rect.top)/rect.height)*2+1;
       ray.setFromCamera(mouse,cam);
-      // cek dulu kena bangunan yang udah ada?
       let meshes=items.map(i=>i.mesh);
       let hitItem=ray.intersectObjects(meshes,true);
       if(hitItem.length>0){
