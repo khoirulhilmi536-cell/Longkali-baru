@@ -199,9 +199,40 @@ function buatBangunanSemua(){
   loadMapAdmin(); buatRealistis();
 }
 function buatRealistis(){
-  let jalan1=new THREE.Mesh(new THREE.PlaneGeometry(500,10),new THREE.MeshLambertMaterial({color:0x374151}));jalan1.rotation.x=-Math.PI/2;jalan1.position.y=0.05;scene.add(jalan1);
-  let jalan2=new THREE.Mesh(new THREE.PlaneGeometry(10,500),new THREE.MeshLambertMaterial({color:0x374151}));jalan2.rotation.x=-Math.PI/2;jalan2.position.y=0.05;scene.add(jalan2);
-  for(let i=-240;i<240;i+=12){let garis=new THREE.Mesh(new THREE.PlaneGeometry(4,0.4),new THREE.MeshLambertMaterial({color:0xFFFFFF}));garis.rotation.x=-Math.PI/2;garis.position.set(i,0.1,0);scene.add(garis);let garis2=new THREE.Mesh(new THREE.PlaneGeometry(0.4,4),new THREE.MeshLambertMaterial({color:0xFFFFFF}));garis2.rotation.x=-Math.PI/2;garis2.position.set(0,0.1,i);scene.add(garis2);}
+  loadJalanAdmin();
+}
+
+// === JALAN BISA DIGESER VIA ADMIN - DI LUAR, JANGAN DI DALAM ===
+async function loadJalanAdmin(){
+  try{
+    let r=await fetch(DB_URL+"/jalan.json");
+    let data=await r.json();
+    if(!data || Object.keys(data).length==0){
+      buatJalanBaru(0,0,500,10,'horizontal');
+      buatJalanBaru(0,0,10,500,'vertical');
+      return;
+    }
+    let arr=Array.isArray(data)?data:Object.values(data);
+    for(let j of arr){
+      if(j) buatJalanBaru(j.x,j.z,j.panjang,j.lebar,j.arah);
+    }
+  }catch(e){
+    buatJalanBaru(0,0,500,10,'horizontal');
+    buatJalanBaru(0,0,10,500,'vertical');
+  }
+}
+function buatJalanBaru(x,z,panjang,lebar,arah){
+  let geo = arah=='vertical' ? new THREE.PlaneGeometry(lebar,panjang) : new THREE.PlaneGeometry(panjang,lebar);
+  let m=new THREE.Mesh(geo, new THREE.MeshLambertMaterial({color:0x374151}));
+  m.rotation.x=-Math.PI/2; m.position.set(x,0.05,z); scene.add(m);
+  for(let i=-panjang/2; i< panjang/2; i+=12){
+    let g=new THREE.Mesh(new THREE.PlaneGeometry(arah=='vertical'?0.4:4, arah=='vertical'?4:0.4), new THREE.MeshLambertMaterial({color:0xFFFFFF}));
+    g.rotation.x=-Math.PI/2;
+    if(arah=='vertical') g.position.set(x,0.1,z+i);
+    else g.position.set(x+i,0.1,z);
+    scene.add(g);
+  }
+}
   let tr1=new THREE.Mesh(new THREE.PlaneGeometry(500,2),new THREE.MeshLambertMaterial({color:0x9CA3AF}));tr1.rotation.x=-Math.PI/2;tr1.position.set(0,0.06,6);scene.add(tr1);
   let tr2=new THREE.Mesh(new THREE.PlaneGeometry(500,2),new THREE.MeshLambertMaterial({color:0x9CA3AF}));tr2.rotation.x=-Math.PI/2;tr2.position.set(0,0.06,-6);scene.add(tr2);
   function pohon(x,z,besar){let g=new THREE.Group();let batang=new THREE.Mesh(new THREE.CylinderGeometry(0.35*besar,0.5*besar,4*besar,8),new THREE.MeshLambertMaterial({color:0x7C4A21}));batang.position.y=2*besar;g.add(batang);let d1=new THREE.Mesh(new THREE.SphereGeometry(3*besar,12,10),new THREE.MeshLambertMaterial({color:0x166534}));d1.position.y=5.5*besar;g.add(d1);let d2=new THREE.Mesh(new THREE.SphereGeometry(2*besar,12,10),new THREE.MeshLambertMaterial({color:0x22C55E}));d2.position.set(0.8*besar,7*besar,0.5*besar);g.add(d2);let d3=new THREE.Mesh(new THREE.SphereGeometry(1.8*besar,12,10),new THREE.MeshLambertMaterial({color:0x4ADE80}));d3.position.set(-0.8*besar,6.8*besar,-0.4*besar);g.add(d3);g.position.set(x,0,z);scene.add(g);}
