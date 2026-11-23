@@ -1,319 +1,185 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Admin Map 3D - LongkaliVerse</title>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin LongkaliVerse V3</title>
 <style>
-*{box-sizing:border-box} body{margin:0;font-family:Arial;background:#0f172a;color:#fff;overflow:hidden}
-#header{background:#0e4a5a;padding:10px 12px;display:flex;justify-content:space-between;align-items:center}
-#header b{font-size:16px}
-#header span{font-size:11px;background:#f59e0b;color:#000;padding:3px 7px;border-radius:6px}
-#wrap{position:relative;height:calc(100vh - 190px)}
-#canvasHolder{position:absolute;inset:0}
-#canvasHolder canvas{display:block}
-#info{position:absolute;top:10px;left:10px;background:rgba(255,255,255,.95);color:#000;padding:10px 12px;border-radius:12px;font-size:12px;max-width:220px}
-#info b{font-size:14px}
-#btnMode{position:absolute;top:10px;right:10px;display:flex;flex-direction:column;gap:6px}
-#btnMode button{padding:10px 12px;border:none;border-radius:10px;font-weight:900;font-size:12px;cursor:pointer}
-#panel{background:#fff;color:#000;padding:12px;height:190px;overflow:auto}
-input,select{width:100%;padding:10px;border:2px solid #cbd5e1;border-radius:10px;margin-bottom:8px;font-size:14px}
-.btnRow{display:flex;gap:8px}
-.btnRow button{flex:1;padding:11px;border:none;border-radius:10px;font-weight:900;cursor:pointer}
-.btnSimpan{background:#16a34a;color:#fff}.btnEdit{background:#0e4a5a;color:#fff}.btnHapus{background:#dc2626;color:#fff}.btnKuning{background:#f59e0b;color:#000}.btnAbu{background:#e2e8f0}
-.chip{display:inline-block;background:#eff6ff;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:800;margin:2px}
-.item{display:flex;justify-content:space-between;align-items:center;background:#f1f5f9;padding:8px;border-radius:10px;margin:5px 0;font-size:12px}
-.item.selected{background:#fef3c7;border:2px solid #f59e0b}
+*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#0f172a;color:#fff;padding:14px}
+h1{margin:0 0 4px;font-size:22px}h1 span{font-size:11px;background:#f59e0b;color:#000;padding:3px 7px;border-radius:6px}
+p{color:#94a3b8;font-size:12px;margin:4px 0 12px}
+.tabs{display:flex;gap:8px;margin-bottom:12px}
+.tabs button{flex:1;padding:12px;border:none;border-radius:12px;font-weight:900;font-size:14px;background:#1e293b;color:#fff}
+.tabs button.active{background:#f59e0b;color:#000}
+.card{background:#fff;color:#000;border-radius:16px;padding:14px;margin-bottom:12px}
+.card h3{margin:0 0 8px}
+label{font-size:12px;font-weight:800;color:#475569}
+input,select{width:100%;padding:11px;border:2px solid #cbd5e1;border-radius:10px;font-size:14px;margin:4px 0 10px}
+.btn{width:100%;padding:13px;border:none;border-radius:12px;font-weight:900;font-size:14px;margin-top:6px}
+.btnUtama{background:#0e4a5a;color:#fff}.btnKuning{background:#f59e0b;color:#000}.btnMerah{background:#dc2626;color:#fff}.btnAbu{background:#e2e8f0}
+.item{background:#f1f5f9;border-radius:12px;padding:10px;margin:8px 0;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.item b{font-size:14px}.item small{color:#64748b}
+.item button{padding:8px 12px;border:none;border-radius:10px;font-weight:900}
+.box{ background:#fef3c7;color:#92400e;padding:10px;border-radius:10px;font-size:12px;font-weight:700;margin-bottom:12px}
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
-<div id="header"><div><b>🗺️ ADMIN MAP 3D</b> <span>PUTER & TAP</span></div><div style="font-size:11px;text-align:right">Geser = Puter Kamera<br>Tap Tanah = Pilih Posisi</div></div>
+<h1>Admin LongkaliVerse <span>V3</span></h1>
+<p>Geser Jalan + Bangunan • Langsung masuk ke game</p>
 
-<div id="wrap">
-  <div id="canvasHolder"></div>
-  <div id="info">
-    <b id="infoJudul">➕ Mode Tambah Baru</b><br>
-    <span id="infoPos">Tap tanah di 3D untuk pilih posisi</span><br>
-    <div style="margin-top:6px"><span class="chip">X: <span id="labelX">0</span></span> <span class="chip">Z: <span id="labelZ">0</span></span></div>
-    <div style="font-size:11px;color:#64748b;margin-top:4px">🟡 = Marker posisi baru<br>🔴 = Bangunan yang dipilih<br>🟢 = Bangunan lain</div>
-  </div>
-  <div id="btnMode">
-    <button onclick="setMode('tambah')" id="btnTambah" style="background:#16a34a;color:#fff">➕ TAMBAH</button>
-    <button onclick="setMode('edit')" id="btnEditMode" style="background:#fff;color:#000">✏️ EDIT</button>
-    <button onclick="zoomIn()" style="background:#fff">🔍 + Zoom</button>
-    <button onclick="zoomOut()" style="background:#fff">🔍 - Zoom</button>
-  </div>
+<div class="tabs">
+<button id="tabMap" class="active" onclick="showTab('map')">🏠 MAP / BANGUNAN</button>
+<button id="tabJalan" onclick="showTab('jalan')">🛣️ JALAN</button>
 </div>
 
-<div id="panel">
-  <div style="display:flex;gap:8px">
-    <input id="namaBangunan" placeholder="Nama Bangunan (contoh: Warung Bu Tini)" style="flex:2">
-    <select id="tipeBangunan" style="flex:1">
-      <option value="rumah">🏠 Rumah</option>
-      <option value="toko">🛒 Toko</option>
-      <option value="masjid">🕌 Masjid</option>
-      <option value="pos">🚨 Pos Ronda</option>
-      <option value="sekolah">🏫 Sekolah</option>
-      <option value="puskesmas">🏥 Puskesmas</option>
-      <option value="balai">🏛️ Balai</option>
-    </select>
-  </div>
-  <div class="btnRow" id="rowTambah">
-    <button class="btnSimpan" onclick="simpanBaru()">✅ SIMPAN BANGUNAN BARU DI SINI</button>
-  </div>
-  <div class="btnRow" id="rowEdit" style="display:none">
-    <button class="btnSimpan" onclick="simpanEdit()">💾 SIMPAN PINDAHAN</button>
-    <button class="btnHapus" onclick="hapusDipilih()">🗑️ HAPUS</button>
-    <button class="btnAbu" onclick="batalEdit()">❌ Batal</button>
-  </div>
-  <div style="display:flex;gap:6px;margin:8px 0">
-    <button onclick="geser(-5,0)" style="flex:1;background:#0e4a5a;color:#fff;padding:8px;border:none;border-radius:8px">⬅</button>
-    <button onclick="geser(0,-5)" style="flex:1;background:#0e4a5a;color:#fff;padding:8px;border:none;border-radius:8px">⬆</button>
-    <button onclick="geser(0,5)" style="flex:1;background:#0e4a5a;color:#fff;padding:8px;border:none;border-radius:8px">⬇</button>
-    <button onclick="geser(5,0)" style="flex:1;background:#0e4a5a;color:#fff;padding:8px;border:none;border-radius:8px">➡</button>
-    <button onclick="loadData()" style="flex:1;background:#f59e0b;padding:8px;border:none;border-radius:8px;font-weight:900">🔄 Refresh</button>
-  </div>
-  <b style="font-size:13px">Daftar Bangunan Admin (<span id="jml">0</span>) - Tap untuk Edit:</b>
-  <div id="listBangunan"></div>
-  <button onclick="location.href='index.html'" style="width:100%;margin-top:8px;padding:10px;background:#0e4a5a;color:#fff;border:none;border-radius:10px;font-weight:900">⬅ Kembali ke Game</button>
+<div class="box">⚠️ Abis SIMPAN, buka game-nya terus REFRESH. Jalan / bangunan baru langsung muncul.</div>
+
+<!-- TAB MAP -->
+<div id="pageMap">
+<div class="card">
+<h3>➕ Tambah Bangunan</h3>
+<label>Nama Bangunan</label>
+<input id="namaMap" placeholder="Contoh: Warung Bu Sari">
+<label>Tipe</label>
+<select id="typeMap">
+<option value="rumah">🏠 Rumah</option>
+<option value="toko">🛒 Toko / Warung</option>
+<option value="masjid">🕌 Masjid</option>
+<option value="pos">🚨 Pos Ronda</option>
+<option value="lain">🏠 Bangunan Lain</option>
+</select>
+<label>Posisi X (-230 sampai 230)</label>
+<input id="xMap" type="number" value="50">
+<label>Posisi Z (-230 sampai 230)</label>
+<input id="zMap" type="number" value="50">
+<button class="btn btnUtama" onclick="tambahMap()">✅ SIMPAN BANGUNAN</button>
+</div>
+<div class="card">
+<h3>📋 Daftar Bangunan Admin</h3>
+<div id="listMap">Loading...</div>
+</div>
+</div>
+
+<!-- TAB JALAN -->
+<div id="pageJalan" style="display:none">
+<div class="card">
+<h3>➕ Tambah / Edit Jalan</h3>
+<label>Posisi X</label>
+<input id="xJalan" type="number" value="0">
+<label>Posisi Z</label>
+<input id="zJalan" type="number" value="0">
+<label>Panjang</label>
+<input id="panjangJalan" type="number" value="500">
+<label>Lebar</label>
+<input id="lebarJalan" type="number" value="10">
+<label>Arah</label>
+<select id="arahJalan">
+<option value="horizontal">↔️ Horizontal (kiri-kanan)</option>
+<option value="vertical">↕️ Vertical (atas-bawah)</option>
+</select>
+<button class="btn btnKuning" onclick="tambahJalan()">✅ SIMPAN JALAN</button>
+<button class="btn btnAbu" onclick="resetJalan()">🔄 Reset ke Jalan Default (Salib)</button>
+</div>
+<div class="card">
+<h3>📋 Daftar Jalan</h3>
+<div id="listJalan">Loading...</div>
+</div>
 </div>
 
 <script>
 var DB_URL="https://admin-55bc3-default-rtdb.firebaseio.com";
-var MODE='tambah', EDIT_KEY=null, DATA_MAP={}, posX=0, posZ=0, sudahPilih=false;
-var scene, cam, ren, ground, marker, ghost, bangunanMesh={};
-var yaw=0.8, pitch=0.9, dist=180, dragging=false, lastX=0, lastY=0;
-
-function getEmoji(t){t=(t||'').toLowerCase(); if(t.includes('toko'))return'🛒'; if(t.includes('masjid'))return'🕌'; if(t.includes('pos'))return'🚨'; if(t.includes('sekolah'))return'🏫'; if(t.includes('puskesmas'))return'🏥'; if(t.includes('balai'))return'🏛️'; return'🏠';}
-function getWarna(t){t=(t||'').toLowerCase(); if(t.includes('toko'))return 0xFDE68A; if(t.includes('masjid'))return 0xA7F3D0; if(t.includes('pos'))return 0xFCA5A5; if(t.includes('sekolah'))return 0xFDBA74; if(t.includes('puskesmas'))return 0xBFDBFE; if(t.includes('balai'))return 0xFFE8B0; return 0xFEF9C3;}
-
-function init3D(){
-  scene=new THREE.Scene(); scene.background=new THREE.Color(0xBFE3FF);
-  var holder=document.getElementById('canvasHolder');
-  cam=new THREE.PerspectiveCamera(55, holder.clientWidth/holder.clientHeight, 0.1, 2000);
-  ren=new THREE.WebGLRenderer({antialias:true}); ren.setSize(holder.clientWidth, holder.clientHeight);
-  holder.appendChild(ren.domElement);
-  scene.add(new THREE.AmbientLight(0xffffff,0.85));
-  scene.add(new THREE.HemisphereLight(0xffffff,0x2ea043,0.55));
-  let dl=new THREE.DirectionalLight(0xffffff,0.65); dl.position.set(20,30,10); scene.add(dl);
-  ground=new THREE.Mesh(new THREE.PlaneGeometry(500,500), new THREE.MeshLambertMaterial({color:0x2ea043}));
-  ground.rotation.x=-Math.PI/2; ground.name='tanah'; scene.add(ground);
-  // Jalan
-  let j1=new THREE.Mesh(new THREE.PlaneGeometry(500,10), new THREE.MeshLambertMaterial({color:0x374151})); j1.rotation.x=-Math.PI/2; j1.position.y=0.05; scene.add(j1);
-  let j2=new THREE.Mesh(new THREE.PlaneGeometry(10,500), new THREE.MeshLambertMaterial({color:0x374151})); j2.rotation.x=-Math.PI/2; j2.position.y=0.05; scene.add(j2);
-  // Marker kuning - posisi baru
-  marker=new THREE.Group();
-  let m1=new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,10,8), new THREE.MeshLambertMaterial({color:0xf59e0b})); m1.position.y=5; marker.add(m1);
-  let m2=new THREE.Mesh(new THREE.SphereGeometry(1.5,12,10), new THREE.MeshLambertMaterial({color:0xf59e0b})); m2.position.y=10.5; marker.add(m2);
-  let ring=new THREE.Mesh(new THREE.RingGeometry(3,5,24), new THREE.MeshBasicMaterial({color:0xf59e0b, side:THREE.DoubleSide})); ring.rotation.x=-Math.PI/2; ring.position.y=0.15; marker.add(ring);
-  marker.visible=false; scene.add(marker);
-  // Ghost bangunan - preview
-  ghost=new THREE.Group();
-  let gb=new THREE.Mesh(new THREE.BoxGeometry(12,6,10), new THREE.MeshLambertMaterial({color:0xffffff, transparent:true, opacity:0.6})); gb.position.y=3; ghost.add(gb);
-  let ga=new THREE.Mesh(new THREE.ConeGeometry(9,4,4), new THREE.MeshLambertMaterial({color:0xC0392B, transparent:true, opacity:0.6})); ga.position.y=8; ga.rotation.y=Math.PI/4; ghost.add(ga);
-  ghost.visible=false; scene.add(ghost);
-
-  // Bangunan default game (biar gak nabrak)
-  tambahBangunanDefault(0,-170,'🏛️ BALAI DESA',0xFFE8B0,20);
-  tambahBangunanDefault(-170,-40,'🕌 MASJID',0xA7F3D0,14);
-  tambahBangunanDefault(170,-30,'🛒 TOKO',0xFDE68A,18);
-  tambahBangunanDefault(-150,150,'🏫 SEKOLAH',0xFDBA74,28);
-  tambahBangunanDefault(150,150,'🚨 POS',0xFCA5A5,8);
-  tambahBangunanDefault(0,170,'🏥 PUSKESMAS',0xBFDBFE,16);
-
-  updateCam();
-  // Event
-  ren.domElement.addEventListener('pointerdown', e=>{dragging=true; lastX=e.clientX; lastY=e.clientY;});
-  ren.domElement.addEventListener('pointermove', e=>{
-    if(!dragging) return;
-    let dx=e.clientX-lastX, dy=e.clientY-lastY;
-    yaw-=dx*0.008; pitch=Math.max(0.15, Math.min(1.35, pitch+dy*0.005));
-    lastX=e.clientX; lastY=e.clientY; updateCam();
-  });
-  ren.domElement.addEventListener('pointerup', e=>{
-    if(!dragging) return; dragging=false;
-    // Kalau gesernya dikit, anggap TAP
-    if(Math.abs(e.clientX-lastX)<5 && Math.abs(e.clientY-lastY)<5){} // ignore
-  });
-  ren.domElement.addEventListener('click', onTap);
-  window.addEventListener('resize', ()=>{ ren.setSize(holder.clientWidth, holder.clientHeight); cam.aspect=holder.clientWidth/holder.clientHeight; cam.updateProjectionMatrix(); });
-  (function loop(){ requestAnimationFrame(loop); if(marker.visible) marker.children[1].position.y=10.5+Math.sin(Date.now()*0.005)*1; ren.render(scene,cam); })();
+function showTab(t){
+  document.getElementById('pageMap').style.display = t=='map'?'block':'none';
+  document.getElementById('pageJalan').style.display = t=='jalan'?'block':'none';
+  document.getElementById('tabMap').classList.toggle('active',t=='map');
+  document.getElementById('tabJalan').classList.toggle('active',t=='jalan');
+  if(t=='map') loadMap(); else loadJalan();
 }
-
-function tambahBangunanDefault(x,z,nama,warna,lebar){
-  let g=new THREE.Group();
-  let d=new THREE.Mesh(new THREE.BoxGeometry(lebar,6,10), new THREE.MeshLambertMaterial({color:warna})); d.position.y=3; g.add(d);
-  let a=new THREE.Mesh(new THREE.ConeGeometry(lebar*0.7,4,4), new THREE.MeshLambertMaterial({color:0xC0392B})); a.position.y=8; a.rotation.y=Math.PI/4; g.add(a);
-  let c=document.createElement('canvas'); c.width=512; c.height=96; let ctx=c.getContext('2d'); ctx.fillStyle='#94a3b8'; ctx.fillRect(0,0,512,96); ctx.fillStyle='#fff'; ctx.font='bold 36px Arial'; ctx.textAlign='center'; ctx.fillText(nama,256,62);
-  let tex=new THREE.CanvasTexture(c);
-  let p=new THREE.Mesh(new THREE.BoxGeometry(12,2.2,0.4), new THREE.MeshLambertMaterial({map:tex})); p.position.y=11; g.add(p);
-  g.position.set(x,0,z); scene.add(g);
-}
-
-function papanNama(g,teks,warna){
-  let c=document.createElement('canvas'); c.width=512; c.height=96; let ctx=c.getContext('2d'); ctx.fillStyle=warna; ctx.fillRect(0,0,512,96); ctx.fillStyle='#000'; ctx.font='bold 38px Arial'; ctx.textAlign='center'; ctx.fillText(teks,256,62);
-  let tex=new THREE.CanvasTexture(c);
-  let p=new THREE.Mesh(new THREE.BoxGeometry(12,2.2,0.4), new THREE.MeshLambertMaterial({map:tex})); p.position.y=11; g.add(p);
-}
-
-function buatMeshBangunan(item, key, isSelected){
-  let g=new THREE.Group();
-  let warna=getWarna(item.type);
-  let d=new THREE.Mesh(new THREE.BoxGeometry(12,6,10), new THREE.MeshLambertMaterial({color: warna})); d.position.y=3; g.add(d);
-  let a=new THREE.Mesh(new THREE.ConeGeometry(9,4,4), new THREE.MeshLambertMaterial({color: isSelected?0xf59e0b:0xC0392B})); a.position.y=8; a.rotation.y=Math.PI/4; g.add(a);
-  // Ring kalau dipilih
-  if(isSelected){
-    let ring=new THREE.Mesh(new THREE.RingGeometry(8,10,24), new THREE.MeshBasicMaterial({color:0xef4444, side:THREE.DoubleSide})); ring.rotation.x=-Math.PI/2; ring.position.y=0.2; g.add(ring);
-  }
-  papanNama(g, getEmoji(item.type)+' '+(item.nama||'').toUpperCase(), isSelected?'#f59e0b':'#FFC107');
-  g.position.set(parseFloat(item.x),0,parseFloat(item.z));
-  g.userData.key=key; g.userData.isBangunanAdmin=true;
-  return g;
-}
-
-function onTap(e){
-  // Raycast
-  let rect=ren.domElement.getBoundingClientRect();
-  let mouse=new THREE.Vector2(((e.clientX-rect.left)/rect.width)*2-1, -((e.clientY-rect.top)/rect.height)*2+1);
-  let ray=new THREE.Raycaster(); ray.setFromCamera(mouse, cam);
-  let hits=ray.intersectObjects(scene.children, true);
-  for(let h of hits){
-    // Cek apakah kena bangunan admin?
-    let obj=h.object; let root=obj;
-    while(root.parent && root.parent!==scene) root=root.parent;
-    if(root.userData && root.userData.isBangunanAdmin){
-      mulaiEdit(root.userData.key);
-      return;
-    }
-    if(h.object===ground){
-      let x=Math.round(h.point.x), z=Math.round(h.point.z);
-      setPos(x,z);
-      if(MODE==='edit' && EDIT_KEY){
-        // Di mode edit, tap tanah = langsung pindahin bangunan yang dipilih
-        DATA_MAP[EDIT_KEY].x=x; DATA_MAP[EDIT_KEY].z=z;
-        refreshMesh();
-      }
-      return;
-    }
-  }
-}
-
-function setPos(x,z){
-  posX=x; posZ=z; sudahPilih=true;
-  document.getElementById('labelX').innerText=x;
-  document.getElementById('labelZ').innerText=z;
-  document.getElementById('infoPos').innerText='Posisi: X='+x+', Z='+z;
-  marker.visible=true; marker.position.set(x,0,z);
-  ghost.visible=true; ghost.position.set(x,0,z);
-  let tipe=document.getElementById('tipeBangunan').value;
-  ghost.children[0].material.color.set(getWarna(tipe));
-}
-function geser(dx,dz){ if(!sudahPilih){alert('Tap tanah dulu!'); return;} setPos(posX+dx, posZ+dz); if(MODE==='edit'&&EDIT_KEY){DATA_MAP[EDIT_KEY].x=posX; DATA_MAP[EDIT_KEY].z=posZ; refreshMesh();} }
-function updateCam(){
-  cam.position.set(Math.sin(yaw)*Math.cos(pitch)*dist, Math.sin(pitch)*dist, Math.cos(yaw)*Math.cos(pitch)*dist);
-  cam.lookAt(0,0,0);
-}
-function zoomIn(){ dist=Math.max(30,dist-15); updateCam(); }
-function zoomOut(){ dist=Math.min(400,dist+15); updateCam(); }
-
-function setMode(m){
-  MODE=m;
-  document.getElementById('btnTambah').style.background = m==='tambah' ? '#16a34a' : '#fff';
-  document.getElementById('btnTambah').style.color = m==='tambah' ? '#fff' : '#000';
-  document.getElementById('btnEditMode').style.background = m==='edit' ? '#0e4a5a' : '#fff';
-  document.getElementById('btnEditMode').style.color = m==='edit' ? '#fff' : '#000';
-  if(m==='tambah'){ batalEdit(); }
-  else { document.getElementById('infoJudul').innerText='✏️ Mode EDIT - Tap bangunan 3D untuk pilih'; }
-}
-
-function refreshMesh(){
-  for(let k in bangunanMesh){ scene.remove(bangunanMesh[k]); }
-  bangunanMesh={};
-  for(let [key,item] of Object.entries(DATA_MAP)){
-    if(!item) continue;
-    let mesh=buatMeshBangunan(item, key, key===EDIT_KEY);
-    scene.add(mesh); bangunanMesh[key]=mesh;
-  }
-}
-
-async function loadData(){
+// ===== MAP =====
+async function loadMap(){
+  document.getElementById('listMap').innerHTML='Loading...';
   try{
-    let r=await fetch(DB_URL+"/map.json"); let v=await r.json(); DATA_MAP=v||{};
-    refreshMesh();
-    let arr=Object.entries(DATA_MAP);
-    document.getElementById('jml').innerText=arr.length;
-    let html='';
-    for(let [key,item] of arr){
-      html+='<div class="item '+(key===EDIT_KEY?'selected':'')+'"><div><b>'+getEmoji(item.type)+' '+(item.nama||'-')+'</b><br><span style="color:#64748b">X:'+item.x+' Z:'+item.z+' | '+item.type+'</span></div><button onclick="mulaiEdit(\''+key+'\')" style="background:#0e4a5a;color:#fff;border:none;padding:7px 12px;border-radius:8px;font-weight:900">EDIT</button></div>';
+    let r=await fetch(DB_URL+"/map.json"); let v=await r.json();
+    if(!v){document.getElementById('listMap').innerHTML='Belum ada bangunan admin.';return;}
+    let arr = Array.isArray(v) ? v : Object.entries(v).map(([k,val])=>({...val,_key:k}));
+    let h='';
+    arr.forEach((it,i)=>{
+      let key = it._key!=null?it._key:i;
+      h+='<div class="item"><div><b>'+(it.nama||it.label||'Bangunan')+'</b><br><small>'+(it.type||'')+' • X: '+it.x+' • Z: '+it.z+'</small></div><button style="background:#dc2626;color:#fff" onclick="hapusMap(\''+key+'\')">HAPUS</button></div>';
+    });
+    document.getElementById('listMap').innerHTML=h||'Belum ada bangunan.';
+  }catch(e){document.getElementById('listMap').innerHTML='Gagal load: '+e;}
+}
+async function tambahMap(){
+  let nama=document.getElementById('namaMap').value.trim();
+  let type=document.getElementById('typeMap').value;
+  let x=parseFloat(document.getElementById('xMap').value);
+  let z=parseFloat(document.getElementById('zMap').value);
+  if(!nama){alert('Isi nama dulu!');return;}
+  if(isNaN(x)||isNaN(z)){alert('Isi X dan Z!');return;}
+  try{
+    await fetch(DB_URL+"/map.json",{method:"POST",body:JSON.stringify({nama:nama,type:type,x:x,z:z})});
+    alert('✅ Bangunan tersimpan! Refresh game!');
+    document.getElementById('namaMap').value='';
+    loadMap();
+  }catch(e){alert('Gagal simpan! '+e);}
+}
+async function hapusMap(key){
+  if(!confirm('Hapus bangunan ini?'))return;
+  try{await fetch(DB_URL+"/map/"+key+".json",{method:"DELETE"});loadMap();}catch(e){alert('Gagal hapus');}
+}
+// ===== JALAN =====
+async function loadJalan(){
+  document.getElementById('listJalan').innerHTML='Loading...';
+  try{
+    let r=await fetch(DB_URL+"/jalan.json"); let v=await r.json();
+    if(!v){document.getElementById('listJalan').innerHTML='Belum ada jalan custom. Game pakai jalan default (salib).';return;}
+    let arr = Array.isArray(v) ? v : Object.entries(v).map(([k,val])=>({...val,_key:k}));
+    let h='';
+    arr.forEach((it,i)=>{
+      let key = it._key!=null?it._key:i;
+      h+='<div class="item"><div><b>🛣️ Jalan '+(i+1)+'</b><br><small>'+(it.arah||'')+' • X: '+it.x+' • Z: '+it.z+' • Panjang: '+it.panjang+' • Lebar: '+it.lebar+'</small></div><div style="display:flex;gap:6px"><button style="background:#f59e0b" onclick="editJalan(\''+key+'\','+it.x+','+it.z+','+it.panjang+','+it.lebar+',\''+it.arah+'\')">EDIT</button><button style="background:#dc2626;color:#fff" onclick="hapusJalan(\''+key+'\')">HAPUS</button></div></div>';
+    });
+    document.getElementById('listJalan').innerHTML=h||'Belum ada jalan.';
+  }catch(e){document.getElementById('listJalan').innerHTML='Gagal load: '+e;}
+}
+function editJalan(key,x,z,panjang,lebar,arah){
+  document.getElementById('xJalan').value=x;
+  document.getElementById('zJalan').value=z;
+  document.getElementById('panjangJalan').value=panjang;
+  document.getElementById('lebarJalan').value=lebar;
+  document.getElementById('arahJalan').value=arah;
+  window._editJalanKey=key;
+  alert('Ke-edit! Ubah angkanya di atas, terus pencet SIMPAN JALAN. Nanti yang lama kehapus, yang baru kesimpan.');
+}
+async function tambahJalan(){
+  let x=parseFloat(document.getElementById('xJalan').value);
+  let z=parseFloat(document.getElementById('zJalan').value);
+  let panjang=parseFloat(document.getElementById('panjangJalan').value);
+  let lebar=parseFloat(document.getElementById('lebarJalan').value);
+  let arah=document.getElementById('arahJalan').value;
+  if(isNaN(x)||isNaN(z)||isNaN(panjang)||isNaN(lebar)){alert('Isi semua angka dulu!');return;}
+  try{
+    if(window._editJalanKey){
+      await fetch(DB_URL+"/jalan/"+window._editJalanKey+".json",{method:"DELETE"});
+      window._editJalanKey=null;
     }
-    if(arr.length==0) html='<div style="text-align:center;color:#888">Belum ada bangunan admin</div>';
-    document.getElementById('listBangunan').innerHTML=html;
-  }catch(e){ console.log(e); }
+    await fetch(DB_URL+"/jalan.json",{method:"POST",body:JSON.stringify({x:x,z:z,panjang:panjang,lebar:lebar,arah:arah})});
+    alert('✅ Jalan tersimpan! Refresh game!');
+    loadJalan();
+  }catch(e){alert('Gagal simpan! '+e);}
 }
-
-function mulaiEdit(key){
-  let item=DATA_MAP[key]; if(!item) return;
-  EDIT_KEY=key; MODE='edit'; setMode('edit');
-  document.getElementById('namaBangunan').value=item.nama||'';
-  document.getElementById('tipeBangunan').value=item.type||'rumah';
-  setPos(parseFloat(item.x), parseFloat(item.z));
-  document.getElementById('infoJudul').innerText='✏️ EDIT: '+(item.nama||'');
-  document.getElementById('infoPos').innerText='Tap tanah 3D / tombol panah untuk pindahin! Lalu SIMPAN.';
-  document.getElementById('rowTambah').style.display='none';
-  document.getElementById('rowEdit').style.display='flex';
-  refreshMesh(); loadData();
-  // Arahkan kamera ke bangunan itu
-  // (opsional, biar langsung keliatan)
+async function hapusJalan(key){
+  if(!confirm('Hapus jalan ini?'))return;
+  try{await fetch(DB_URL+"/jalan/"+key+".json",{method:"DELETE"});loadJalan();}catch(e){alert('Gagal hapus');}
 }
-
-function batalEdit(){
-  EDIT_KEY=null;
-  document.getElementById('infoJudul').innerText='➕ Mode Tambah Baru';
-  document.getElementById('infoPos').innerText='Tap tanah di 3D untuk pilih posisi';
-  document.getElementById('rowTambah').style.display='flex';
-  document.getElementById('rowEdit').style.display='none';
-  document.getElementById('namaBangunan').value='';
-  marker.visible=false; ghost.visible=false; sudahPilih=false;
-  refreshMesh(); loadData();
+async function resetJalan(){
+  if(!confirm('Reset jalan ke default salib? Semua jalan custom bakal kehapus!'))return;
+  try{
+    await fetch(DB_URL+"/jalan.json",{method:"DELETE"});
+    await fetch(DB_URL+"/jalan.json",{method:"POST",body:JSON.stringify({x:0,z:0,panjang:500,lebar:10,arah:'horizontal'})});
+    await fetch(DB_URL+"/jalan.json",{method:"POST",body:JSON.stringify({x:0,z:0,panjang:500,lebar:10,arah:'vertical'})});
+    alert('✅ Reset! Jalan balik jadi salib. Refresh game!');
+    loadJalan();
+  }catch(e){alert('Gagal reset');}
 }
-
-async function simpanBaru(){
-  let nama=document.getElementById('namaBangunan').value.trim();
-  let tipe=document.getElementById('tipeBangunan').value;
-  if(!sudahPilih){ alert('Tap tanah di 3D dulu!'); return; }
-  if(!nama){ alert('Isi nama dulu!'); return; }
-  let data={nama:nama, type:tipe, x:posX, z:posZ, dibuat:Date.now()};
-  await fetch(DB_URL+"/map.json",{method:"POST",body:JSON.stringify(data)});
-  alert('✅ "'+nama+'" masuk ke game!');
-  document.getElementById('namaBangunan').value='';
-  loadData();
-}
-
-async function simpanEdit(){
-  if(!EDIT_KEY) return;
-  let nama=document.getElementById('namaBangunan').value.trim();
-  let tipe=document.getElementById('tipeBangunan').value;
-  let item=DATA_MAP[EDIT_KEY]||{};
-  let data={nama:nama, type:tipe, x:posX, z:posZ, dibuat:item.dibuat||Date.now(), diedit:Date.now()};
-  await fetch(DB_URL+"/map/"+EDIT_KEY+".json",{method:"PUT",body:JSON.stringify(data)});
-  alert('✅ Posisi "'+nama+'" pindah ke X='+posX+', Z='+posZ+'!');
-  batalEdit();
-}
-
-async function hapusDipilih(){
-  if(!EDIT_KEY) return;
-  if(!confirm('Hapus bangunan ini?')) return;
-  await fetch(DB_URL+"/map/"+EDIT_KEY+".json",{method:"DELETE"});
-  alert('Terhapus!');
-  batalEdit();
-}
-
-document.getElementById('tipeBangunan').addEventListener('change', function(){
-  if(ghost.visible) ghost.children[0].material.color.set(getWarna(this.value));
-});
-
-init3D(); loadData();
+loadMap();
 </script>
-</body>
-</html>
+</body></html>
