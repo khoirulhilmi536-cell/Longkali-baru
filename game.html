@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>BloxLongkali - Game Kayak Roblox!</title>
+<title>BloxLongkali V2 - FULL SERVER!</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{margin:0;font-family:Arial;background:#111;color:#fff;overflow:hidden}
 #top{position:fixed;top:0;left:0;right:0;z-index:100;background:#fff;color:#000;padding:8px 10px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,.3)}
@@ -11,7 +11,7 @@
 #coins{position:fixed;top:58px;left:10px;z-index:999;background:#f59e0b;color:#000;padding:7px 12px;border-radius:20px;font-weight:900;font-size:13px}
 #holder{position:fixed;inset:0;top:52px;bottom:0;background:#5aa9e6}
 #toolbar{position:fixed;bottom:0;left:0;right:0;z-index:100;background:#fff;display:flex;gap:4px;padding:6px;overflow-x:auto}
-#toolbar button{flex:1;min-width:68px;background:#eee;border:none;padding:10px 4px;border-radius:10px;font-weight:900;font-size:11px;color:#000}
+#toolbar button{flex:1;min-width:62px;background:#eee;border:none;padding:10px 4px;border-radius:10px;font-weight:900;font-size:11px;color:#000}
 #toolbar button.on{background:#111;color:#fff}
 #joy{position:fixed;bottom:80px;left:14px;width:110px;height:110px;background:rgba(255,255,255,.3);border:2px solid rgba(255,255,255,.7);border-radius:50%;z-index:99}
 #knob{position:absolute;left:35px;top:35px;width:40px;height:40px;background:#fff;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.4)}
@@ -24,27 +24,28 @@ input{width:100%;padding:11px;border:2px solid #ddd;border-radius:10px;margin:4p
 .kitem{display:flex;justify-content:space-between;align-items:center;background:#f1f5f9;border-radius:12px;padding:10px;margin:7px 0}
 .kbtn{border:none;padding:8px 12px;border-radius:10px;font-weight:900;color:#fff;font-size:12px}
 .cbtn{width:36px;height:36px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1px #ccc;cursor:pointer}
+#toast{position:fixed;top:120px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 16px;border-radius:20px;font-weight:900;font-size:13px;z-index:99999;display:none;white-space:nowrap}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
-<div id="top"><div><b>Blox<i>Longkali</i></b><br><small id="namaTop" style="color:#666;font-size:11px">Game Kayak Roblox • Buatan Anak Longkali</small></div><div><button onclick="bukaAvatar()">👤 AVATAR</button> <button onclick="bukaKatalog()">🛒 KATALOG</button></div></div>
+<div id="top"><div><b>Blox<i>Longkali</i> <span style="font-size:10px;background:#16a34a;color:#fff;padding:2px 6px;border-radius:4px">V2 FULL SERVER</span></b><br><small id="namaTop" style="color:#666;font-size:11px">Game Kayak Roblox • Buatan Anak Longkali</small></div><div><button onclick="bukaAvatar()">👤 AVATAR</button> <button onclick="bukaKatalog()">🛒 KATALOG</button></div></div>
 <div id="coins">🪙 <span id="coinsText">100</span> Coins</div>
 <div id="robux" onclick="bukaTopUp()">🔴 R$ <span id="robuxText">0</span> • TOP UP</div>
+<div id="toast"></div>
 <div id="holder"></div>
 <div id="toolPanel">
-<b id="toolJudul">🧱 BUILD - Pilih Part</b>
+<b id="toolJudul">🧱 BUILD - Real-Time! Temen Lu Langsung Liat!</b>
 <div style="display:flex;gap:6px;margin:8px 0">
 <button onclick="setTool('part')" style="flex:1;padding:9px;border-radius:8px;font-weight:900">⬛ Part</button>
 <button onclick="setTool('wedge')" style="flex:1;padding:9px;border-radius:8px;font-weight:900">🔺 Wedge</button>
 <button onclick="setTool('ball')" style="flex:1;padding:9px;border-radius:8px;font-weight:900">⚪ Ball</button>
 <button onclick="setTool('cylinder')" style="flex:1;padding:9px;border-radius:8px;font-weight:900">🛢️ Cylinder</button>
 <button onclick="setTool('delete')" style="flex:1;padding:9px;border-radius:8px;font-weight:900;background:#dc2626;color:#fff">❌ Delete</button>
-<button onclick="setTool('move')" style="flex:1;padding:9px;border-radius:8px;font-weight:900;background:#0ea5e9;color:#fff">✋ Move</button>
 </div>
 <div style="display:flex;gap:6px;flex-wrap:wrap" id="warnaList"></div>
-<p style="font-size:11px;color:#666;margin:6px 0 0">👆 Tap Baseplate = Buat Part • Tap Part = Hapus / Pindah • Drag = Puter Kamera (kalau tool Move / Select)</p>
-<div style="display:flex;gap:6px;margin-top:8px"><button onclick="saveWorld()" style="flex:1;background:#16a34a;color:#fff;border:none;padding:9px;border-radius:8px;font-weight:900">💾 SAVE WORLD</button><button onclick="clearWorld()" style="flex:1;background:#111;color:#fff;border:none;padding:9px;border-radius:8px;font-weight:900">🗑️ CLEAR</button></div>
+<p style="font-size:11px;color:#666;margin:6px 0 0">✅ Tap Baseplate = Buat Part, langsung muncul di HP temen! • Tap Part + Delete = Hapus!</p>
+<div style="display:flex;gap:6px;margin-top:8px"><button onclick="clearWorld()" style="flex:1;background:#111;color:#fff;border:none;padding:9px;border-radius:8px;font-weight:900">🗑️ HAPUS PART SAYA</button><button onclick="toggleBuild()" style="flex:1;background:#0e4a5a;color:#fff;border:none;padding:9px;border-radius:8px;font-weight:900">TUTUP BUILD</button></div>
 </div>
 <div id="joy"><div id="knob"></div></div>
 <button id="jumpBtn" onclick="lompat()">⬆️</button>
@@ -57,104 +58,134 @@ input{width:100%;padding:11px;border:2px solid #ddd;border-radius:10px;margin:4p
 <button onclick="bukaTopUp()">🔴<br>Robux</button>
 <button onclick="bukaChat()">💬<br>Chat</button>
 </div>
-
-<div id="modalLogin" class="modal"><div><h2 style="text-align:center">BloxLongkali</h2><p style="text-align:center;font-size:12px;color:#666">Bikin akun Roblox-nya Longkali! Gratis!</p><label>Username</label><input id="inUser" placeholder="Contoh: BudiBlox"><button class="btn" style="background:#ff0000;color:#fff" onclick="buatAkun()">▶ PLAY!</button><p style="font-size:11px;color:#888;text-align:center">Dapet 100 Coins + Bisa Bangun + Bisa Ganti Avatar!</p></div></div>
-<div id="modalAvatar" class="modal"><div><div style="display:flex;justify-content:space-between"><b>👤 AVATAR EDITOR</b><button onclick="tutupSemua()" style="border:none;background:#eee;border-radius:50%;width:28px;height:28px">✕</button></div><p style="font-size:12px;color:#666">Kayak di Roblox! Ganti warna badan, kepala, celana!</p><label>Kepala (Head)</label><div style="display:flex;gap:6px;flex-wrap:wrap" id="warnaHead"></div><label>Badan (Torso)</label><div style="display:flex;gap:6px;flex-wrap:wrap" id="warnaTorso"></div><label>Kaki (Legs)</label><div style="display:flex;gap:6px;flex-wrap:wrap" id="warnaLegs"></div><label>Topi</label><div id="listTopi"></div><button class="btn" style="background:#111;color:#fff" onclick="tutupSemua()">✅ PAKAI AVATAR INI</button></div></div>
+<div id="modalLogin" class="modal"><div><h2 style="text-align:center">BloxLongkali V2</h2><p style="text-align:center;font-size:12px;color:#666">FULL SERVER! Temen lu bisa liat lu jalan + bangun bareng!</p><label>Username (tanpa spasi)</label><input id="inUser" placeholder="Contoh: BudiBlox"><button class="btn" style="background:#ff0000;color:#fff" onclick="buatAkun()">▶ PLAY!</button><p style="font-size:11px;color:#888;text-align:center">Dapet 100 Coins + Bisa Bangun + Bisa Ganti Avatar!</p></div></div>
+<div id="modalAvatar" class="modal"><div><div style="display:flex;justify-content:space-between"><b>👤 AVATAR EDITOR</b><button onclick="tutupSemua()" style="border:none;background:#eee;border-radius:50%;width:28px;height:28px">✕</button></div><p style="font-size:12px;color:#666">Ganti warna! Temen lu langsung liat perubahan lu!</p><label>Kepala (Head)</label><div style="display:flex;gap:6px;flex-wrap:wrap" id="warnaHead"></div><label>Badan (Torso)</label><div style="display:flex;gap:6px;flex-wrap:wrap" id="warnaTorso"></div><label>Kaki (Legs)</label><div style="display:flex;gap:6px;flex-wrap:wrap" id="warnaLegs"></div><label>Topi</label><div id="listTopi"></div><button class="btn" style="background:#111;color:#fff" onclick="tutupSemua()">✅ PAKAI AVATAR INI</button></div></div>
 <div id="modalKatalog" class="modal"><div><div style="display:flex;justify-content:space-between"><b>🛒 KATALOG</b><button onclick="tutupSemua()" style="border:none;background:#eee;border-radius:50%;width:28px;height:28px">✕</button></div><p style="font-size:12px;color:#666">Beli pake Robux! Kayak di Roblox beneran!</p><div style="background:#fee2e2;padding:10px;border-radius:10px;text-align:center">🔴 Robux Kamu: <b id="robuxKatalog">0</b> • <span onclick="bukaTopUp()" style="text-decoration:underline;font-weight:900">Top Up</span></div><div id="listKatalog"></div><button class="btn" style="background:#eee" onclick="tutupSemua()">TUTUP</button></div></div>
-<div id="modalTopUp" class="modal"><div><div style="display:flex;justify-content:space-between"><b>🔴 TOP UP ROBUX</b><button onclick="tutupSemua()" style="border:none;background:#eee;border-radius:50%;width:28px;height:28px">✕</button></div><p style="font-size:12px;color:#666">Robux buat beli di Katalog! Bukan Coins!</p><div style="background:#fee2e2;padding:10px;border-radius:10px;text-align:center">🔴 Robux Kamu: <b id="robuxTopUp" style="font-size:20px">0</b></div><div id="listTopUp"></div><div style="margin-top:12px;background:#fef3c7;padding:10px;border-radius:10px"><b>🎟️ Kode Voucher?</b><input id="inputVoucher" placeholder="Contoh: BLOX-100"><button onclick="tukarVoucher()" class="btn" style="background:#16a34a;color:#fff">✅ TUKAR</button><p style="font-size:11px">Kode Demo: <b>BLOX-DEMO</b>=50 R$ • <b>BLOX-100</b>=100 R$ • <b>BLOX-VIP</b>=1000 R$</p></div><button class="btn" style="background:#eee" onclick="tutupSemua()">TUTUP</button></div></div>
-<div id="modalChat" class="modal"><div><div style="display:flex;justify-content:space-between"><b>💬 CHAT</b><button onclick="tutupSemua()" style="border:none;background:#eee;border-radius:50%;width:28px;height:28px">✕</button></div><div id="isiChat" style="height:200px;overflow:auto;background:#f1f5f9;padding:10px;border-radius:10px;display:flex;flex-direction:column;gap:6px"></div><div style="display:flex;gap:6px;margin-top:8px"><input id="inputChat" placeholder="Ketik chat..." style="flex:1;margin:0"><button onclick="kirimChat()" style="background:#111;color:#fff;border:none;padding:11px 16px;border-radius:10px;font-weight:900">KIRIM</button></div></div></div>
-
+<div id="modalTopUp" class="modal"><div><div style="display:flex;justify-content:space-between"><b>🔴 TOP UP ROBUX</b><button onclick="tutupSemua()" style="border:none;background:#eee;border-radius:50%;width:28px;height:28px">✕</button></div><p style="font-size:12px;color:#666">Robux buat beli di Katalog! Tersimpan di server!</p><div style="background:#fee2e2;padding:10px;border-radius:10px;text-align:center">🔴 Robux Kamu: <b id="robuxTopUp" style="font-size:20px">0</b></div><div id="listTopUp"></div><div style="margin-top:12px;background:#fef3c7;padding:10px;border-radius:10px"><b>🎟️ Kode Voucher? (1x Pakai)</b><input id="inputVoucher" placeholder="Contoh: BLOX-100"><button onclick="tukarVoucher()" class="btn" style="background:#16a34a;color:#fff">✅ TUKAR</button><p style="font-size:11px">Kode Demo V2: <b>BLOX-DEMO</b>=50 R$ • <b>BLOX-100</b>=100 R$ • <b>BLOX-VIP</b>=1000 R$ (cuma bisa dipake 1x per kode di server!)</p></div><button class="btn" style="background:#eee" onclick="tutupSemua()">TUTUP</button></div></div>
+<div id="modalChat" class="modal"><div><div style="display:flex;justify-content:space-between"><b>💬 CHAT - Real-Time</b><button onclick="tutupSemua()" style="border:none;background:#eee;border-radius:50%;width:28px;height:28px">✕</button></div><div id="isiChat" style="height:240px;overflow:auto;background:#f1f5f9;padding:10px;border-radius:10px;display:flex;flex-direction:column;gap:6px"></div><div style="display:flex;gap:6px;margin-top:8px"><input id="inputChat" placeholder="Ketik chat..." style="flex:1;margin:0" onkeypress="if(event.key=='Enter') kirimChat()"><button onclick="kirimChat()" style="background:#111;color:#fff;border:none;padding:11px 16px;border-radius:10px;font-weight:900">KIRIM</button></div></div></div>
 <script>
 var DB_URL="https://admin-55bc3-default-rtdb.firebaseio.com";
 var AKUN=null, scene,cam,ren,pemain,baseplate,RAY=new THREE.Raycaster(),MOUSE=new THREE.Vector2();
-var keys={},joyX=0,joyY=0,speed=0.35,velY=0,isJump=false,yaw=0.8,pitch=0.8,dist=18;
-var MODE="select", TOOL="part", WARNA=0xff0000, PARTS={}, PET=null;
+var joyX=0,joyY=0,speed=0.35,velY=0,isJump=false,yaw=0.8,pitch=0.8,dist=18;
+var MODE="select", TOOL="part", WARNA=0xff0000, PARTS={}, PEMAIN_LAIN={}, CHAT_TERAKHIR=0;
 var WARNA_LIST=[0xff0000,0x00ff00,0x0000ff,0xffff00,0xff00ff,0x00ffff,0xffa500,0x8b4513,0xffffff,0x000000,0x808080,0xffc0cb];
 var AVATAR={head:0xfdbd8a,torso:0x00a2ff,legs:0x00ff00,hat:"none"};
 var KATALOG=[
 {id:"topi_merah",nama:"🧢 Topi Merah",harga:20,tipe:"hat",warna:0xff0000,desc:"Topi keren!"},
-{id:"topi_kuning",nama:"👑 Mahkota Emas",harga:100,tipe:"hat",warna:0xffd700,desc:"Jadi Sultan!"},
-{id:"sayap",nama:"🦋 Sayap Kupu",harga:150,tipe:"wing",warna:0xff00ff,desc:"Bisa terbang (gaya doang)!"},
+{id:"topi_kuning",nama:"👑 Mahkota Emas",harga:100,tipe:"hat",warna:0xffd700,desc:"Jadi Sultan! Temen lu liat!"},
+{id:"sayap",nama:"🦋 Sayap Kupu",harga:150,tipe:"wing",warna:0xff00ff,desc:"Sayap warna pink!"},
 {id:"pedang",nama:"⚔️ Pedang Blox",harga:80,tipe:"sword",warna:0xcccccc,desc:"Pedang tajam!"},
 {id:"jetpack",nama:"🚀 Jetpack",harga:300,tipe:"jetpack",warna:0x333333,desc:"Paling langka!"},
 ];
 var PAKET=[{robux:100,harga:10000,label:"🔴 100 Robux"},{robux:500,harga:40000,label:"🔴 500 Robux"},{robux:1000,harga:75000,label:"🔴 1000 Robux"},{robux:5000,harga:300000,label:"🔴 5000 Robux - VIP!"}];
+function showToast(t){var e=document.getElementById('toast');e.innerText=t;e.style.display='block';setTimeout(()=>e.style.display='none',3000);}
 function tutupSemua(){document.querySelectorAll('.modal').forEach(m=>m.style.display='none');}
-function updateUang(){if(!AKUN) return; document.getElementById('coinsText').innerText=AKUN.coins; document.getElementById('robuxText').innerText=AKUN.robux; document.getElementById('robuxKatalog').innerText=AKUN.robux; document.getElementById('robuxTopUp').innerText=AKUN.robux; document.getElementById('namaTop').innerText='@'+AKUN.username+' • Level 1 Builder';}
+function updateUang(){if(!AKUN) return; document.getElementById('coinsText').innerText=AKUN.coins||0; document.getElementById('robuxText').innerText=AKUN.robux||0; var rk=document.getElementById('robuxKatalog'); if(rk) rk.innerText=AKUN.robux||0; var rt=document.getElementById('robuxTopUp'); if(rt) rt.innerText=AKUN.robux||0; document.getElementById('namaTop').innerText='@'+AKUN.username+' • FULL SERVER • Level 1 Builder';}
 async function simpanAkun(){if(!AKUN) return; localStorage.setItem('bloxAkun',JSON.stringify(AKUN)); try{await fetch(DB_URL+"/blox/"+AKUN.username+".json",{method:"PUT",body:JSON.stringify(AKUN)});}catch(e){}}
-function buatAkun(){var u=document.getElementById('inUser').value.trim(); if(!u){alert('Isi Username dulu!');return;} AKUN={username:u,coins:100,robux:0,avatar:AVATAR,items:[],hat:"none"}; simpanAkun(); tutupSemua(); updateUang(); alert('Selamat datang di BloxLongkali, @'+u+'!\nDapet 100 Coins!\nCoba pencet BUILD buat bangun!');}
+async function buatAkun(){var u=document.getElementById('inUser').value.trim().replace(/[^a-zA-Z0-9_]/g,''); if(!u){alert('Isi Username dulu! Tanpa spasi ya!');return;} if(u.length<3){alert('Username minimal 3 huruf!');return;} var r=await fetch(DB_URL+"/blox/"+u+".json"); var cek=await r.json(); if(cek){ if(confirm('Username @'+u+' udah ada! Mau login pake akun ini?')){AKUN=cek; AVATAR=AKUN.avatar||AVATAR; localStorage.setItem('bloxAkun',JSON.stringify(AKUN)); updateUang(); gantiAvatar(); tutupSemua(); showToast('👋 Selamat datang kembali @'+u+'!'); return;} else return; } AKUN={username:u,coins:100,robux:0,avatar:AVATAR,items:[],hat:"none"}; await simpanAkun(); tutupSemua(); updateUang(); alert('Selamat datang di BloxLongkali V2, @'+u+'!\nDapet 100 Coins!\nSekarang temen lu bisa liat lu jalan + bangun bareng!');}
 function setMode(m){MODE=m; document.querySelectorAll('#toolbar button').forEach(b=>b.classList.remove('on')); if(m=='select') document.getElementById('tbSelect').classList.add('on'); if(m=='move') document.getElementById('tbMove').classList.add('on'); document.getElementById('toolPanel').style.display='none';}
-function toggleBuild(){var p=document.getElementById('toolPanel'); var show=p.style.display!='block'; p.style.display=show?'block':'none'; if(show){document.getElementById('toolJudul').innerText='🧱 BUILD MODE - Kayak Roblox Studio!'; MODE='build';}}
-function setTool(t){TOOL=t; alert('Tool: '+t.toUpperCase()+'\n'+(t=='delete'?'Tap Part buat hapus!':t=='move'?'Drag buat puter kamera!':'Tap Baseplate buat buat '+t+'!'));}
-function buildWarnaList(){var h=''; WARNA_LIST.forEach(c=>{var hex='#'+c.toString(16).padStart(6,'0'); h+='<div class="cbtn" style="background:'+hex+'" onclick="WARNA='+c+';this.style.border=\'3px solid #111\'"></div>';}); document.getElementById('warnaList').innerHTML=h;
-var h2=''; WARNA_LIST.forEach(c=>{var hex='#'+c.toString(16).padStart(6,'0'); h2+='<div class="cbtn" style="background:'+hex+'" onclick="AVATAR.head='+c+';gantiAvatar()"></div>';}); document.getElementById('warnaHead').innerHTML=h2;
-var h3=''; WARNA_LIST.forEach(c=>{var hex='#'+c.toString(16).padStart(6,'0'); h3+='<div class="cbtn" style="background:'+hex+'" onclick="AVATAR.torso='+c+';gantiAvatar()"></div>';}); document.getElementById('warnaTorso').innerHTML=h3;
-var h4=''; WARNA_LIST.forEach(c=>{var hex='#'+c.toString(16).padStart(6,'0'); h4+='<div class="cbtn" style="background:'+hex+'" onclick="AVATAR.legs='+c+';gantiAvatar()"></div>';}); document.getElementById('warnaLegs').innerHTML=h4;}
+function toggleBuild(){if(!AKUN){alert('Bikin akun dulu!');return;} var p=document.getElementById('toolPanel'); var show=p.style.display!='block'; p.style.display=show?'block':'none'; if(show){document.getElementById('toolJudul').innerText='🧱 BUILD MODE - Real-Time! Temen Lu Langsung Liat!'; MODE='build';} else MODE='select';}
+function setTool(t){TOOL=t; showToast('Tool: '+t.toUpperCase());}
+function buildWarnaList(){var h=''; WARNA_LIST.forEach(c=>{var hex='#'+c.toString(16).padStart(6,'0'); h+='<div class="cbtn" style="background:'+hex+'" onclick="WARNA='+c+'"></div>';}); document.getElementById('warnaList').innerHTML=h;
+var h2=''; WARNA_LIST.forEach(c=>{var hex='#'+c.toString(16).padStart(6,'0'); h2+='<div class="cbtn" style="background:'+hex+'" onclick="AVATAR.head='+c+';simpanAvatar()"></div>';}); document.getElementById('warnaHead').innerHTML=h2;
+var h3=''; WARNA_LIST.forEach(c=>{var hex='#'+c.toString(16).padStart(6,'0'); h3+='<div class="cbtn" style="background:'+hex+'" onclick="AVATAR.torso='+c+';simpanAvatar()"></div>';}); document.getElementById('warnaTorso').innerHTML=h3;
+var h4=''; WARNA_LIST.forEach(c=>{var hex='#'+c.toString(16).padStart(6,'0'); h4+='<div class="cbtn" style="background:'+hex+'" onclick="AVATAR.legs='+c+';simpanAvatar()"></div>';}); document.getElementById('warnaLegs').innerHTML=h4;}
+async function simpanAvatar(){if(!AKUN) return; AKUN.avatar=AVATAR; AKUN.hat=AVATAR.hat; await simpanAkun(); gantiAvatar();}
 function bukaAvatar(){if(!AKUN){alert('Bikin akun dulu!');return;} document.getElementById('modalAvatar').style.display='flex'; var h=''; h+='<div class="kitem"><div><b>🚫 Tanpa Topi</b></div><button class="kbtn" style="background:#111" onclick="pilihTopi(\'none\')">PAKAI</button></div>'; KATALOG.filter(k=>k.tipe=='hat').forEach(k=>{var punya=(AKUN.items||[]).includes(k.id); h+='<div class="kitem"><div><b>'+k.nama+'</b><br><small>'+(punya?'Udah punya - Tinggal pakai':'Belum punya - Beli di Katalog '+k.harga+' R$')+'</small></div>'+(punya?'<button class="kbtn" style="background:#111" onclick="pilihTopi(\''+k.id+'\')">PAKAI</button>':'<button class="kbtn" style="background:#aaa" onclick="bukaKatalog()">BELI</button>')+'</div>';}); document.getElementById('listTopi').innerHTML=h;}
-async function pilihTopi(id){AKUN.hat=id; AVATAR.hat=id; await simpanAkun(); gantiAvatar(); alert('Topi diganti!');}
+async function pilihTopi(id){AVATAR.hat=id; await simpanAvatar(); showToast('Topi diganti! Temen lu langsung liat!');}
 function bukaKatalog(){if(!AKUN){alert('Bikin akun dulu!');return;} document.getElementById('modalKatalog').style.display='flex'; updateUang(); var h=''; KATALOG.forEach(k=>{var punya=(AKUN.items||[]).includes(k.id); h+='<div class="kitem"><div><b>'+k.nama+'</b><br><small>'+k.desc+'</small><br><small style="color:#e11d48;font-weight:900">🔴 '+k.harga+' Robux</small></div>'+(punya?'<span style="background:#16a34a;color:#fff;padding:8px 12px;border-radius:10px;font-weight:900;font-size:12px">✅ PUNYA</span>':'<button class="kbtn" style="background:#e11d48" onclick="beliKatalog(\''+k.id+'\')">BELI</button>')+'</div>';}); document.getElementById('listKatalog').innerHTML=h;}
-async function beliKatalog(id){var k=KATALOG.find(x=>x.id==id); if(AKUN.robux<k.harga){alert('Robux kurang! Robux Kamu: '+AKUN.robux+'\nButuh: '+k.harga+' R$\nTop Up dulu!'); tutupSemua(); bukaTopUp(); return;} AKUN.robux-=k.harga; if(!AKUN.items) AKUN.items=[]; AKUN.items.push(id); if(k.tipe=='hat'){AKUN.hat=id;} await simpanAkun(); updateUang(); gantiAvatar(); alert('✅ Beli '+k.nama+' berhasil!'); bukaKatalog();}
+async function beliKatalog(id){var k=KATALOG.find(x=>x.id==id); if(AKUN.robux<k.harga){alert('Robux kurang! Robux Kamu: '+AKUN.robux+'\nButuh: '+k.harga+' R$\nTop Up dulu!'); tutupSemua(); bukaTopUp(); return;} AKUN.robux-=k.harga; if(!AKUN.items) AKUN.items=[]; AKUN.items.push(id); if(k.tipe=='hat'){AVATAR.hat=id; AKUN.hat=id;} AKUN.avatar=AVATAR; await simpanAkun(); updateUang(); gantiAvatar(); alert('✅ Beli '+k.nama+' berhasil! Temen lu bisa liat!'); bukaKatalog();}
 function bukaTopUp(){if(!AKUN){alert('Bikin akun dulu!');return;} document.getElementById('modalTopUp').style.display='flex'; updateUang(); var h=''; PAKET.forEach((p,i)=>{h+='<div class="kitem" style="background:#fee2e2"><div><b>'+p.label+'</b><br><small>Rp '+p.harga.toLocaleString('id-ID')+'</small></div><button class="kbtn" style="background:#e11d48" onclick="pilihPaket('+i+')">BELI</button></div>';}); document.getElementById('listTopUp').innerHTML=h;}
-function pilihPaket(i){var p=PAKET[i]; alert('Mau Top Up '+p.label+'?\n\n1. Transfer ke Saweria: saweria.co/namalu\n2. Nominal: Rp '+p.harga.toLocaleString('id-ID')+'\n3. Tulis: BLOX-'+p.robux+' + Username lu\n4. Admin kasih kode voucher, masukin di bawah!');}
-async function tukarVoucher(){if(!AKUN) return; var kode=document.getElementById('inputVoucher').value.trim().toUpperCase(); if(!kode){alert('Masukin kode dulu!');return;} var demo={'BLOX-DEMO':50,'BLOX-100':100,'BLOX-VIP':1000,'BLOX-500':500}; if(demo[kode]){AKUN.robux+=demo[kode]; await simpanAkun(); updateUang(); alert('✅ +'+demo[kode]+' Robux! Robux Kamu: '+AKUN.robux); document.getElementById('inputVoucher').value=''; return;} try{var r=await fetch(DB_URL+"/voucher/"+kode+".json"); var v=await r.json(); if(!v||v.pakai){alert('Kode salah / udah dipakai!');return;} AKUN.robux+=v.diamond||v.robux||100; await simpanAkun(); await fetch(DB_URL+"/voucher/"+kode+".json",{method:"PUT",body:JSON.stringify({diamond:v.diamond||100,pakai:true,pemakai:AKUN.username,waktu:Date.now()})}); updateUang(); alert('✅ Berhasil Top Up!');}catch(e){alert('Gagal!');}}
+function pilihPaket(i){var p=PAKET[i]; alert('Mau Top Up '+p.label+'?\n\n1. Transfer ke Saweria: saweria.co/namalu\n(GANTI SAMA LINK SAWERIA LU!)\n2. Nominal: Rp '+p.harga.toLocaleString('id-ID')+'\n3. Tulis: BLOX-'+p.robux+' + Username lu\n4. Admin kasih kode voucher, masukin di bawah!');}
+async function tukarVoucher(){if(!AKUN) return; var kode=document.getElementById('inputVoucher').value.trim().toUpperCase(); if(!kode){alert('Masukin kode dulu!');return;} var demo={'BLOX-DEMO':50,'BLOX-100':100,'BLOX-VIP':1000,'BLOX-500':500}; if(demo[kode]){ try{ var rr=await fetch(DB_URL+"/voucherUsed/"+kode+"_"+AKUN.username+".json"); var used=await rr.json(); if(used){alert('Kode ini udah lu pakai! 1 akun cuma bisa 1x!');return;} AKUN.robux+=demo[kode]; await simpanAkun(); await fetch(DB_URL+"/voucherUsed/"+kode+"_"+AKUN.username+".json",{method:"PUT",body:JSON.stringify({waktu:Date.now(),user:AKUN.username})}); updateUang(); alert('✅ +'+demo[kode]+' Robux! Robux Kamu: '+AKUN.robux); document.getElementById('inputVoucher').value=''; return; }catch(e){} } try{var r=await fetch(DB_URL+"/voucher/"+kode+".json"); var v=await r.json(); if(!v||v.pakai){alert('Kode salah / udah dipakai orang lain!');return;} AKUN.robux+=(v.diamond||v.robux||100); await simpanAkun(); await fetch(DB_URL+"/voucher/"+kode+".json",{method:"PUT",body:JSON.stringify({diamond:v.diamond||100,pakai:true,pemakai:AKUN.username,waktu:Date.now()})}); updateUang(); alert('✅ Berhasil Top Up!');}catch(e){alert('Gagal! Cek internet!');}}
 function bukaChat(){document.getElementById('modalChat').style.display='flex'; loadChat();}
 async function kirimChat(){var t=document.getElementById('inputChat').value.trim(); if(!t) return; if(!AKUN){alert('Bikin akun dulu!');return;} document.getElementById('inputChat').value=''; try{await fetch(DB_URL+"/bloxChat.json",{method:"POST",body:JSON.stringify({nama:AKUN.username,teks:t,waktu:Date.now()})}); loadChat();}catch(e){}}
-async function loadChat(){try{var r=await fetch(DB_URL+"/bloxChat.json?orderBy=\"waktu\"&limitToLast=20"); var v=await r.json(); if(!v) return; var arr=Object.values(v).sort((a,b)=>a.waktu-b.waktu); var h=''; arr.forEach(c=>{h+='<div style="background:#fff;padding:8px 12px;border-radius:12px"><b style="font-size:11px">@'+c.nama+'</b><br>'+c.teks+'</div>';}); document.getElementById('isiChat').innerHTML=h;}catch(e){}}
-function buatAvatarRoblox(){
+async function loadChat(){try{var r=await fetch(DB_URL+"/bloxChat.json?orderBy=\"waktu\"&limitToLast=20"); var v=await r.json(); if(!v) return; var arr=Object.values(v).sort((a,b)=>a.waktu-b.waktu); var h=''; arr.forEach(c=>{var saya=AKUN&&c.nama==AKUN.username; h+='<div style="align-self:'+(saya?'flex-end':'flex-start')+';max-width:80%;background:'+(saya?'#111;color:#fff':'#fff')+';padding:8px 12px;border-radius:12px"><b style="font-size:11px">@'+c.nama+'</b><br>'+c.teks+'</div>';}); document.getElementById('isiChat').innerHTML=h; var box=document.getElementById('isiChat'); box.scrollTop=box.scrollHeight; if(arr.length>0){var last=arr[arr.length-1]; if(last.waktu>CHAT_TERAKHIR && !(AKUN&&last.nama==AKUN.username)){CHAT_TERAKHIR=last.waktu; showToast('💬 @'+last.nama+': '+last.teks);} else if(last.waktu>CHAT_TERAKHIR) CHAT_TERAKHIR=last.waktu;}}catch(e){}}
+setInterval(loadChat,3000);
+function buatAvatarRoblox(avatarData){
+  var av=avatarData||AVATAR;
   var g=new THREE.Group();
-  // Kaki Roblox - Kotak 2
-  var kakiK=new THREE.Mesh(new THREE.BoxGeometry(0.5,0.8,0.5),new THREE.MeshLambertMaterial({color:AVATAR.legs})); kakiK.position.set(-0.3,0.4,0); kakiK.userData.isLegs=true; g.add(kakiK);
-  var kaki2=new THREE.Mesh(new THREE.BoxGeometry(0.5,0.8,0.5),new THREE.MeshLambertMaterial({color:AVATAR.legs})); kaki2.position.set(0.3,0.4,0); kaki2.userData.isLegs=true; g.add(kaki2);
-  // Badan Roblox - Kotak lebar
-  var badan=new THREE.Mesh(new THREE.BoxGeometry(1.1,1.1,0.55),new THREE.MeshLambertMaterial({color:AVATAR.torso})); badan.position.y=1.35; badan.userData.isTorso=true; g.add(badan);
-  // Tangan Roblox - Kotak panjang
-  var tK=new THREE.Mesh(new THREE.BoxGeometry(0.35,1.1,0.5),new THREE.MeshLambertMaterial({color:AVATAR.torso})); tK.position.set(-0.75,1.35,0); tK.userData.isTorso=true; g.add(tK);
-  var t2=new THREE.Mesh(new THREE.BoxGeometry(0.35,1.1,0.5),new THREE.MeshLambertMaterial({color:AVATAR.torso})); t2.position.set(0.75,1.35,0); t2.userData.isTorso=true; g.add(t2);
-  // Kepala Roblox - Kotak + Senyum
-  var kp=new THREE.Mesh(new THREE.BoxGeometry(0.9,0.9,0.85),new THREE.MeshLambertMaterial({color:AVATAR.head})); kp.position.y=2.35; kp.userData.isHead=true; g.add(kp);
-  // Mata Roblox
+  var kakiK=new THREE.Mesh(new THREE.BoxGeometry(0.5,0.8,0.5),new THREE.MeshLambertMaterial({color:av.legs})); kakiK.position.set(-0.3,0.4,0); kakiK.userData.isLegs=true; g.add(kakiK);
+  var kaki2=new THREE.Mesh(new THREE.BoxGeometry(0.5,0.8,0.5),new THREE.MeshLambertMaterial({color:av.legs})); kaki2.position.set(0.3,0.4,0); kaki2.userData.isLegs=true; g.add(kaki2);
+  var badan=new THREE.Mesh(new THREE.BoxGeometry(1.1,1.1,0.55),new THREE.MeshLambertMaterial({color:av.torso})); badan.position.y=1.35; badan.userData.isTorso=true; g.add(badan);
+  var tK=new THREE.Mesh(new THREE.BoxGeometry(0.35,1.1,0.5),new THREE.MeshLambertMaterial({color:av.torso})); tK.position.set(-0.75,1.35,0); tK.userData.isTorso=true; g.add(tK);
+  var t2=new THREE.Mesh(new THREE.BoxGeometry(0.35,1.1,0.5),new THREE.MeshLambertMaterial({color:av.torso})); t2.position.set(0.75,1.35,0); t2.userData.isTorso=true; g.add(t2);
+  var kp=new THREE.Mesh(new THREE.BoxGeometry(0.9,0.9,0.85),new THREE.MeshLambertMaterial({color:av.head})); kp.position.y=2.35; kp.userData.isHead=true; g.add(kp);
   var mataK=new THREE.Mesh(new THREE.BoxGeometry(0.12,0.18,0.05),new THREE.MeshLambertMaterial({color:0x000000})); mataK.position.set(-0.2,2.45,0.44); g.add(mataK);
   var mata2=mataK.clone(); mata2.position.x=0.2; g.add(mata2);
-  // Senyum Roblox
   var senyum=new THREE.Mesh(new THREE.BoxGeometry(0.4,0.06,0.05),new THREE.MeshLambertMaterial({color:0x000000})); senyum.position.set(0,2.2,0.44); g.add(senyum);
+  var c=document.createElement('canvas'); c.width=256; c.height=64; var ctx=c.getContext('2d'); ctx.fillStyle='rgba(0,0,0,0.7)'; ctx.fillRect(0,0,256,64); ctx.fillStyle='#fff'; ctx.font='bold 28px Arial'; ctx.textAlign='center'; ctx.fillText('@'+(av.username||'Player'),128,42); var tex=new THREE.CanvasTexture(c); var papan=new THREE.Mesh(new THREE.PlaneGeometry(3,0.75),new THREE.MeshBasicMaterial({map:tex,transparent:true})); papan.position.y=3.6; g.add(papan);
   return g;
+}
+function tambahAksesoris(group,hatId){
+  var k=KATALOG.find(x=>x.id==hatId); if(!k) return;
+  if(k.tipe=='hat'){var topi=new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.55,0.35,10),new THREE.MeshLambertMaterial({color:k.warna})); topi.position.y=2.95; topi.name='topi'; group.add(topi);}
+  if(k.tipe=='wing'){var s1=new THREE.Mesh(new THREE.BoxGeometry(0.1,1.2,0.8),new THREE.MeshLambertMaterial({color:k.warna})); s1.position.set(-0.8,1.8,0); s1.name='aksesoris'; group.add(s1); var s2=s1.clone(); s2.position.x=0.8; group.add(s2);}
+  if(k.tipe=='sword'){var ped=new THREE.Mesh(new THREE.BoxGeometry(0.12,1.5,0.12),new THREE.MeshLambertMaterial({color:0xcccccc})); ped.position.set(1.0,1.5,0); ped.name='aksesoris'; group.add(ped);}
+  if(k.tipe=='jetpack'){var jet=new THREE.Mesh(new THREE.BoxGeometry(0.8,1,0.4),new THREE.MeshLambertMaterial({color:0x333333})); jet.position.set(0,1.5,-0.5); jet.name='aksesoris'; group.add(jet);}
 }
 function gantiAvatar(){
   if(!pemain||!AKUN) return;
-  var k=KATALOG.find(x=>x.id==AKUN.hat);
   pemain.traverse(o=>{ if(o.isMesh&&o.material){ if(o.userData.isHead) o.material.color.setHex(AVATAR.head); if(o.userData.isTorso) o.material.color.setHex(AVATAR.torso); if(o.userData.isLegs) o.material.color.setHex(AVATAR.legs); }});
   var lama=pemain.getObjectByName('topi'); if(lama) pemain.remove(lama);
   var lama2=pemain.getObjectByName('aksesoris'); if(lama2) pemain.remove(lama2);
-  if(k){
-    if(k.tipe=='hat'){var topi=new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.55,0.35,10),new THREE.MeshLambertMaterial({color:k.warna})); topi.position.y=2.95; topi.name='topi'; pemain.add(topi);}
-    if(k.tipe=='wing'){var s1=new THREE.Mesh(new THREE.BoxGeometry(0.1,1.2,0.8),new THREE.MeshLambertMaterial({color:k.warna})); s1.position.set(-0.8,1.8,0); s1.name='aksesoris'; pemain.add(s1); var s2=s1.clone(); s2.position.x=0.8; pemain.add(s2);}
-    if(k.tipe=='sword'){var ped=new THREE.Mesh(new THREE.BoxGeometry(0.12,1.5,0.12),new THREE.MeshLambertMaterial({color:0xcccccc})); ped.position.set(1.0,1.5,0); ped.name='aksesoris'; pemain.add(ped);}
-    if(k.tipe=='jetpack'){var jet=new THREE.Mesh(new THREE.BoxGeometry(0.8,1,0.4),new THREE.MeshLambertMaterial({color:0x333333})); jet.position.set(0,1.5,-0.5); jet.name='aksesoris'; pemain.add(jet);}
-  }
-  if(AKUN) {AVATAR.head=AKUN.avatar?AKUN.avatar.head:AVATAR.head;}
+  tambahAksesoris(pemain, AVATAR.hat);
 }
 function buatBaseplate(){
-  // Baseplate Roblox - Hijau + Bintik-bintik
   baseplate=new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.MeshLambertMaterial({color:0x00a550})); baseplate.rotation.x=-Math.PI/2; scene.add(baseplate);
-  // Bintik-bintik kayak Roblox Studio
   for(var x=-95;x<=95;x+=5){ for(var z=-95;z<=95;z+=5){ var dot=new THREE.Mesh(new THREE.CylinderGeometry(0.6,0.6,0.1,10),new THREE.MeshLambertMaterial({color:0x008f43})); dot.position.set(x,0.05,z); scene.add(dot); } }
-  // Beberapa bangunan contoh biar gak kosong
   var b1=new THREE.Mesh(new THREE.BoxGeometry(20,10,15),new THREE.MeshLambertMaterial({color:0xffffff})); b1.position.set(0,5,-60); scene.add(b1);
   var b2=new THREE.Mesh(new THREE.BoxGeometry(15,8,12),new THREE.MeshLambertMaterial({color:0xffff00})); b2.position.set(-50,4,-30); scene.add(b2);
   var b3=new THREE.Mesh(new THREE.BoxGeometry(12,6,10),new THREE.MeshLambertMaterial({color:0xff0000})); b3.position.set(50,3,40); scene.add(b3);
 }
-function buatPartMesh(id,tipe,warna,x,z){
+function buatPartMesh(id,tipe,warna,x,z,owner){
   var m=null;
   if(tipe=='part'){m=new THREE.Mesh(new THREE.BoxGeometry(4,4,4),new THREE.MeshLambertMaterial({color:warna})); m.position.set(x,2,z);}
   else if(tipe=='wedge'){m=new THREE.Mesh(new THREE.BoxGeometry(4,4,4),new THREE.MeshLambertMaterial({color:warna})); m.position.set(x,2,z); m.rotation.z=Math.PI/4;}
   else if(tipe=='ball'){m=new THREE.Mesh(new THREE.SphereGeometry(2,12,10),new THREE.MeshLambertMaterial({color:warna})); m.position.set(x,2,z);}
   else if(tipe=='cylinder'){m=new THREE.Mesh(new THREE.CylinderGeometry(2,2,4,10),new THREE.MeshLambertMaterial({color:warna})); m.position.set(x,2,z);}
   if(!m) return null;
-  m.name='partBlox'; m.userData={partId:id,tipe:tipe,warna:warna,x:x,z:z}; scene.add(m); PARTS[id]=m; return m;
+  m.name='partBlox'; m.userData={partId:id,tipe:tipe,warna:warna,x:x,z:z,owner:owner||''}; scene.add(m); PARTS[id]=m; return m;
 }
-async function saveWorld(){var list=[]; for(var id in PARTS){list.push(PARTS[id].userData);} try{await fetch(DB_URL+"/bloxWorld.json",{method:"PUT",body:JSON.stringify(list)}); alert('✅ World Disimpan di Server! Temen lu bisa liat!');}catch(e){localStorage.setItem('bloxWorld',JSON.stringify(list)); alert('✅ World Disimpan di HP!');}}
-async function loadWorld(){try{var r=await fetch(DB_URL+"/bloxWorld.json"); var v=await r.json(); if(v&&Array.isArray(v)){v.forEach(b=>{buatPartMesh('w_'+Date.now()+'_'+Math.random(),b.tipe,b.warna,b.x,b.z);});}}catch(e){var l=JSON.parse(localStorage.getItem('bloxWorld')||'[]'); l.forEach(b=>{buatPartMesh('w_'+Math.random(),b.tipe,b.warna,b.x,b.z);});}}
-async function clearWorld(){if(!confirm('Hapus SEMUA part yang lu bangun?'))return; for(var id in PARTS){scene.remove(PARTS[id]);} PARTS={}; try{await fetch(DB_URL+"/bloxWorld.json",{method:"DELETE"});}catch(e){} localStorage.removeItem('bloxWorld'); alert('World dibersihkan!');}
+async function kirimPartKeServer(id,data){try{await fetch(DB_URL+"/bloxWorld/"+id+".json",{method:"PUT",body:JSON.stringify(data)});}catch(e){}}
+async function hapusPartServer(id){try{await fetch(DB_URL+"/bloxWorld/"+id+".json",{method:"DELETE"});}catch(e){}}
+async function loadWorldServer(){
+  try{
+    var r=await fetch(DB_URL+"/bloxWorld.json"); var v=await r.json(); if(!v) return;
+    for(var id in v){ if(!PARTS[id] && v[id]){ buatPartMesh(id,v[id].tipe,v[id].warna,v[id].x,v[id].z,v[id].owner); } }
+    for(var id2 in PARTS){ if(!v[id2]){ scene.remove(PARTS[id2]); delete PARTS[id2]; } }
+  }catch(e){}
+}
+setInterval(loadWorldServer,1500);
+async function clearWorld(){if(!AKUN) return; if(!confirm('Hapus SEMUA part punya kamu? Part temen gak kehapus!'))return; try{var r=await fetch(DB_URL+"/bloxWorld.json"); var v=await r.json(); if(!v) return; for(var id in v){ if(v[id] && v[id].owner==AKUN.username){ await hapusPartServer(id); if(PARTS[id]){scene.remove(PARTS[id]); delete PARTS[id];} } } showToast('✅ Part kamu udah kehapus!');}catch(e){alert('Gagal hapus!');}}
+setInterval(async function(){
+  if(!AKUN||!pemain) return;
+  try{await fetch(DB_URL+"/bloxOnline/"+AKUN.username+".json",{method:"PUT",body:JSON.stringify({nama:AKUN.username,last:Date.now(),x:Math.round(pemain.position.x*10)/10,z:Math.round(pemain.position.z*10)/10,rot:pemain.rotation.y,head:AVATAR.head,torso:AVATAR.torso,legs:AVATAR.legs,hat:AVATAR.hat||'none',lagiJalan:Math.abs(joyX)>0.05||Math.abs(joyY)>0.05})});}catch(e){}
+},300);
+setInterval(async function(){
+  if(!scene||!AKUN) return;
+  try{
+    var r=await fetch(DB_URL+"/bloxOnline.json"); var v=await r.json(); if(!v) return;
+    for(var user in v){
+      var d=v[user]; if(Date.now()-d.last>10000){ if(PEMAIN_LAIN[user]){scene.remove(PEMAIN_LAIN[user].group); delete PEMAIN_LAIN[user];} continue; }
+      if(user==AKUN.username) continue; if(d.x==null) continue;
+      if(!PEMAIN_LAIN[user]){
+        var av={head:d.head||0xfdbd8a,torso:d.torso||0x00a2ff,legs:d.legs||0x00ff00,username:d.nama};
+        var g=buatAvatarRoblox(av); g.position.set(d.x,0,d.z); scene.add(g); tambahAksesoris(g,d.hat); PEMAIN_LAIN[user]={group:g,last:Date.now(),hat:d.hat,head:d.head,torso:d.torso};
+        showToast('👋 @'+d.nama+' masuk ke game!');
+      } else {
+        var p=PEMAIN_LAIN[user].group; p.position.x+=(d.x-p.position.x)*0.35; p.position.z+=(d.z-p.position.z)*0.35; if(d.rot!=null) p.rotation.y=d.rot;
+        if(d.hat!=PEMAIN_LAIN[user].hat || d.torso!=PEMAIN_LAIN[user].torso){
+          PEMAIN_LAIN[user].hat=d.hat; PEMAIN_LAIN[user].torso=d.torso;
+          p.traverse(o=>{ if(o.isMesh&&o.material){ if(o.userData.isHead) o.material.color.setHex(d.head); if(o.userData.isTorso) o.material.color.setHex(d.torso); if(o.userData.isLegs) o.material.color.setHex(d.legs); }});
+          var lama=p.getObjectByName('topi'); if(lama) p.remove(lama); var lama2=p.getObjectByName('aksesoris'); if(lama2) p.remove(lama2); tambahAksesoris(p,d.hat);
+        }
+        PEMAIN_LAIN[user].last=Date.now();
+      }
+    }
+    for(var u2 in PEMAIN_LAIN){ if(!v[u2] && Date.now()-PEMAIN_LAIN[u2].last>10000){scene.remove(PEMAIN_LAIN[u2].group); delete PEMAIN_LAIN[u2];} }
+  }catch(e){}
+},500);
 function init3D(){
   scene=new THREE.Scene(); scene.background=new THREE.Color(0x87ceeb);
   var holder=document.getElementById('holder');
@@ -163,19 +194,16 @@ function init3D(){
   scene.add(new THREE.AmbientLight(0xffffff,0.9));
   var dl=new THREE.DirectionalLight(0xffffff,0.6); dl.position.set(20,30,10); scene.add(dl);
   buatBaseplate();
-  pemain=buatAvatarRoblox(); pemain.position.set(0,0,0); scene.add(pemain);
-  // NPC Roblox
-  var npc=buatAvatarRoblox(); npc.position.set(10,0,10); scene.add(npc);
-  loadWorld();
+  pemain=buatAvatarRoblox({head:AVATAR.head,torso:AVATAR.torso,legs:AVATAR.legs,username:AKUN?AKUN.username:'Player'}); pemain.position.set(0,0,0); scene.add(pemain); if(AKUN) gantiAvatar();
+  loadWorldServer();
   ren.domElement.addEventListener('click',function(e){
     if(MODE!='build') return;
     var rect=ren.domElement.getBoundingClientRect();
     MOUSE.x=((e.clientX-rect.left)/rect.width)*2-1; MOUSE.y=-((e.clientY-rect.top)/rect.height)*2+1;
     RAY.setFromCamera(MOUSE,cam);
-    if(TOOL=='delete'){var hits=RAY.intersectObjects(Object.values(PARTS),false); if(hits.length>0){var t=hits[0].object; scene.remove(t); delete PARTS[t.userData.partId];} return;}
-    if(TOOL=='move') return;
+    if(TOOL=='delete'){var hits=RAY.intersectObjects(Object.values(PARTS),false); if(hits.length>0){var t=hits[0].object; var bid=t.userData.partId; scene.remove(t); delete PARTS[bid]; hapusPartServer(bid);} return;}
     var hit=RAY.intersectObject(baseplate);
-    if(hit.length>0){var p=hit[0].point; var x=Math.round(p.x/4)*4, z=Math.round(p.z/4)*4; var id='p_'+Date.now(); buatPartMesh(id,TOOL,WARNA,x,z); if(AKUN){AKUN.coins+=1; updateUang(); simpanAkun();}}
+    if(hit.length>0){var p=hit[0].point; var x=Math.round(p.x/4)*4, z=Math.round(p.z/4)*4; var id='p_'+Date.now()+'_'+Math.floor(Math.random()*9999); var data={tipe:TOOL,warna:WARNA,x:x,z:z,owner:AKUN?AKUN.username:'tamu',waktu:Date.now()}; buatPartMesh(id,TOOL,WARNA,x,z,AKUN?AKUN.username:'tamu'); kirimPartKeServer(id,data); if(AKUN){AKUN.coins+=1; updateUang(); simpanAkun();}}
   });
   var camDrag=false,lastX=0,lastY=0;
   ren.domElement.addEventListener('pointerdown',e=>{if(MODE=='build') return; camDrag=true; lastX=e.clientX; lastY=e.clientY;});
@@ -184,19 +212,16 @@ function init3D(){
   (function loop(){
     requestAnimationFrame(loop);
     var mx=0,mz=0;
-    if(keys['w']||keys['arrowup']) mz-=1; if(keys['s']||keys['arrowdown']) mz+=1; if(keys['a']||keys['arrowleft']) mx-=1; if(keys['d']||keys['arrowright']) mx+=1;
-    mx+=joyX; mz+=joyY;
+    if(joyX!=0||joyY!=0){mx=joyX; mz=joyY;}
     if(mx!=0||mz!=0){var len=Math.sqrt(mx*mx+mz*mz); mx/=len; mz/=len; pemain.position.x+=mx*speed; pemain.position.z+=mz*speed; pemain.position.x=Math.max(-95,Math.min(95,pemain.position.x)); pemain.position.z=Math.max(-95,Math.min(95,pemain.position.z)); pemain.rotation.y=Math.atan2(mx,mz);}
     if(isJump){velY+=0.02; pemain.position.y-=velY; if(pemain.position.y<=0){pemain.position.y=0;isJump=false;velY=0;}}
-    // Kamera kayak Roblox - di belakang karakter
     cam.position.set(pemain.position.x+Math.sin(yaw)*dist*Math.cos(pitch), pemain.position.y+Math.sin(pitch)*dist+2, pemain.position.z+Math.cos(yaw)*dist*Math.cos(pitch));
     cam.lookAt(pemain.position.x,pemain.position.y+2,pemain.position.z);
     ren.render(scene,cam);
   })();
 }
 function lompat(){if(!isJump){isJump=true;velY=-0.5;}}
-window.addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true; if(e.key==' ') lompat();});
-window.addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=false;});
+window.addEventListener('keydown',e=>{if(e.key==' ') lompat();});
 var joy=document.getElementById('joy'),knob=document.getElementById('knob'),joyAktif=false;
 joy.addEventListener('touchstart',e=>{joyAktif=true;},{passive:true});
 joy.addEventListener('touchmove',e=>{if(!joyAktif) return; var t=e.touches[0]; var rect=joy.getBoundingClientRect(); var dx=t.clientX-(rect.left+55); var dy=t.clientY-(rect.top+55); dx=Math.max(-35,Math.min(35,dx)); dy=Math.max(-35,Math.min(35,dy)); knob.style.left=(35+dx)+'px'; knob.style.top=(35+dy)+'px'; joyX=dx/35; joyY=dy/35;},{passive:true});
@@ -206,6 +231,7 @@ window.addEventListener('load',()=>{
   if(saved){try{AKUN=JSON.parse(saved); AVATAR=AKUN.avatar||AVATAR; updateUang();}catch(e){}}
   buildWarnaList(); init3D(); if(AKUN) gantiAvatar();
   if(!AKUN){setTimeout(()=>{document.getElementById('modalLogin').style.display='flex';},600);}
+  loadChat();
 });
 </script>
 </body></html>
