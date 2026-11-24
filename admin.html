@@ -1,58 +1,343 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Admin - BloxLongkali</title>
-<style>body{margin:0;font-family:Arial;background:#111;color:#fff;padding:14px}input,select{width:100%;padding:12px;border-radius:10px;border:none;margin:4px 0 8px;font-size:14px}button{width:100%;padding:13px;border:none;border-radius:10px;font-weight:900;margin-top:6px;cursor:pointer;min-height:48px}.tab{flex:1;padding:12px;border:none;border-radius:10px;font-weight:900;background:#333;color:#fff}.tab.on{background:#a855f7}.card{background:#222;border:1px solid #333;border-radius:12px;padding:12px;margin:8px 0}</style>
+<style>body{margin:0;font-family:Arial;background:#111;color:#fff;padding:14px}input,select{width:100%;padding:12px;border-radius:10px;border:none;margin:4px 0 8px;color:#000}button{width:100%;padding:13px;border:none;border-radius:10px;font-weight:900;margin-top:6px;cursor:pointer;min-height:48px}.tab{flex:1;padding:12px;border:none;border-radius:10px;font-weight:900;background:#333;color:#fff}.tab.on{background:#a855f7}.card{background:#222;border:1px solid #333;border-radius:12px;padding:12px;margin:8px 0}</style>
 </head><body>
-<h2>🛡️ ADMIN - BloxLongkali</h2><p style="color:#aaa;font-size:12px">CUMA LU! Jangan share! WA Top Up: 0895600169977</p>
-<div id="loginAdmin"><input id="passAdmin" type="password" placeholder="Password Admin"><button onclick="cekAdmin()" style="background:#a855f7;color:#fff">MASUK ADMIN</button><p style="font-size:11px;color:#888">Ganti password di kode: ADMIN_PASS</p></div>
+<h2>🛡️ ADMIN - BloxLongkali</h2>
+<p id="debugText" style="color:#f59e0b;font-size:13px;background:#222;padding:8px;border-radius:8px">Status: Halaman ke-load! Kalau lu baca ini, JS jalan!</p>
+<div id="loginAdmin" style="background:#222;padding:16px;border-radius:12px">
+<b>🔑 LOGIN ADMIN</b><br><br>
+<input id="passAdmin" type="text" value="admin123">
+<button id="btnMasuk" onclick="cekAdmin()" style="background:#a855f7;color:#fff;font-size:16px">MASUK ADMIN ➡️</button>
+<p style="font-size:11px;color:#888">Password: admin123<br>Kalau tombol dipencet gak ngapa-ngapain, liat tulisan di bawah!</p>
+<p id="testKlik" style="color:#aaa;font-size:12px">Belum dipencet</p>
+</div>
 <div id="panelAdmin" style="display:none">
 <div style="background:#a855f7;padding:12px;border-radius:12px"><b id="statAdmin">Loading...</b><br><button onclick="loadSemua()" style="background:#fff;color:#a855f7;margin-top:8px">🔄 REFRESH</button></div>
 <div style="display:flex;gap:6px;margin-top:12px"><button class="tab on" onclick="showTabAdmin('topup',this)">💎 Top Up</button><button class="tab" onclick="showTabAdmin('item',this)">🛒 Bikin Item</button><button class="tab" onclick="showTabAdmin('voucher',this)">🎟️ Voucher</button><button class="tab" onclick="showTabAdmin('player',this)">👥 Player</button></div>
+
 <div id="tabTopup">
-<div style="background:#222;padding:14px;border-radius:12px;margin-top:10px"><b>💎 Kasih Diamond / Top Up Player</b><p style="font-size:11px;color:#aaa">Player udah transfer via WA 0895600169977? Cari pake Email / ID!</p><label>Cari by Email ATAU ID</label><input id="cariTopup" placeholder="budi@gmail.com ATAU 8294017365"><button onclick="cariUntukTopup()" style="background:#fff;color:#000">🔍 CARI PLAYER</button><div id="hasilTopup"></div></div>
-<div style="background:#222;padding:14px;border-radius:12px;margin-top:10px"><b>⚡ Top Up Cepat</b><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><button onclick="topupCepat(100)" style="background:#25D366;color:#fff">💎 100 - Rp 10k</button><button onclick="topupCepat(500)" style="background:#a855f7;color:#fff">💎 500 - Rp 40k</button><button onclick="topupCepat(1000)" style="background:#f59e0b;color:#000">💎 1000 - Rp 75k</button><button onclick="topupCepat(5000)" style="background:#ef4444;color:#fff">💎 5000 - Rp 300k</button></div><label style="margin-top:10px;display:block">Jumlah Manual</label><input id="jmlTopupManual" type="number" placeholder="Contoh: 250"><button onclick="topupManual()" style="background:#16a34a;color:#fff">✅ KASIH DIAMOND</button></div>
-<div style="background:#222;padding:14px;border-radius:12px;margin-top:10px"><b>👑 Kasih Premium Langsung</b><input id="emailPremium" placeholder="Email ATAU ID player"><button onclick="kasihPremiumAdmin()" style="background:#ec4899;color:#fff">👑 KASIH PREMIUM</button></div>
+<div style="background:#222;padding:14px;border-radius:12px;margin-top:10px"><b>💎 Kasih Diamond</b><input id="cariTopup" placeholder="Email ATAU ID player"><button onclick="cariUntukTopup()" style="background:#fff;color:#000">🔍 CARI PLAYER</button><div id="hasilTopup"></div></div>
+<div style="background:#222;padding:14px;border-radius:12px;margin-top:10px"><b>⚡ Top Up Cepat</b><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><button onclick="topupCepat(100)" style="background:#25D366;color:#fff">💎 100</button><button onclick="topupCepat(500)" style="background:#a855f7;color:#fff">💎 500</button><button onclick="topupCepat(1000)" style="background:#f59e0b;color:#000">💎 1000</button><button onclick="topupCepat(5000)" style="background:#ef4444;color:#fff">💎 5000</button></div><input id="jmlTopupManual" type="number" placeholder="Jumlah manual"><button onclick="topupManual()" style="background:#16a34a;color:#fff">✅ KASIH DIAMOND</button></div>
+<div style="background:#222;padding:14px;border-radius:12px;margin-top:10px"><b>👑 Kasih Premium</b><input id="emailPremium" placeholder="Email ATAU ID"><button onclick="kasihPremiumAdmin()" style="background:#ec4899;color:#fff">👑 KASIH PREMIUM</button></div>
 <div style="background:#222;padding:14px;border-radius:12px;margin-top:10px"><b>🔑 Reset Password Player</b><input id="resetEmail" placeholder="Email ATAU ID player"><input id="resetPassBaru" placeholder="Password baru"><button onclick="resetPassAdmin()" style="background:#ef4444;color:#fff">🔑 RESET PASSWORD</button></div>
 </div>
+
 <div id="tabItem" style="display:none">
-<div style="background:#222;padding:14px;border-radius:12px;margin-top:10px"><b>🛒 Bikin Item Baru Buat Katalog Pemain</b><p style="font-size:11px;color:#aaa">Item lu bikin di sini, langsung muncul di Katalog pemain!</p><label>Nama Item</label><input id="itemNama" placeholder="Contoh: Topi Merah Keren"><label>Emoji Item</label><input id="itemEmoji" placeholder="Contoh: 🧢"><label>Harga Diamond</label><input id="itemHarga" type="number" placeholder="50"><label>Tipe Item</label><select id="itemTipe"><option value="hat">🎩 Topi - Kepala</option><option value="wing">🦋 Sayap - Punggung</option><option value="weapon">⚔️ Senjata - Tangan</option><option value="backpack">🎒 Tas - Punggung</option></select><label>Warna (hex)</label><input id="itemWarna" placeholder="#FF0000"><label>Deskripsi</label><input id="itemDesc" placeholder="Topi merah keren!"><button onclick="buatItem()" style="background:#16a34a;color:#fff">✅ BIKIN ITEM!</button><div style="display:flex;gap:6px;margin-top:8px"><button onclick="isiContohItem('🧢','Topi Merah',20,'hat','#FF0000','Topi merah keren!')" style="background:#333;color:#fff;flex:1">Contoh: Topi</button><button onclick="isiContohItem('👑','Mahkota Emas',100,'hat','#FFD700','Jadi Sultan!')" style="background:#333;color:#fff;flex:1">Mahkota</button><button onclick="isiContohItem('⚔️','Pedang Blox',80,'weapon','#CCCCCC','Pedang tajam!')" style="background:#333;color:#fff;flex:1">Pedang</button></div></div>
+<div style="background:#222;padding:14px;border-radius:12px;margin-top:10px">
+<b>🛒 Bikin Item Baru - 2 Cara!</b>
+<div style="display:flex;gap:6px;margin:10px 0">
+<button onclick="modeItem('gambar')" id="btnModeGambar" style="background:#a855f7;color:#fff;flex:1">✏️ GAMBAR SENDIRI</button>
+<button onclick="modeItem('template')" id="btnModeTemplate" style="background:#333;color:#fff;flex:1">🎨 PAKAI TEMPLATE</button>
+</div>
+
+<div id="panelGambar">
+<b>✏️ Gambar Item Lu Sendiri!</b><br>
+<small style="color:#aaa">Coret-coret di kotak bawah pake jari! Gambar apa aja!</small>
+<div style="background:#fff;border-radius:12px;padding:8px;margin:8px 0;text-align:center">
+<canvas id="canvasGambar" width="300" height="200" style="border:2px dashed #a855f7;border-radius:10px;touch-action:none;background:#fff"></canvas>
+</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap">
+<button onclick="setWarnaGambar('#FF0000')" style="background:#FF0000;color:#fff;flex:1">🔴 Merah</button>
+<button onclick="setWarnaGambar('#0000FF')" style="background:#0000FF;color:#fff;flex:1">🔵 Biru</button>
+<button onclick="setWarnaGambar('#00FF00')" style="background:#00FF00;color:#000;flex:1">🟢 Hijau</button>
+<button onclick="setWarnaGambar('#FFFF00')" style="background:#FFFF00;color:#000;flex:1">🟡 Kuning</button>
+<button onclick="setWarnaGambar('#000000')" style="background:#000;color:#fff;flex:1">⚫ Hitam</button>
+<button onclick="setWarnaGambar('#FF00FF')" style="background:#FF00FF;color:#fff;flex:1">🩷 Pink</button>
+</div>
+<div style="display:flex;gap:6px;margin-top:6px">
+<button onclick="setTebalGambar(3)" style="background:#333;color:#fff;flex:1">✏️ Tipis</button>
+<button onclick="setTebalGambar(8)" style="background:#333;color:#fff;flex:1">🖊️ Sedang</button>
+<button onclick="setTebalGambar(15)" style="background:#333;color:#fff;flex:1">🖌️ Tebal</button>
+<button onclick="hapusGambar()" style="background:#ef4444;color:#fff;flex:1">🗑️ Hapus Gambar</button>
+</div>
+<div style="background:#fef3c7;color:#000;padding:8px;border-radius:8px;margin-top:8px;font-size:12px">
+<b>Preview Gambar Lu:</b><br>
+<img id="previewGambarItem" style="width:80px;height:80px;object-fit:contain;background:#fff;border-radius:10px;display:none">
+<span id="textPreviewGambar">Belum ada gambar, gambar dulu!</span>
+</div>
+</div>
+
+<div id="panelTemplate" style="display:none">
+<b>🎨 Pilih Template - Pencet Langsung Jadi!</b><br>
+<small style="color:#aaa">Pencet template, nama + harga + warna otomatis keisi! Tinggal pencet BIKIN ITEM!</small>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin:10px 0">
+<button onclick="pilihTemplateItem('🧢','Topi Merah',20,'hat','#FF0000','Topi merah keren!')" style="background:#fff;color:#000;padding:14px">🧢<br>Topi Merah<br><small>20 💎</small></button>
+<button onclick="pilihTemplateItem('👑','Mahkota Emas',100,'hat','#FFD700','Jadi Sultan!')" style="background:#fff;color:#000;padding:14px">👑<br>Mahkota Emas<br><small>100 💎</small></button>
+<button onclick="pilihTemplateItem('🎩','Topi Sulap',50,'hat','#111111','Topi sulap ajaib!')" style="background:#fff;color:#000;padding:14px">🎩<br>Topi Sulap<br><small>50 💎</small></button>
+<button onclick="pilihTemplateItem('🕶️','Kacamata Keren',30,'hat','#111111','Kacamata hitam kece!')" style="background:#fff;color:#000;padding:14px">🕶️<br>Kacamata<br><small>30 💎</small></button>
+<button onclick="pilihTemplateItem('⚔️','Pedang Blox',80,'weapon','#CCCCCC','Pedang tajam!')" style="background:#fff;color:#000;padding:14px">⚔️<br>Pedang Blox<br><small>80 💎</small></button>
+<button onclick="pilihTemplateItem('🔫','Blaster Laser',120,'weapon','#00FFFF','Senjata laser!')" style="background:#fff;color:#000;padding:14px">🔫<br>Blaster<br><small>120 💎</small></button>
+<button onclick="pilihTemplateItem('🛡️','Perisai Naga',90,'weapon','#FF0000','Perisai kuat!')" style="background:#fff;color:#000;padding:14px">🛡️<br>Perisai Naga<br><small>90 💎</small></button>
+<button onclick="pilihTemplateItem('🦋','Sayap Kupu',150,'wing','#FF00FF','Sayap cantik!')" style="background:#fff;color:#000;padding:14px">🦋<br>Sayap Kupu<br><small>150 💎</small></button>
+<button onclick="pilihTemplateItem('👼','Sayap Malaikat',200,'wing','#FFFFFF','Sayap malaikat!')" style="background:#fff;color:#000;padding:14px">👼<br>Sayap Malaikat<br><small>200 💎</small></button>
+<button onclick="pilihTemplateItem('🔥','Sayap Api',250,'wing','#FF4500','Sayap api membara!')" style="background:#fff;color:#000;padding:14px">🔥<br>Sayap Api<br><small>250 💎</small></button>
+<button onclick="pilihTemplateItem('🎒','Tas Sekolah',40,'backpack','#00A2FF','Tas sekolah kece!')" style="background:#fff;color:#000;padding:14px">🎒<br>Tas Sekolah<br><small>40 💎</small></button>
+<button onclick="pilihTemplateItem('💰','Tas Sultan',300,'backpack','#FFD700','Tas emas sultan!')" style="background:#fff;color:#000;padding:14px">💰<br>Tas Sultan<br><small>300 💎</small></button>
+<button onclick="pilihTemplateItem('🎧','Headset Gamer',60,'hat','#111111','Headset gamer pro!')" style="background:#fff;color:#000;padding:14px">🎧<br>Headset Gamer<br><small>60 💎</small></button>
+<button onclick="pilihTemplateItem('🤠','Topi Koboi',70,'hat','#8B4513','Topi koboi keren!')" style="background:#fff;color:#000;padding:14px">🤠<br>Topi Koboi<br><small>70 💎</small></button>
+<button onclick="pilihTemplateItem('🐲','Topi Naga',180,'hat','#00FF00','Topi naga langka!')" style="background:#fff;color:#000;padding:14px">🐲<br>Topi Naga<br><small>180 💎</small></button>
+</div>
+</div>
+
+<hr style="border-color:#444">
+<label>Nama Item</label><input id="itemNama" placeholder="Contoh: Topi Merah Keren">
+<label>Emoji Item (kalau gambar sendiri, isi emoji yang mirip!)</label><input id="itemEmoji" placeholder="Contoh: 🧢">
+<label>Harga Diamond</label><input id="itemHarga" type="number" placeholder="50">
+<label>Tipe Item</label><select id="itemTipe"><option value="hat">🎩 Topi - Kepala</option><option value="wing">🦋 Sayap - Punggung</option><option value="weapon">⚔️ Senjata - Tangan</option><option value="backpack">🎒 Tas - Punggung</option></select>
+<label>Warna (hex)</label><input id="itemWarna" placeholder="#FF0000">
+<label>Deskripsi</label><input id="itemDesc" placeholder="Topi merah keren!">
+<button onclick="buatItem()" style="background:#16a34a;color:#fff;font-size:16px">✅ BIKIN ITEM! - MUNCUL DI KATALOG PEMAIN!</button>
+<p style="font-size:11px;color:#888">Kalau mode GAMBAR SENDIRI, gambar lu kesimpen jadi foto item! Pemain bisa liat gambar lu di Katalog!</p>
+</div>
 <div><b>📋 Semua Item</b> <span id="jmlItem"></span></div><div id="listItem"></div>
 </div>
+
 <div id="tabVoucher" style="display:none">
-<div style="background:#222;padding:14px;border-radius:12px;margin-top:10px"><b>🎟️ Bikin Voucher Diamond</b><label>Kode</label><input id="kodeBaru" placeholder="BLOX-500"><label>Jumlah Diamond</label><input id="diamondBaru" type="number" placeholder="500"><label>Keterangan</label><input id="ketBaru" placeholder="Buat Budi, udah transfer"><button onclick="buatVoucher()" style="background:#16a34a;color:#fff">✅ BUAT VOUCHER</button><div style="display:flex;gap:6px;margin-top:8px"><button onclick="buatVoucherCepat(100)" style="background:#333;color:#fff;flex:1">+100 💎</button><button onclick="buatVoucherCepat(500)" style="background:#a855f7;color:#fff;flex:1">+500 💎</button><button onclick="buatVoucherCepat(1000)" style="background:#f59e0b;color:#000;flex:1">+1000 💎</button></div></div><div><b>📋 Semua Voucher</b></div><div id="listVoucher"></div>
+<div style="background:#222;padding:14px;border-radius:12px;margin-top:10px"><b>🎟️ Bikin Voucher</b><input id="kodeBaru" placeholder="BLOX-500"><input id="diamondBaru" type="number" placeholder="500"><input id="ketBaru" placeholder="Keterangan"><button onclick="buatVoucher()" style="background:#16a34a;color:#fff">✅ BUAT VOUCHER</button><div style="display:flex;gap:6px;margin-top:8px"><button onclick="buatVoucherCepat(100)" style="background:#333;color:#fff;flex:1">+100 💎</button><button onclick="buatVoucherCepat(500)" style="background:#a855f7;color:#fff;flex:1">+500 💎</button><button onclick="buatVoucherCepat(1000)" style="background:#f59e0b;color:#000;flex:1">+1000 💎</button></div></div><div><b>📋 Semua Voucher</b></div><div id="listVoucher"></div>
 </div>
+
 <div id="tabPlayer" style="display:none">
 <div style="background:#222;padding:12px;border-radius:12px;margin-top:10px"><b>🔍 Cari Player</b><input id="cariID" placeholder="Email ATAU ID"><button onclick="cariPlayer()" style="background:#fff;color:#000">🔍 CARI</button><div id="hasilCari"></div></div>
-<h3>👥 Semua Player</h3><div id="listPlayer</div>
+<h3>👥 Semua Player</h3><div id="listPlayer"></div>
 </div>
 </div>
 <script>
+document.getElementById('debugText').innerText = "Status: JS JALAN ✅ Tombol siap dipencet!";
 var DB_URL="https://admin-55bc3-default-rtdb.firebaseio.com";
 var ADMIN_PASS="admin123";
 var AKUN_TOPUP=null;
-function cekAdmin(){if(document.getElementById('passAdmin').value!=ADMIN_PASS){alert('Password salah!');return;}document.getElementById('loginAdmin').style.display='none';document.getElementById('panelAdmin').style.display='block';loadSemua();}
-function showTabAdmin(tab,btn){document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));if(btn)btn.classList.add('on');['topup','item','voucher','player'].forEach(t=>{document.getElementById('tab'+t.charAt(0).toUpperCase()+t.slice(1)).style.display=t==tab?'block':'none';});if(tab=='item')loadItems();if(tab=='voucher')loadVoucher();if(tab=='player')loadPlayer();}
+var WARNA_GAMBAR='#FF0000';
+var TEBAL_GAMBAR=8;
+var GAMBAR_ITEM_DATA=null;
+var MODE_ITEM='gambar';
+function cekAdmin(){
+  document.getElementById('testKlik').innerText = "Tombol KEPENCET! ✅ Lagi cek password...";
+  document.getElementById('debugText').innerText = "Tombol kepencet! Cek password...";
+  var inp = document.getElementById('passAdmin').value.trim();
+  alert("Tombol jalan! Password yang lu ketik: " + inp);
+  if(inp != ADMIN_PASS){ alert('Password salah! Yang bener: admin123'); return; }
+  document.getElementById('loginAdmin').style.display='none';
+  document.getElementById('panelAdmin').style.display='block';
+  alert('✅ Login Admin Berhasil!');
+  loadSemua();
+  setTimeout(initCanvasGambar,300);
+}
+function showTabAdmin(tab,btn){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  if(btn) btn.classList.add('on');
+  var list = ['topup','item','voucher','player'];
+  list.forEach(function(t){
+    var el = document.getElementById('tab'+t.charAt(0).toUpperCase()+t.slice(1));
+    if(el) el.style.display = (t==tab?'block':'none');
+  });
+  if(tab=='item'){ loadItems(); setTimeout(initCanvasGambar,200); }
+  if(tab=='voucher') loadVoucher();
+  if(tab=='player') loadPlayer();
+}
 function emailKeKey(email){return email.toLowerCase().trim().replace(/[^a-z0-9]/g,'_');}
-async function cariAkun(input){input=input.trim();if(!input)return null;if(/^[0-9]{10}$/.test(input)){var r=await fetch(DB_URL+"/bloxByID/"+input+".json");var v=await r.json();if(!v)return null;var r2=await fetch(DB_URL+"/blox/"+v.username+".json");return await r2.json();}if(input.includes('@')){var r3=await fetch(DB_URL+"/bloxByEmail/"+emailKeKey(input)+".json");var v3=await r3.json();if(!v3)return null;var r4=await fetch(DB_URL+"/blox/"+v3.username+".json");return await r4.json();}var r5=await fetch(DB_URL+"/blox/"+input+".json");return await r5.json();}
-async function simpanAkunAdmin(akun){await fetch(DB_URL+"/blox/"+akun.username+".json",{method:"PUT",body:JSON.stringify(akun)});if(akun.id)await fetch(DB_URL+"/bloxByID/"+akun.id+".json",{method:"PUT",body:JSON.stringify({username:akun.username,id:akun.id,email:akun.email})});if(akun.email)await fetch(DB_URL+"/bloxByEmail/"+emailKeKey(akun.email)+".json",{method:"PUT",body:JSON.stringify({username:akun.username,id:akun.id,email:akun.email})});}
-async function cariUntukTopup(){var inp=document.getElementById('cariTopup').value;if(!inp){alert('Isi Email / ID!');return;}var a=await cariAkun(inp);if(!a){document.getElementById('hasilTopup').innerHTML='<div style="background:#ef4444;padding:10px;border-radius:10px;margin-top:8px">❌ Gak ketemu!</div>';AKUN_TOPUP=null;return;}AKUN_TOPUP=a;document.getElementById('hasilTopup').innerHTML='<div style="background:#333;padding:12px;border-radius:10px;margin-top:8px"><b>@'+a.username+' '+(a.premium?'👑 PREMIUM':'')+'</b><br><small>Email: '+a.email+'<br>ID: '+a.id+'<br>💎 '+(a.diamond||0)+' • 🪙 '+(a.coins||0)+' • 🎒 '+(a.items?a.items.length:0)+' item • 👥 '+(a.friends?a.friends.length:0)+' teman</small></div>';}
-async function topupCepat(jml){if(!AKUN_TOPUP){alert('Cari player dulu!');return;}if(!confirm('Kasih +'+jml+' 💎 ke @'+AKUN_TOPUP.username+'?'))return;var s=await cariAkun(AKUN_TOPUP.email);if(!s)return;AKUN_TOPUP=s;AKUN_TOPUP.diamond=(AKUN_TOPUP.diamond||0)+jml;await simpanAkunAdmin(AKUN_TOPUP);alert('✅ +'+jml+' 💎 ke @'+AKUN_TOPUP.username+'!\nDiamond sekarang: '+AKUN_TOPUP.diamond);cariUntukTopup();loadSemua();}
-async function topupManual(){var jml=parseInt(document.getElementById('jmlTopupManual').value);if(!AKUN_TOPUP){alert('Cari player dulu!');return;}if(!jml||jml<=0){alert('Isi jumlah!');return;}var s=await cariAkun(AKUN_TOPUP.email);AKUN_TOPUP=s;AKUN_TOPUP.diamond=(AKUN_TOPUP.diamond||0)+jml;await simpanAkunAdmin(AKUN_TOPUP);alert('✅ +'+jml+' 💎 ke @'+AKUN_TOPUP.username);cariUntukTopup();loadSemua();}
-async function kasihPremiumAdmin(){var inp=document.getElementById('emailPremium').value;if(!inp){alert('Isi Email / ID!');return;}var a=await cariAkun(inp);if(!a){alert('Gak ketemu!');return;}a.premium=true;await simpanAkunAdmin(a);alert('✅ @'+a.username+' sekarang PREMIUM!');loadSemua();}
+async function cariAkun(input){
+  input=input.trim(); if(!input) return null;
+  if(/^[0-9]{10}$/.test(input)){
+    var r=await fetch(DB_URL+"/bloxByID/"+input+".json"); var v=await r.json();
+    if(!v) return null;
+    var r2=await fetch(DB_URL+"/blox/"+v.username+".json"); return await r2.json();
+  }
+  if(input.includes('@')){
+    var r3=await fetch(DB_URL+"/bloxByEmail/"+emailKeKey(input)+".json"); var v3=await r3.json();
+    if(!v3) return null;
+    var r4=await fetch(DB_URL+"/blox/"+v3.username+".json"); return await r4.json();
+  }
+  var r5=await fetch(DB_URL+"/blox/"+input+".json"); return await r5.json();
+}
+async function simpanAkunAdmin(akun){
+  await fetch(DB_URL+"/blox/"+akun.username+".json",{method:"PUT",body:JSON.stringify(akun)});
+  if(akun.id) await fetch(DB_URL+"/bloxByID/"+akun.id+".json",{method:"PUT",body:JSON.stringify({username:akun.username,id:akun.id,email:akun.email})});
+  if(akun.email) await fetch(DB_URL+"/bloxByEmail/"+emailKeKey(akun.email)+".json",{method:"PUT",body:JSON.stringify({username:akun.username,id:akun.id,email:akun.email})});
+}
+async function cariUntukTopup(){
+  var inp=document.getElementById('cariTopup').value;
+  if(!inp){alert('Isi Email / ID!');return;}
+  var a=await cariAkun(inp);
+  if(!a){document.getElementById('hasilTopup').innerHTML='<div style="background:#ef4444;padding:10px;border-radius:10px">❌ Gak ketemu!</div>';AKUN_TOPUP=null;return;}
+  AKUN_TOPUP=a;
+  document.getElementById('hasilTopup').innerHTML='<div style="background:#333;padding:12px;border-radius:10px"><b>@'+a.username+' '+(a.premium?'👑 PREMIUM':'')+'</b><br><small>Email: '+a.email+'<br>ID: '+a.id+'<br>💎 '+(a.diamond||0)+' • 🪙 '+(a.coins||0)+'</small></div>';
+}
+async function topupCepat(jml){
+  if(!AKUN_TOPUP){alert('Cari player dulu!');return;}
+  var s=await cariAkun(AKUN_TOPUP.email); AKUN_TOPUP=s;
+  AKUN_TOPUP.diamond=(AKUN_TOPUP.diamond||0)+jml;
+  await simpanAkunAdmin(AKUN_TOPUP);
+  alert('✅ +'+jml+' 💎 ke @'+AKUN_TOPUP.username);
+  cariUntukTopup(); loadSemua();
+}
+async function topupManual(){
+  var jml=parseInt(document.getElementById('jmlTopupManual').value);
+  if(!AKUN_TOPUP){alert('Cari player dulu!');return;}
+  var s=await cariAkun(AKUN_TOPUP.email); AKUN_TOPUP=s;
+  AKUN_TOPUP.diamond=(AKUN_TOPUP.diamond||0)+jml;
+  await simpanAkunAdmin(AKUN_TOPUP);
+  alert('✅ +'+jml+' 💎');
+  cariUntukTopup(); loadSemua();
+}
+async function kasihPremiumAdmin(){
+  var inp=document.getElementById('emailPremium').value;
+  var a=await cariAkun(inp);
+  if(!a){alert('Gak ketemu!');return;}
+  a.premium=true; await simpanAkunAdmin(a);
+  alert('✅ @'+a.username+' Premium!'); loadSemua();
+}
 function hashPass(p){var h=0;for(var i=0;i<p.length;i++){h=((h<<5)-h)+p.charCodeAt(i);h=h&h;}var s='blox_'+Math.abs(h).toString(16)+'_'+p.length+'_'+(p.charCodeAt(0)||0);for(var j=0;j<p.length;j++){s+=((p.charCodeAt(j)*7+13)%16).toString(16);}return s;}
-async function resetPassAdmin(){var inp=document.getElementById('resetEmail').value;var np=document.getElementById('resetPassBaru').value;if(!inp||!np){alert('Isi Email/ID + password baru!');return;}var a=await cariAkun(inp);if(!a){alert('Gak ketemu!');return;}a.password=hashPass(np);await simpanAkunAdmin(a);alert('✅ Password @'+a.username+' direset jadi: '+np);loadSemua();}
-function isiContohItem(emoji,nama,harga,tipe,warna,desc){document.getElementById('itemEmoji').value=emoji;document.getElementById('itemNama').value=nama;document.getElementById('itemHarga').value=harga;document.getElementById('itemTipe').value=tipe;document.getElementById('itemWarna').value=warna;document.getElementById('itemDesc').value=desc;}
-async function buatItem(){var nama=document.getElementById('itemNama').value.trim();var emoji=document.getElementById('itemEmoji').value.trim()||'🎁';var harga=parseInt(document.getElementById('itemHarga').value);var tipe=document.getElementById('itemTipe').value;var warnaHex=document.getElementById('itemWarna').value.trim()||'#FF0000';var desc=document.getElementById('itemDesc').value.trim()||nama;if(!nama){alert('Isi Nama Item!');return;}if(!harga||harga<=0){alert('Isi Harga Diamond!');return;}var warna=parseInt(warnaHex.replace('#',''),16);if(isNaN(warna))warna=0xff0000;var id='item_'+Date.now()+'_'+Math.floor(Math.random()*9999);var data={id:id,nama:emoji+' '+nama,emoji:emoji,harga:harga,tipe:tipe,warna:warna,warnaHex:warnaHex,desc:desc,waktu:Date.now(),dibuatOleh:'Admin'};await fetch(DB_URL+"/bloxItems/"+id+".json",{method:"PUT",body:JSON.stringify(data)});alert('✅ Item berhasil dibuat!\n\n'+emoji+' '+nama+'\n💎 '+harga+' Diamond\nTipe: '+tipe+'\n\nLangsung muncul di Katalog pemain!');document.getElementById('itemNama').value='';document.getElementById('itemEmoji').value='';document.getElementById('itemHarga').value='';document.getElementById('itemDesc').value='';loadItems();}
-async function loadItems(){try{var r=await fetch(DB_URL+"/bloxItems.json");var v=await r.json();var el=document.getElementById('listItem');if(!v){el.innerHTML='<div style="background:#222;padding:14px;border-radius:12px;text-align:center;color:#888">Belum ada item! Bikin yang pertama!</div>';document.getElementById('jmlItem').innerText='(0)';return;}var arr=Object.values(v);document.getElementById('jmlItem').innerText='('+arr.length+')';var h='';arr.forEach(k=>{h+='<div class="card"><b>'+k.emoji+' '+k.nama+'</b><br><small>💎 '+k.harga+' • Tipe: '+k.tipe+' • Warna: '+k.warnaHex+'</small><br><small>'+k.desc+'</small><br><button onclick="hapusItem(\''+k.id+'\')" style="background:#ef4444;color:#fff;padding:8px;margin-top:6px">🗑️ HAPUS ITEM</button></div>';});el.innerHTML=h;}catch(e){}}
-async function hapusItem(id){if(!confirm('Hapus item ini? Pemain yang udah beli tetep punya, tapi gak bisa dibeli lagi!'))return;await fetch(DB_URL+"/bloxItems/"+id+".json",{method:"DELETE"});alert('✅ Item dihapus!');loadItems();}
-async function buatVoucher(){var kode=document.getElementById('kodeBaru').value.trim().toUpperCase().replace(/\s/g,'-');var jml=parseInt(document.getElementById('diamondBaru').value);var ket=document.getElementById('ketBaru').value.trim();if(!kode||!jml){alert('Isi Kode + Diamond!');return;}var data={diamond:jml,pakai:false,waktu:Date.now(),keterangan:ket||'',dibuatOleh:'Admin'};await fetch(DB_URL+"/voucher/"+kode+".json",{method:"PUT",body:JSON.stringify(data)});alert('✅ Voucher '+kode+' = '+jml+' 💎 dibuat!');document.getElementById('kodeBaru').value='';document.getElementById('diamondBaru').value='';document.getElementById('ketBaru').value='';loadVoucher();}
-async function buatVoucherCepat(jml){var kode='BLOX-'+Math.random().toString(36).substring(2,6).toUpperCase();var data={diamond:jml,pakai:false,waktu:Date.now(),keterangan:'Voucher cepat '+jml,dibuatOleh:'Admin'};await fetch(DB_URL+"/voucher/"+kode+".json",{method:"PUT",body:JSON.stringify(data)});alert('✅ Voucher: '+kode+' = '+jml+' 💎\nSalin, kirim ke player!');if(navigator.clipboard)navigator.clipboard.writeText(kode);loadVoucher();}
-async function loadVoucher(){try{var r=await fetch(DB_URL+"/voucher.json");var v=await r.json();var el=document.getElementById('listVoucher');if(!v){el.innerHTML='<div style="background:#222;padding:14px;border-radius:12px;text-align:center;color:#888">Belum ada voucher!</div>';return;}var arr=Object.entries(v).sort((a,b)=>(b[1].waktu||0)-(a[1].waktu||0));var h='';arr.forEach(([kode,data])=>{h+='<div class="card"><b>'+kode+'</b> '+(data.pakai?'❌ UDAH DIPAKE':'✅ AKTIF')+'<br><small>💎 '+data.diamond+' • '+(data.keterangan||'')+'</small><br>'+(data.pakai?'<small>Dipake @'+(data.pemakai||'-')+'</small><br>':'')+'<div style="display:flex;gap:6px"><button onclick="salinVoucher(\''+kode+'\')" style="background:#fff;color:#000;padding:8px;flex:1">📋 SALIN</button><button onclick="hapusVoucher(\''+kode+'\')" style="background:#ef4444;color:#fff;padding:8px;flex:1">🗑️ HAPUS</button></div></div>';});el.innerHTML=h;}catch(e){}}
-function salinVoucher(kode){if(navigator.clipboard)navigator.clipboard.writeText(kode).then(()=>alert('Disalin: '+kode));}
-async function hapusVoucher(kode){if(!confirm('Hapus '+kode+'?'))return;await fetch(DB_URL+"/voucher/"+kode+".json",{method:"DELETE"});loadVoucher();}
-async function cariPlayer(){var id=document.getElementById('cariID').value;var a=await cariAkun(id);if(!a){document.getElementById('hasilCari').innerHTML='<div style="background:#ef4444;padding:10px;border-radius:10px;margin-top:8px">❌ Gak ketemu!</div>';return;}document.getElementById('hasilCari').innerHTML='<div style="background:#333;padding:12px;border-radius:10px;margin-top:8px"><b>@'+a.username+' '+(a.premium?'👑 PREMIUM':'')+'</b><br><small>Email: '+a.email+'<br>ID: '+a.id+'<br>💎 '+(a.diamond||0)+' • 🪙 '+(a.coins||0)+' • Maps: '+(a.maps?a.maps.length:0)+' • Items: '+(a.items?a.items.length:0)+' • Teman: '+(a.friends?a.friends.length:0)+'</small></div>';}
-async function loadPlayer(){try{var r=await fetch(DB_URL+"/blox.json");var v=await r.json();if(!v){document.getElementById('listPlayer').innerHTML='Belum ada player!';return;}var arr=Object.values(v).sort((a,b)=>(b.diamond||0)-(a.diamond||0));var totalD=0,totalP=0;arr.forEach(a=>{totalD+=a.diamond||0;if(a.premium)totalP++;});document.getElementById('statAdmin').innerText='Total Player: '+arr.length+' • Total Diamond: '+totalD+' • Premium: '+totalP;var h='';arr.forEach(a=>{h+='<div class="card"><b>@'+a.username+' '+(a.premium?'👑 PREMIUM':'')+'</b><br><small>Email: '+a.email+' • ID: '+(a.id||'-')+'<br>💎 '+(a.diamond||0)+' • 🪙 '+(a.coins||0)+' • Maps: '+(a.maps?a.maps.length:0)+' • Items: '+(a.items?a.items.length:0)+' • Teman: '+(a.friends?a.friends.length:0)+'</small><br><div style="display:flex;gap:6px;margin-top:6px"><button onclick="kasihDiamondCepat(\''+a.email+'\')" style="background:#f59e0b;color:#000;padding:8px;flex:1">💎 +100</button><button onclick="kasihPremiumCepat(\''+a.email+'\')" style="background:#ec4899;color:#fff;padding:8px;flex:1">👑 Premium</button></div></div>';});document.getElementById('listPlayer').innerHTML=h;}catch(e){}}
-async function kasihDiamondCepat(email){var a=await cariAkun(email);a.diamond=(a.diamond||0)+100;await simpanAkunAdmin(a);alert('✅ +100 💎 ke @'+a.username);loadSemua();}
-async function kasihPremiumCepat(email){var a=await cariAkun(email);a.premium=true;await simpanAkunAdmin(a);alert('✅ @'+a.username+' Premium!');loadSemua();}
-async function loadSemua(){await loadItems();await loadVoucher();await loadPlayer();}
-</script></body></html>
+async function resetPassAdmin(){
+  var inp=document.getElementById('resetEmail').value;
+  var np=document.getElementById('resetPassBaru').value;
+  if(!inp||!np){alert('Isi Email/ID + password baru!');return;}
+  var a=await cariAkun(inp);
+  if(!a){alert('Gak ketemu!');return;}
+  a.password=hashPass(np); await simpanAkunAdmin(a);
+  alert('✅ Password @'+a.username+' direset jadi: '+np); loadSemua();
+}
+function modeItem(mode){
+  MODE_ITEM=mode;
+  document.getElementById('panelGambar').style.display = mode=='gambar'?'block':'none';
+  document.getElementById('panelTemplate').style.display = mode=='template'?'block':'none';
+  document.getElementById('btnModeGambar').style.background = mode=='gambar'?'#a855f7':'#333';
+  document.getElementById('btnModeTemplate').style.background = mode=='template'?'#a855f7':'#333';
+  if(mode=='gambar'){ setTimeout(initCanvasGambar,100); }
+}
+function setWarnaGambar(w){ WARNA_GAMBAR=w; }
+function setTebalGambar(t){ TEBAL_GAMBAR=t; }
+function initCanvasGambar(){
+  var cv=document.getElementById('canvasGambar');
+  if(!cv) return;
+  var ctx=cv.getContext('2d');
+  if(!GAMBAR_ITEM_DATA){
+    ctx.fillStyle='#fff'; ctx.fillRect(0,0,300,200);
+    ctx.fillStyle='#aaa'; ctx.font='14px Arial'; ctx.textAlign='center';
+    ctx.fillText('Gambar di sini pake jari!',150,100);
+  }
+  var lagiGambar=false;
+  var lastX=0,lastY=0;
+  function getPos(e){
+    var r=cv.getBoundingClientRect();
+    var t=e.touches?e.touches[0]:e;
+    return {x:(t.clientX-r.left)*(300/r.width), y:(t.clientY-r.top)*(200/r.height)};
+  }
+  cv.onmousedown=function(e){ lagiGambar=true; var p=getPos(e); lastX=p.x; lastY=p.y; };
+  cv.onmousemove=function(e){ if(!lagiGambar) return; var p=getPos(e); ctx.strokeStyle=WARNA_GAMBAR; ctx.lineWidth=TEBAL_GAMBAR; ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(lastX,lastY); ctx.lineTo(p.x,p.y); ctx.stroke(); lastX=p.x; lastY=p.y; updatePreviewGambar(); };
+  cv.onmouseup=function(){ lagiGambar=false; updatePreviewGambar(); };
+  cv.ontouchstart=function(e){ e.preventDefault(); lagiGambar=true; var p=getPos(e); lastX=p.x; lastY=p.y; };
+  cv.ontouchmove=function(e){ e.preventDefault(); if(!lagiGambar) return; var p=getPos(e); ctx.strokeStyle=WARNA_GAMBAR; ctx.lineWidth=TEBAL_GAMBAR; ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(lastX,lastY); ctx.lineTo(p.x,p.y); ctx.stroke(); lastX=p.x; lastY=p.y; updatePreviewGambar(); };
+  cv.ontouchend=function(){ lagiGambar=false; updatePreviewGambar(); };
+}
+function updatePreviewGambar(){
+  var cv=document.getElementById('canvasGambar');
+  GAMBAR_ITEM_DATA=cv.toDataURL('image/png');
+  var prev=document.getElementById('previewGambarItem');
+  if(prev){ prev.src=GAMBAR_ITEM_DATA; prev.style.display='block'; }
+  var txt=document.getElementById('textPreviewGambar');
+  if(txt) txt.innerText='Gambar lu udah kesimpen! Tinggal isi nama + harga, pencet BIKIN ITEM!';
+}
+function hapusGambar(){
+  var cv=document.getElementById('canvasGambar');
+  if(!cv) return;
+  var ctx=cv.getContext('2d');
+  ctx.fillStyle='#fff'; ctx.fillRect(0,0,300,200);
+  GAMBAR_ITEM_DATA=null;
+  var prev=document.getElementById('previewGambarItem');
+  if(prev) prev.style.display='none';
+  var t=document.getElementById('textPreviewGambar');
+  if(t) t.innerText='Belum ada gambar, gambar dulu!';
+}
+function pilihTemplateItem(emoji,nama,harga,tipe,warna,desc){
+  document.getElementById('itemEmoji').value=emoji;
+  document.getElementById('itemNama').value=nama;
+  document.getElementById('itemHarga').value=harga;
+  document.getElementById('itemTipe').value=tipe;
+  document.getElementById('itemWarna').value=warna;
+  document.getElementById('itemDesc').value=desc;
+  GAMBAR_ITEM_DATA=null;
+  var prev=document.getElementById('previewGambarItem');
+  if(prev) prev.style.display='none';
+  alert('✅ Template dipilih!\n\n'+emoji+' '+nama+'\n💎 '+harga+'\n\nTinggal pencet BIKIN ITEM di bawah!');
+}
+function isiContohItem(emoji,nama,harga,tipe,warna,desc){ pilihTemplateItem(emoji,nama,harga,tipe,warna,desc); }
+async function buatItem(){
+  var nama=document.getElementById('itemNama').value.trim();
+  var emoji=document.getElementById('itemEmoji').value.trim()||'🎁';
+  var harga=parseInt(document.getElementById('itemHarga').value);
+  var tipe=document.getElementById('itemTipe').value;
+  var warnaHex=document.getElementById('itemWarna').value.trim()||'#FF0000';
+  var desc=document.getElementById('itemDesc').value.trim()||nama;
+  if(!nama){alert('Isi Nama Item!');return;}
+  if(!harga||harga<=0){alert('Isi Harga Diamond!');return;}
+  var warna=parseInt(warnaHex.replace('#',''),16); if(isNaN(warna)) warna=0xff0000;
+  var id='item_'+Date.now()+'_'+Math.floor(Math.random()*9999);
+  var gambarData = (MODE_ITEM=='gambar' && GAMBAR_ITEM_DATA) ? GAMBAR_ITEM_DATA : null;
+  if(MODE_ITEM=='gambar' && !gambarData){
+    if(!confirm('Lu belum gambar! Mau tetep bikin item pake Emoji aja?')) return;
+  }
+  var data={id:id,nama:emoji+' '+nama,emoji:emoji,harga:harga,tipe:tipe,warna:warna,warnaHex:warnaHex,desc:desc,waktu:Date.now(),gambar:gambarData,mode:MODE_ITEM};
+  await fetch(DB_URL+"/bloxItems/"+id+".json",{method:"PUT",body:JSON.stringify(data)});
+  alert('✅ Item berhasil dibuat!\n\n'+emoji+' '+nama+'\n💎 '+harga+' Diamond\nTipe: '+tipe+'\n'+(gambarData?'✏️ + Gambar sendiri kesimpen!':'🎨 Template')+'\n\nLangsung muncul di Katalog pemain!');
+  document.getElementById('itemNama').value='';document.getElementById('itemEmoji').value='';document.getElementById('itemHarga').value='';document.getElementById('itemDesc').value='';
+  hapusGambar();
+  loadItems();
+}
+async function loadItems(){
+  try{
+    var r=await fetch(DB_URL+"/bloxItems.json"); var v=await r.json();
+    var el=document.getElementById('listItem');
+    if(!v){el.innerHTML='Belum ada item!';return;}
+    var arr=Object.values(v); document.getElementById('jmlItem').innerText='('+arr.length+')';
+    var h=''; arr.forEach(k=>{
+      var gambarHtml = k.gambar ? '<br><img src="'+k.gambar+'" style="width:100px;height:70px;object-fit:contain;background:#fff;border-radius:10px;margin-top:6px">' : '';
+      h+='<div class="card"><b>'+k.emoji+' '+k.nama+'</b><br><small>💎 '+k.harga+' • '+k.tipe+' • '+(k.mode=='gambar'?'✏️ Gambar Sendiri':'🎨 Template')+'</small><br><small>'+k.desc+'</small>'+gambarHtml+'<br><button onclick="hapusItem(\''+k.id+'\')" style="background:#ef4444;color:#fff;padding:8px">🗑️ HAPUS</button></div>';
+    });
+    el.innerHTML=h;
+  }catch(e){}
+}
+async function hapusItem(id){ await fetch(DB_URL+"/bloxItems/"+id+".json",{method:"DELETE"}); loadItems(); }
+async function buatVoucher(){
+  var kode=document.getElementById('kodeBaru').value.trim().toUpperCase();
+  var jml=parseInt(document.getElementById('diamondBaru').value);
+  if(!kode||!jml){alert('Isi Kode + Diamond!');return;}
+  await fetch(DB_URL+"/voucher/"+kode+".json",{method:"PUT",body:JSON.stringify({diamond:jml,pakai:false,waktu:Date.now()})});
+  alert('✅ Voucher '+kode+' dibuat!'); loadVoucher();
+}
+async function buatVoucherCepat(jml){
+  var kode='BLOX-'+Math.random().toString(36).substring(2,6).toUpperCase();
+  await fetch(DB_URL+"/voucher/"+kode+".json",{method:"PUT",body:JSON.stringify({diamond:jml,pakai:false,waktu:Date.now()})});
+  alert('✅ Voucher: '+kode+' = '+jml+' 💎');
+  if(navigator.clipboard) navigator.clipboard.writeText(kode);
+  loadVoucher();
+}
+async function loadVoucher(){
+  try{
+    var r=await fetch(DB_URL+"/voucher.json"); var v=await r.json();
+    var el=document.getElementById('listVoucher');
+    if(!v){el.innerHTML='Belum ada voucher!';return;}
+    var h=''; Object.entries(v).forEach(([kode,data])=>{h+='<div class="card"><b>'+kode+'</b> • 💎 '+data.diamond+' '+(data.pakai?'❌ DIPAKE':'✅ AKTIF')+'<br><button onclick="hapusVoucher(\''+kode+'\')" style="background:#ef4444;color:#fff;padding:8px">🗑️ HAPUS</button></div>';});
+    el.innerHTML=h;
+  }catch(e){}
+}
+async function hapusVoucher(kode){ await fetch(DB_URL+"/voucher/"+kode+".json",{method:"DELETE"}); loadVoucher(); }
+async function cariPlayer(){
+  var id=document.getElementById('cariID').value;
+  var a=await cariAkun(id);
+  if(!a){document.getElementById('hasilCari').innerHTML='❌ Gak ketemu!';return;}
+  document.getElementById('hasilCari').innerHTML='<div style="background:#333;padding:12px;border-radius:10px"><b>@'+a.username+'</b><br>Email: '+a.email+'<br>ID: '+a.id+'<br>💎 '+(a.diamond||0)+'</div>';
+}
+async function loadPlayer(){
+  try{
+    var r=await fetch(DB_URL+"/blox.json"); var v=await r.json();
+    if(!v){document.getElementById('listPlayer').innerHTML='Belum ada player!';return;}
+    var arr=Object.values(v);
+    document.getElementById('statAdmin').innerText='Total Player: '+arr.length;
+    var h=''; arr.forEach(a=>{h+='<div class="card"><b>@'+a.username+' '+(a.premium?'👑':'')+'</b><br><small>'+a.email+' • ID: '+(a.id||'-')+' • 💎 '+(a.diamond||0)+'</small></div>';});
+    document.getElementById('listPlayer').innerHTML=h;
+  }catch(e){}
+}
+async function loadSemua(){ await loadItems(); await loadVoucher(); await loadPlayer(); }
+</script>
+</body></html>
