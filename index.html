@@ -1,258 +1,318 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>BloxLongkali</title>
+<title>BloxClicker Longkali</title>
 <style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{margin:0;font-family:Arial;background:#fff;color:#111;overflow-x:hidden}
-button{cursor:pointer;touch-action:manipulation;pointer-events:auto!important;position:relative;z-index:10}
-#lobby{display:block;padding-bottom:80px}
-#lobbyTop{background:#fff;padding:12px 14px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100}
-#lobbyTop .logo{font-size:26px;font-weight:900;letter-spacing:-1px;flex:1}#lobbyTop .logo i{font-style:normal;background:#111;color:#fff;padding:1px 5px;border-radius:3px;transform:rotate(-8deg);display:inline-block}
-#lobbyTop button{border:none;background:none;font-size:22px;padding:6px}
-#profileRow{display:flex;align-items:center;gap:12px;padding:6px 16px}
-#avatarBox{width:56px;height:56px;border-radius:50%;background:#eee;display:flex;align-items:center;justify-content:center;font-size:32px;overflow:hidden;flex-shrink:0;border:2px solid #eee}
-#profileRow b{font-size:20px}#profileRow .verif{background:#e5e7eb;padding:5px 12px;border-radius:20px;font-size:13px;color:#333;margin-left:8px}
-#temanRow{display:flex;gap:12px;overflow-x:auto;padding:6px 16px}
-.temanItem{text-align:center;flex-shrink:0;width:72px;cursor:pointer}.temanItem .av{width:72px;height:72px;border-radius:50%;background:#eee;display:flex;align-items:center;justify-content:center;font-size:36px;overflow:hidden}
-#rekomGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px}
-.mapCard{cursor:pointer}.mapCard .thumb{height:110px;background:#d1d5db;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:36px;overflow:hidden}
-.mapCard b{font-size:15px;display:block;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mapCard small{color:#555;font-size:13px}
-#bottomNav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #eee;display:flex;z-index:1000;padding:8px 0 12px}
-#bottomNav button{flex:1;border:none;background:none;font-size:12px;color:#666;pointer-events:auto!important}#bottomNav button.on{color:#000;font-weight:900}#bottomNav button .ic{font-size:24px;display:block}
-#game{display:none;position:relative;z-index:20}
-#top{position:fixed;top:0;left:0;right:0;z-index:1000;background:#fff;padding:8px 10px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,.2)}
-#top button{background:#111;color:#fff;border:none;padding:11px 13px;border-radius:8px;font-weight:900;font-size:12px}
-#diamondBar{position:fixed;top:58px;right:10px;z-index:1000;background:#25D366;color:#fff;padding:8px 12px;border-radius:20px;font-weight:900;font-size:13px;cursor:pointer}
-#coins{position:fixed;top:58px;left:10px;z-index:1000;background:#f59e0b;padding:8px 12px;border-radius:20px;font-weight:900;font-size:13px}
-#holder{position:fixed;inset:0;top:52px;bottom:75px;background:#8ecae6;z-index:1}#holder canvas{display:block;touch-action:none}
-#toolbar{position:fixed;bottom:0;left:0;right:0;z-index:1000;background:#fff;display:flex;gap:4px;padding:6px;overflow-x:auto;border-top:2px solid #ddd}
-#toolbar button{flex:1;min-width:58px;background:#eee;border:none;padding:11px 4px;border-radius:10px;font-weight:900;font-size:11px;min-height:52px}
-#toolbar button.on{background:#111;color:#fff}#toolbar button.locked{background:#fee2e2!important;color:#991b1b!important}
-#toolPanel{position:fixed;bottom:75px;left:10px;right:10px;z-index:1100;background:#fff;padding:10px;border-radius:14px;display:none;box-shadow:0 4px 20px rgba(0,0,0,.3);max-height:60vh;overflow-y:auto}
-#joy{position:fixed;bottom:145px;left:14px;width:95px;height:95px;background:rgba(255,255,255,.35);border:2px solid rgba(255,255,255,.8);border-radius:50%;z-index:900;touch-action:none}
-#knob{position:absolute;left:28px;top:28px;width:38px;height:38px;background:#fff;border-radius:50%}
-#jumpBtn{position:fixed;bottom:145px;right:14px;width:56px;height:56px;border-radius:50%;background:#fff;border:3px solid #111;font-size:22px;font-weight:900;z-index:900}
-#buildLockBanner{position:fixed;top:92px;left:50%;transform:translateX(-50%);z-index:1000;background:#ef4444;color:#fff;padding:8px 14px;border-radius:20px;font-weight:900;font-size:12px;display:none;white-space:nowrap}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{margin:0;font-family:Arial;background:#0f172a;color:#fff;overflow-x:hidden}
+button{cursor:pointer;touch-action:manipulation}
+.top{background:#1e293b;padding:12px 14px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:100}
+.logo{font-size:22px;font-weight:900;flex:1}.logo i{font-style:normal;background:#facc15;color:#111;padding:1px 6px;border-radius:4px}
+.top button{border:none;background:#334155;color:#fff;padding:8px 10px;border-radius:8px;font-weight:900}
+.card{background:#1e293b;border-radius:16px;padding:14px;margin:12px}
+.bigCoin{width:200px;height:200px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fde047,#f59e0b,#b45309);border:8px solid #facc15;display:flex;align-items:center;justify-content:center;font-size:90px;cursor:pointer;user-select:none;margin:10px auto;box-shadow:0 10px 30px rgba(245,158,11,.5);transition:transform .08s;position:relative}
+.bigCoin:active{transform:scale(.92)}
+.bigCoin .plus{position:absolute;font-weight:900;color:#fff;font-size:22px;pointer-events:none;animation:naik 0.7s forwards}
+@keyframes naik{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-60px)}}
+.upg{display:flex;justify-content:space-between;align-items:center;background:#334155;border-radius:12px;padding:10px;margin:8px 0}
+.upg b{font-size:14px}.upg small{color:#94a3b8}
+.upg button{border:none;padding:11px 12px;border-radius:10px;font-weight:900;color:#fff;background:#16a34a;min-width:90px}
+.upg button:disabled{background:#475569;color:#94a3b8}
+.btn{width:100%;padding:13px;border:none;border-radius:11px;font-weight:900;margin-top:6px}
+input{width:100%;padding:11px;border:2px solid #334155;background:#0f172a;color:#fff;border-radius:10px;margin:4px 0 8px}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:50000;display:none;justify-content:center;align-items:center;padding:14px}
-.modal>div{background:#fff;border-radius:18px;width:100%;max-width:420px;padding:16px;max-height:88vh;overflow:auto;position:relative;z-index:50001}
-.modal button{pointer-events:auto!important;position:relative;z-index:50002}
-.modal input,.modal select{pointer-events:auto!important;position:relative;z-index:50002}
-input{width:100%;padding:11px;border:2px solid #ddd;border-radius:10px;margin:4px 0 8px}
-.btn{width:100%;padding:13px;border:none;border-radius:11px;font-weight:900;margin-top:6px;min-height:48px}
-.kitem{display:flex;justify-content:space-between;align-items:center;background:#f1f5f9;border-radius:12px;padding:10px;margin:7px 0}
-.kbtn{border:none;padding:11px 12px;border-radius:10px;font-weight:900;color:#fff;font-size:12px;min-height:44px}
-.cbtn{width:40px;height:40px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1px #ccc}
-#toast{position:fixed;top:120px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 16px;border-radius:20px;font-weight:900;font-size:13px;z-index:99999;display:none;white-space:nowrap}
-.invCard{background:#fff;border:2px solid #eee;border-radius:14px;padding:10px;text-align:center}
-.invCard.pakai{border-color:#16a34a;background:#f0fdf4}
-.previewBox{width:100%;height:140px;background:linear-gradient(135deg,#e0e7ff,#fce7f3);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:80px;position:relative;overflow:hidden}
-.waBtn{background:#25D366!important;color:#fff!important}
-.propBtn{padding:12px;border-radius:10px;font-weight:900;background:#fff;border:2px solid #ddd;font-size:12px}
-</style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-</head>
+.modal>div{background:#fff;color:#111;border-radius:18px;width:100%;max-width:420px;padding:16px;max-height:88vh;overflow:auto}
+.tab{display:flex;gap:6px;margin:12px}.tab button{flex:1;padding:11px;border:none;border-radius:10px;font-weight:900;background:#334155;color:#fff}.tab button.on{background:#facc15;color:#111}
+.rank{display:flex;justify-content:space-between;background:#334155;padding:10px;border-radius:10px;margin:6px 0}
+.bar{height:10px;background:#334155;border-radius:10px;overflow:hidden}.bar i{display:block;height:100%;background:#facc15}
+</style></head>
 <body>
-<div id="lobby">
-<div id="lobbyTop"><button type="button" onclick="tesTombol('Menu')">☰</button><div class="logo">BLOX<i>Longkali</i></div><button type="button" onclick="bukaTopUp()">🔍</button><button type="button" onclick="bukaTopUp()">⬡</button><button type="button" onclick="bukaTopUp()">🔔</button></div>
-<div id="profileRow"><div id="avatarBox"><span id="avatarEmoji">🧑</span></div><div style="flex:1"><b id="lobbyNama">Player</b><span class="verif" id="lobbyVerif">Belum diperiksa</span><br><small style="color:#666;font-size:12px" id="lobbyEmail">email@gmail.com • ID: <b id="lobbyID">-</b></small><br><small style="font-size:12px">🪙 <span id="coinsLobby">0</span> • 💎 <span id="diamondLobby">0</span> • <span id="premiumLobby">GRATIS</span> • 🎒 <span onclick="bukaInventory()" style="color:#16a34a;text-decoration:underline">Inventory (<span id="jmlInvLobby">0</span>)</span></small><br><button onclick="bukaTopUp()" class="waBtn" style="border:none;padding:8px 14px;border-radius:20px;font-weight:900;margin-top:6px">💎 TOP UP WA - 0895600169977</button></div></div>
-<div style="padding:10px 16px 4px;display:flex;justify-content:space-between;align-items:center"><b style="font-size:20px">Teman (<span id="temanJumlah">0</span>) <span style="font-weight:400">></span></b><span style="font-size:12px;color:#666" id="temanCount">0 Teman</span></div>
-<div id="temanRow"></div>
-<div style="padding:14px 16px 8px"><b style="font-size:20px">Direkomendasikan untukmu</b></div>
-<div id="rekomGrid"></div>
-<div style="padding:14px 16px 8px"><b style="font-size:20px">Lanjutkan <span style="font-weight:400">></span></b></div>
-<div id="lanjutGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px"></div>
-<div style="padding:14px 16px 8px"><b style="font-size:20px">Maps Saya</b></div>
-<div id="listMapSaya" style="padding:0 16px"></div>
-<div style="padding:10px 16px"><button onclick="cobaBuatMap()" style="width:100%;background:#111;color:#fff;border:none;padding:14px;border-radius:12px;font-weight:900">➕ BUAT MAP BARU - KHUSUS PREMIUM (500 💎)</button><br><small style="color:#666">Tanah awal kosong! Bebas bangun apa aja! Bisa diperluas! Cuma pemilik yang bisa bangun!</small></div>
-<div style="padding:0 16px"><button onclick="logoutAkun()" style="width:100%;background:#eee;border:none;padding:12px;border-radius:12px;font-weight:900">🚪 LOGOUT</button></div>
+<div class="top"><div class="logo">BLOX<i>Clicker</i> Longkali</div><button onclick="bukaTopUp()">💎 <span id="topDiamond">0</span></button><button onclick="bukaLeader()">🏆 RANK</button><button onclick="logoutAkun()">🚪</button></div>
+
+<div style="text-align:center;padding:10px 14px 0">
+<div style="font-size:13px;color:#94a3b8">COIN LU • ID: <b id="myIDTop" style="color:#fff">-</b> • @<span id="myUserTop">-</span></div>
+<div style="font-size:38px;font-weight:900" id="coinText">0 🪙</div>
+<div style="font-size:13px;color:#facc15">Per Klik: <b id="perKlikText">+1</b> • Per Detik: <b id="perDetikText">+0</b> • Total Klik: <b id="totalKlikText">0</b></div>
+<div style="font-size:12px;color:#94a3b8;margin-top:4px" id="statusServer">🔄 Nyambung ke server...</div>
 </div>
-<div id="bottomNav">
-<button class="on" onclick="tesTombol('Beranda');loadMapSemua()"><span class="ic">🏠</span>Beranda</button>
-<button onclick="tesTombol('Teratas');loadMapSemua()"><span class="ic">📊</span>Teratas</button>
-<button onclick="bukaAvatar()"><span class="ic" id="navAvatarEmoji">🧑</span>Avatar</button>
-<button onclick="bukaInventory()"><span class="ic">👥</span>Party</button>
+
+<div class="card" style="text-align:center;padding:16px 10px">
+<div class="bigCoin" id="coinBtn" onclick="klikCoin(event)">🪙</div>
+<div style="font-size:12px;color:#94a3b8">PENCET KOIN GEDE SECEPETNYA!</div>
+<div style="display:flex;gap:6px;margin-top:10px">
+<button onclick="klikCoin(event)" style="flex:1;background:#facc15;border:none;padding:12px;border-radius:10px;font-weight:900">👆 KLIK!</button>
+<button onclick="beliPrestige()" style="flex:1;background:#a855f7;color:#fff;border:none;padding:12px;border-radius:10px;font-weight:900">♻️ PRESTIGE<br><small id="prestigeInfo">Butuh 100K Coin</small></button>
 </div>
-<div id="game">
-<div id="top"><div><b>Blox<i>Longkali</i></b><br><small id="namaTop">Map</small></div><div><button onclick="kembaliLobby()">🏠 LOBBY</button> <button onclick="bukaAvatar()">👤 AVATAR</button></div></div>
-<div id="coins">🪙 <span id="coinsText">0</span></div>
-<div id="diamondBar" onclick="bukaTopUp()">💎 <span id="diamondText">0</span> • 📱 TOP UP WA</div>
-<div id="buildLockBanner">🔒 MAP ORANG LAIN - LU GABISA BANGUN!</div>
-<div id="toast"></div><div id="holder"></div>
-<div id="toolPanel"><b>🧱 BUILD - Cuma Pemilik Map!</b><div style="background:#fef3c7;padding:8px;border-radius:8px;font-size:12px;margin:6px 0" id="buildInfo">Pemilik: -</div>
-<div style="background:#e0f2fe;padding:10px;border-radius:10px;margin:6px 0">
-<b>🗺️ LUAS TANAH: <span id="labelLuas">200 x 200</span></b><br><small id="infoLuas">Tanah awal kosong 200x200. Bisa diperluas!</small><br>
-<input id="sliderLuas" type="range" min="200" max="1000" step="100" value="200" oninput="previewLuas(this.value)" style="width:100%">
-<div style="display:flex;gap:6px;margin-top:6px">
-<button onclick="setLuas(200)" style="flex:1;padding:10px;border-radius:8px;font-weight:900;background:#eee;border:none">Kecil 200</button>
-<button onclick="setLuas(400)" style="flex:1;padding:10px;border-radius:8px;font-weight:900;background:#eee;border:none">Sedang 400</button>
-<button onclick="setLuas(600)" style="flex:1;padding:10px;border-radius:8px;font-weight:900;background:#eee;border:none">Besar 600</button>
-<button onclick="setLuas(1000)" style="flex:1;padding:10px;border-radius:8px;font-weight:900;background:#111;color:#fff;border:none">MEGA 1000!</button>
 </div>
-<button onclick="simpanLuas()" style="width:100%;background:#0284c7;color:#fff;border:none;padding:12px;border-radius:8px;font-weight:900;margin-top:6px">✅ SIMPAN LUAS TANAH KE SERVER!</button>
+
+<div class="tab"><button id="tabUpgrade" class="on" onclick="gantiTab('upgrade')">⬆️ UPGRADE</button><button id="tabAuto" onclick="gantiTab('auto')">🤖 AUTO</button><button id="tabRank" onclick="gantiTab('rank')">🏆 RANK</button></div>
+
+<div id="panelUpgrade" class="card">
+<b>👆 UPGRADE KLIK - Biar 1x Pencet Makin Gede!</b>
+<div id="listUpgrade"></div>
 </div>
-<b>🧱 Bangun Dasar</b>
-<div style="display:flex;gap:6px;margin:8px 0;flex-wrap:wrap">
-<button onclick="setTool('part')" style="flex:1;padding:12px;border-radius:8px;font-weight:900">⬛ Part</button>
-<button onclick="setTool('wedge')" style="flex:1;padding:12px;border-radius:8px;font-weight:900">🔺 Wedge</button>
-<button onclick="setTool('ball')" style="flex:1;padding:12px;border-radius:8px;font-weight:900">⚪ Ball</button>
-<button onclick="setTool('cylinder')" style="flex:1;padding:12px;border-radius:8px;font-weight:900">🛢️ Cylinder</button>
-<button onclick="setTool('delete')" style="flex:1;padding:12px;border-radius:8px;font-weight:900;background:#dc2626;color:#fff">❌ Delete</button>
+
+<div id="panelAuto" class="card" style="display:none">
+<b>🤖 AUTO - Diem Aja Coin Nambah Sendiri!</b>
+<div style="background:#fef3c7;color:#111;padding:10px;border-radius:10px;font-size:12px;margin:8px 0">Auto jalan walau lu gak pencet! Makin banyak Auto, makin cepet kaya! Pas lu tidur pun Coin jalan!</div>
+<div id="listAuto"></div>
 </div>
-<div style="display:flex;gap:6px;flex-wrap:wrap" id="warnaList"></div>
-<b style="margin-top:10px;display:block">🏠 Props Lengkap - Pencet Langsung Jadi!</b>
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin:8px 0">
-<button class="propBtn" onclick="tambahProp('telepon')">📞<br>Telepon</button>
-<button class="propBtn" onclick="tambahProp('rumah')">🏠<br>Rumah</button>
-<button class="propBtn" onclick="tambahProp('pohon')">🌳<br>Pohon</button>
-<button class="propBtn" onclick="tambahProp('mobil')">🚗<br>Mobil</button>
-<button class="propBtn" onclick="tambahProp('lampu')">💡<br>Lampu Jalan</button>
-<button class="propBtn" onclick="tambahProp('toko')">🏪<br>Toko</button>
-<button class="propBtn" onclick="tambahProp('jembatan')">🌉<br>Jembatan</button>
-<button class="propBtn" onclick="tambahProp('pagar')">🚧<br>Pagar</button>
-<button class="propBtn" onclick="tambahProp('kursi')">🪑<br>Kursi</button>
-<button class="propBtn" onclick="tambahProp('meja')">🍽️<br>Meja</button>
-<button class="propBtn" onclick="tambahProp('kolam')">🏊<br>Kolam</button>
-<button class="propBtn" onclick="tambahProp('tower')">🗼<br>Tower</button>
-<button class="propBtn" onclick="tambahProp('sekolah')">🏫<br>Sekolah</button>
-<button class="propBtn" onclick="tambahProp('masjid')">🕌<br>Masjid</button>
-<button class="propBtn" onclick="tambahProp('warung')">🍜<br>Warung</button>
-<button class="propBtn" onclick="tambahProp('lapangan')">⚽<br>Lapangan</button>
-<button class="propBtn" onclick="tambahProp('jalan')">🛣️<br>Jalan</button>
-<button class="propBtn" onclick="tambahProp('pintu')">🚪<br>Gerbang</button>
+
+<div id="panelRank" class="card" style="display:none">
+<b>🏆 LEADERBOARD LONGKALI - Siapa Paling Kaya?</b>
+<div id="listRank"><div style="text-align:center;padding:20px;color:#94a3b8">Loading...</div></div>
+<button onclick="loadRank()" style="width:100%;background:#334155;color:#fff;border:none;padding:11px;border-radius:10px;font-weight:900;margin-top:8px">🔄 REFRESH RANK</button>
 </div>
-<div style="background:#f0fdf4;padding:10px;border-radius:10px;font-size:12px"><b>💡 Cara Pakai:</b><br>1. Pencet Props (misal 📞 Telepon)<br>2. Muncul di depan lu!<br>3. Pencet lagi buat nambah banyak!</div>
-<div style="display:flex;gap:6px;margin-top:8px"><button onclick="clearWorld()" style="flex:1;background:#111;color:#fff;border:none;padding:12px;border-radius:8px;font-weight:900">🗑️ HAPUS PART SAYA</button><button onclick="toggleBuild()" style="flex:1;background:#0e4a5a;color:#fff;border:none;padding:12px;border-radius:8px;font-weight:900">TUTUP</button></div></div>
-<div id="joy"><div id="knob"></div></div><button id="jumpBtn" onclick="lompat()">⬆️</button>
-<div id="toolbar"><button id="tbSelect" class="on" onclick="setMode('select')">🖱️<br>Select</button><button id="tbMove" onclick="setMode('move')">✋<br>Move</button><button onclick="bukaAvatar()">👤<br>Avatar</button><button onclick="bukaInventory()">🎒<br>Inventory</button><button id="tbBuild" onclick="toggleBuild()">🧱<br>Build</button><button onclick="bukaKatalog()">🛒<br>Katalog</button><button onclick="bukaTopUp()" style="background:#25D366;color:#fff">📱<br>Top Up</button><button onclick="kembaliLobby()">🏠<br>Lobby</button></div>
-</div>
-<div id="modalTambahTeman" class="modal"><div><div style="display:flex;justify-content:space-between"><b>👥 Tambah Teman</b><button onclick="tutupSemua()" style="border:none;background:#eee;border-radius:50%;width:32px;height:32px">✕</button></div><p style="font-size:12px;color:#666">Minta ID 10 Digit temen lu!<br>ID lu: <b id="myIDTeman">-</b> <span onclick="salinID()" style="color:#4338ca;text-decoration:underline;cursor:pointer">📋 Salin ID Gw</span></p><label>ID 10 Digit Temen</label><input id="inputIDTeman" placeholder="Contoh: 8294017365" maxlength="10" inputmode="numeric"><button onclick="tambahTemanByID()" class="btn" style="background:#111;color:#fff">➕ TAMBAH TEMAN!</button><div id="hasilCariTeman"></div></div></div>
-<div id="modalProfilTeman" class="modal"><div><div style="display:flex;justify-content:space-between"><b>👤 Profil Teman</b><button onclick="tutupSemua()" style="border:none;background:#eee;border-radius:50%;width:32px;height:32px">✕</button></div><div id="isiProfilTeman" style="text-align:center;padding:10px"></div></div></div>
-<div id="modalLogin" class="modal"><div><h2 style="text-align:center">Blox<i>Longkali</i></h2><p style="text-align:center;font-size:12px;color:#666">Login pake Email + Password<br>Map awal kosong • Item dari Admin • Top Up WA</p>
-<div style="display:flex;gap:6px"><button id="btnTabDaftar" onclick="switchLoginTab('daftar')" style="flex:1;padding:11px;border:none;border-radius:10px;font-weight:900;background:#111;color:#fff">📝 DAFTAR</button><button id="btnTabLogin" onclick="switchLoginTab('login')" style="flex:1;padding:11px;border:none;border-radius:10px;font-weight:900;background:#eee">🔑 LOGIN</button></div>
-<div id="panelDaftar"><label>Username (tanpa spasi)</label><input id="inUser" placeholder="Contoh: BudiBlox"><label>Email</label><input id="inEmailDaftar" type="email" placeholder="budi@gmail.com"><label>Password (min 6 huruf)</label><input id="inPassDaftar" type="password" placeholder="budi123"><label>Ulangi Password</label><input id="inPassDaftar2" type="password" placeholder="Ketik lagi"><button class="btn" style="background:#ff0000;color:#fff" onclick="buatAkun()">▶ DAFTAR + DAPET ID!</button><p style="font-size:11px;color:#888;text-align:center">Daftar = 0 Diamond! Diamond cuma dari Top Up WA!<br>100 Coins awal!</p></div>
-<div id="panelLogin" style="display:none"><label>Email</label><input id="inLoginEmail" type="email" placeholder="Email lu pas daftar"><label>Password</label><input id="inLoginPass" type="password" placeholder="Password lu"><button class="btn" style="background:#111;color:#fff" onclick="loginAkun()">🔑 LOGIN!</button><p style="font-size:11px;color:#888;text-align:center">Lupa password? Chat Admin WA 0895600169977</p></div>
-</div></div>
-<div id="modalBuatMap" class="modal"><div><div style="display:flex;justify-content:space-between"><b>➕ BUAT MAP BARU</b><button onclick="tutupSemua()" style="border:none;background:#eee;border-radius:50%;width:32px;height:32px">✕</button></div><p style="font-size:12px;color:#666">Khusus Premium! Tanah awal KOSONG 200x200! Bisa diperluas sampe 1000!<br>ID: <b id="buatMapID">-</b></p><label>Nama Map</label><input id="inputNamaMap" placeholder="Contoh: Kota Budi"><label>Tema Tanah</label><div style="display:flex;gap:6px;flex-wrap:wrap"><button onclick="pilihTema('city','🏙️ Kota')" style="flex:1;padding:12px;border-radius:10px;font-weight:900">🏙️ Kota</button><button onclick="pilihTema('lava','🌋 Lava')" style="flex:1;padding:12px;border-radius:10px;font-weight:900">🌋 Lava</button><button onclick="pilihTema('beach','🏖️ Pantai')" style="flex:1;padding:12px;border-radius:10px;font-weight:900">🏖️ Pantai</button><button onclick="pilihTema('forest','🌲 Hutan')" style="flex:1;padding:12px;border-radius:10px;font-weight:900">🌲 Hutan</button></div><p style="font-size:12px">Tema: <b id="temaDipilih">🏙️ Kota (city)</b> • Tanah kosong!</p><label>Luas Awal</label><div style="display:flex;gap:6px"><button onclick="pilihLuasAwal(200)" style="flex:1;padding:10px;border-radius:8px;font-weight:900">200 Kecil</button><button onclick="pilihLuasAwal(400)" style="flex:1;padding:10px;border-radius:8px;font-weight:900">400 Sedang</button><button onclick="pilihLuasAwal(1000)" style="flex:1;padding:10px;border-radius:8px;font-weight:900;background:#111;color:#fff">1000 MEGA</button></div><p style="font-size:12px">Luas dipilih: <b id="luasAwalDipilih">200 x 200</b></p><button onclick="simpanMapBaru()" class="btn" style="background:#111;color:#fff">✅ BUAT MAP & MAIN!</button><button onclick="tutupSemua()" class="btn" style="background:#eee">BATAL</button></div></div>
-<div id="modalAvatar" class="modal"><div><div style="display:flex;justify-content:space-between"><b>👤 AVATAR - LIAT KARAKTER LU!</b><button onclick="tutupSemua()" style="border:none;background:#eee;border-radius:50%;width:32px;height:32px">✕</button></div>
-<div style="background:linear-gradient(180deg,#87ceeb,#e0f2fe);border-radius:14px;padding:12px;margin:10px 0;text-align:center;position:relative;overflow:hidden">
-<div style="font-size:11px;font-weight:900;color:#333">👀 PREVIEW KARAKTER LU - LIVE!</div>
-<div id="previewKarakterBesar" style="height:210px;display:flex;align-items:flex-end;justify-content:center;position:relative;margin:8px 0"></div>
-<div style="background:rgba(255,255,255,.9);padding:6px;border-radius:10px;font-weight:900;font-size:13px" id="previewNama">@Player • ID: -</div>
+
+<div class="card">
+<b>💎 TOP UP - Biar Langsung Sultan!</b>
 <div style="display:flex;gap:6px;margin-top:8px">
-<button onclick="putarKarakter()" style="flex:1;background:#111;color:#fff;border:none;padding:10px;border-radius:10px;font-weight:900">🔄 PUTAR KARAKTER</button>
-<button onclick="lompatPreview()" style="flex:1;background:#f59e0b;color:#fff;border:none;padding:10px;border-radius:10px;font-weight:900">⬆️ LOMPAT!</button>
+<button onclick="topUpWA(0)" style="flex:1;background:#25D366;color:#fff;border:none;padding:11px;border-radius:10px;font-weight:900">100 💎<br><small>Rp 10rb</small></button>
+<button onclick="topUpWA(1)" style="flex:1;background:#25D366;color:#fff;border:none;padding:11px;border-radius:10px;font-weight:900">500 💎<br><small>Rp 40rb</small></button>
+<button onclick="topUpWA(2)" style="flex:1;background:#25D366;color:#fff;border:none;padding:11px;border-radius:10px;font-weight:900">1000 💎<br><small>Rp 75rb</small></button>
 </div>
-<div style="font-size:11px;color:#555;margin-top:6px" id="infoAvatarPreview">Rambut: Pendek • Kulit: Cerah • Baju: Biru</div>
+<div style="display:flex;gap:6px;margin-top:8px">
+<button onclick="tukarDiamondKeCoin(100)" style="flex:1;background:#facc15;border:none;padding:11px;border-radius:10px;font-weight:900">💎100 = +10K 🪙</button>
+<button onclick="tukarDiamondKeCoin(500)" style="flex:1;background:#facc15;border:none;padding:11px;border-radius:10px;font-weight:900">💎500 = +100K 🪙</button>
 </div>
-<label>💇 Rambut</label><div style="display:flex;gap:6px;flex-wrap:wrap" id="listRambut"></div>
-<label>🎨 Kulit</label><div style="display:flex;gap:6px;flex-wrap:wrap" id="warnaHead"></div>
-<label>👕 Baju</label><div style="display:flex;gap:6px;flex-wrap:wrap" id="warnaTorso"></div>
-<label>👖 Celana</label><div style="display:flex;gap:6px;flex-wrap:wrap" id="warnaLegs"></div>
-<label>👟 Sepatu</label><div style="display:flex;gap:6px;flex-wrap:wrap" id="warnaSepatu"></div>
-<label>🎩 Aksesoris Dipake</label><div id="listTopi"></div>
-<div style="display:flex;gap:6px"><button class="btn" style="background:#16a34a;color:#fff;flex:1" onclick="bukaInventory()">🎒 INVENTORY</button><button class="btn" style="background:#111;color:#fff;flex:1" onclick="tutupSemua();gantiAvatar()">✅ PAKAI & LIAT DI GAME!</button></div>
+<div style="margin-top:10px;background:#0f172a;padding:10px;border-radius:10px"><b>🎟️ Voucher</b><input id="inputVoucher" placeholder="Kode dari Admin"><button onclick="tukarVoucher()" class="btn" style="background:#16a34a;color:#fff">✅ TUKAR VOUCHER</button></div>
+</div>
+
+<div class="card" style="text-align:center;font-size:12px;color:#94a3b8">
+BloxClicker Longkali • Nyambung ke server Firebase • Coin ke-save otomatis tiap 3 detik<br>
+<button onclick="simpanKeServer(true)" style="background:#334155;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-weight:900;margin-top:6px">💾 SIMPAN SEKARANG</button>
+</div>
+
+<div id="modalLogin" class="modal"><div><h2 style="text-align:center;margin:4px 0">BLOX<i>Clicker</i></h2><p style="text-align:center;font-size:12px;color:#666">Login pake akun BloxLongkali lu! Coin lama lu kebawa!<br>Atau daftar baru kalo belum punya!</p>
+<div style="display:flex;gap:6px"><button id="btnDaftar" onclick="switchTab('daftar')" style="flex:1;padding:11px;border:none;border-radius:10px;font-weight:900;background:#111;color:#fff">📝 DAFTAR</button><button id="btnLogin" onclick="switchTab('login')" style="flex:1;padding:11px;border:none;border-radius:10px;font-weight:900;background:#eee">🔑 LOGIN</button></div>
+<div id="pDaftar"><label>Username</label><input id="inUser" placeholder="BudiBlox"><label>Email</label><input id="inEmailDaftar" placeholder="budi@gmail.com"><label>Password</label><input id="inPassDaftar" type="password" placeholder="min 6 huruf"><label>Ulangi Password</label><input id="inPassDaftar2" type="password" placeholder="Ketik lagi"><button class="btn" style="background:#f59e0b" onclick="buatAkun()">▶ DAFTAR + DAPET ID!</button></div>
+<div id="pLogin" style="display:none"><label>Email</label><input id="inLoginEmail" placeholder="Email lu"><label>Password</label><input id="inLoginPass" type="password" placeholder="Password lu"><button class="btn" style="background:#111;color:#fff" onclick="loginAkun()">🔑 LOGIN!</button></div>
 </div></div>
-<div id="modalInventory" class="modal"><div><div style="display:flex;justify-content:space-between"><b>🎒 INVENTORY</b><button onclick="tutupSemua()" style="border:none;background:#eee;border-radius:50%;width:32px;height:32px">✕</button></div><div style="background:#f0fdf4;padding:10px;border-radius:10px;text-align:center;font-size:12px">Punya <b id="jmlInv">0</b> item • <b id="jmlDipake">0</b> dipake • ID: <b id="invID">-</b></div><div id="listInventory" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px"></div><div id="invKosong" style="display:none;text-align:center;padding:20px;color:#888">Inventory masih kosong!<br><small>Item cuma dari Admin!</small><br><button onclick="tutupSemua();bukaKatalog()" style="background:#111;color:#fff;border:none;padding:11px 18px;border-radius:10px;font-weight:900;margin-top:8px">🛒 KE KATALOG</button></div><button class="btn" style="background:#eee" onclick="tutupSemua()">TUTUP</button></div></div>
-<div id="modalKatalog" class="modal"><div><div style="display:flex;justify-content:space-between"><b>🛒 KATALOG</b><button onclick="tutupSemua()" style="border:none;background:#eee;border-radius:50%;width:32px;height:32px">✕</button></div><div style="background:#f3e8ff;padding:10px;border-radius:10px;text-align:center">💎 <b id="diamondKatalog">0</b> • ID: <b id="katalogID">-</b><br><small>Item dibikin Admin! Beli, masuk Inventory, bisa dipake!</small></div><div id="listKatalog"></div><div id="katalogKosong" style="display:none;text-align:center;padding:20px;color:#888">Katalog masih kosong!<br><small>Admin belum bikin item! Chat WA 0895600169977!</small></div><button class="btn" style="background:#16a34a;color:#fff" onclick="tutupSemua();bukaInventory()">🎒 LIAT INVENTORY</button><button class="btn" style="background:#eee" onclick="tutupSemua()">TUTUP</button></div></div>
-<div id="modalTopUp" class="modal"><div><div style="display:flex;justify-content:space-between"><b>💎 TOP UP - VIA WA</b><button onclick="tutupSemua()" style="border:none;background:#eee;border-radius:50%;width:32px;height:32px">✕</button></div><div style="background:#dcfce7;padding:12px;border-radius:12px;text-align:center;border:2px solid #25D366"><div style="font-size:32px">📱</div><b>Top Up Via WhatsApp Admin</b><br><small>Nomor: <b>0895600169977</b></small><br><small>💎 <b id="diamondTopUp">0</b> • ID: <b id="topupID">-</b> • Email: <b id="topupEmail">-</b></small><br><button onclick="bukaTopUpWA()" class="btn waBtn">📱 CHAT WA ADMIN SEKARANG</button></div><div style="margin-top:12px"><b>💎 Pilih Paket - Langsung WA!</b></div><div id="listTopUp"></div><div style="margin-top:12px;background:#fef3c7;padding:10px;border-radius:10px"><b>🎟️ Punya Kode Voucher?</b><input id="inputVoucher" placeholder="Kode dari Admin"><button onclick="tukarVoucher()" class="btn" style="background:#16a34a;color:#fff">✅ TUKAR VOUCHER</button></div><div style="margin-top:12px;background:#f3e8ff;padding:10px;border-radius:10px"><b>👑 PREMIUM - 500 💎</b><br><small id="premiumInfo">Diamond lu: 0</small><br><button onclick="beliPremium()" class="btn" style="background:#111;color:#fff">👑 BELI PREMIUM - 500 💎</button><button onclick="bukaTopUpWA(1)" class="btn waBtn">📱 TOP UP 500 💎 BUAT PREMIUM</button></div><button class="btn" style="background:#eee" onclick="tutupSemua()">TUTUP</button></div></div>
-<div id="modalChat" class="modal"><div><div style="display:flex;justify-content:space-between"><b>💬 CHAT</b><button onclick="tutupSemua()" style="border:none;background:#eee;border-radius:50%;width:32px;height:32px">✕</button></div><div id="isiChat" style="height:240px;overflow:auto;background:#f1f5f9;padding:10px;border-radius:10px;display:flex;flex-direction:column;gap:6px"></div><div style="display:flex;gap:6px;margin-top:8px"><input id="inputChat" placeholder="Ketik chat..." style="flex:1;margin:0"><button onclick="kirimChat()" style="background:#111;color:#fff;border:none;padding:11px 16px;border-radius:10px;font-weight:900">KIRIM</button></div></div></div>
+
+<div id="modalTopUp" class="modal"><div><div style="display:flex;justify-content:space-between"><b>💎 TOP UP WA</b><button onclick="tutupSemua()" style="border:none;background:#eee;border-radius:50%;width:32px;height:32px">✕</button></div><div style="background:#dcfce7;padding:12px;border-radius:12px;text-align:center;margin-top:10px"><b>WA Admin: 0895600169977</b><br><small>💎 <span id="diamondTopUp">0</span> • ID: <span id="topupID">-</span></small><br><button onclick="topUpWA(0)" class="btn" style="background:#25D366;color:#fff">📱 CHAT WA ADMIN</button></div><button class="btn" style="background:#eee" onclick="tutupSemua()">TUTUP</button></div></div>
+
 <script>
-function tesTombol(nama){ alert('✅ TOMBOL JALAN! Lu pencet: '+nama); if(navigator.vibrate) navigator.vibrate(50); }
 var DB_URL="https://admin-55bc3-default-rtdb.firebaseio.com";
 var WA_ADMIN="62895600169977";
-var AKUN=null, scene=null, cam=null, ren=null, pemain=null, baseplate=null, RAY=null, MOUSE=null;
-try{ RAY=new THREE.Raycaster(); MOUSE=new THREE.Vector2(); }catch(e){}
-var joyX=0,joyY=0,speed=0.35,velY=0,isJump=false,yaw=0.8,pitch=0.8,dist=18,WALK_TIME=0,SEDANG_JALAN=false;
-var MODE="select",TOOL="part",WARNA=0xff0000,PARTS={},PEMAIN_LAIN={},MAP_AKTIF=null,TEMA_BARU="city",LUAS_AWAL_BARU=200,ITEMS_SERVER=[];
-var LUAS_SAAT_INI=200, LUAS_PREVIEW=200;
-var PUTAR_KARAKTER=0, LOMPAT_PREVIEW=0;
-var WARNA_LIST=[0xff0000,0x00ff00,0x0000ff,0xffff00,0xff00ff,0x00ffff,0xffa500,0x8b4513,0xffffff,0x000000,0x808080,0xffc0cb];
-var KULIT_LIST=[0xfdbd8a,0xffd9a0,0xe8b88a,0xc68e5e,0x8d5524,0x5c3a21];
-var RAMBUT_LIST=[{id:"pendek",emoji:"👦",nama:"Pendek"},{id:"panjang",emoji:"👧",nama:"Panjang"},{id:"mohawk",emoji:"🧑‍🎤",nama:"Mohawk"},{id:"botak",emoji:"🧑‍🦲",nama:"Botak"},{id:"keriting",emoji:"🧑‍🦱",nama:"Keriting"},{id:"pirang",emoji:"👱",nama:"Pirang"}];
-var AVATAR={head:0xfdbd8a,torso:0x00a2ff,legs:0x1e3a8a,shoes:0x111111,rambut:"pendek",rambutWarna:0x2b1a12,hat:"none",wing:"none",weapon:"none",backpack:"none"};
-var PAKET=[{diamond:100,harga:10000,label:"💎 100 Diamond"},{diamond:500,harga:40000,label:"💎 500 Diamond - Pas Buat Premium!"},{diamond:1000,harga:75000,label:"💎 1000 Diamond"},{diamond:5000,harga:300000,label:"💎 5000 Diamond - VIP!"}];
-function hashPass(p){var h=0;for(var i=0;i<p.length;i++){h=((h<<5)-h)+p.charCodeAt(i);h=h&h;}var s='blox_'+Math.abs(h).toString(16)+'_'+p.length+'_'+(p.charCodeAt(0)||0);for(var j=0;j<p.length;j++){s+=((p.charCodeAt(j)*7+13)%16).toString(16);}return s;}
-function emailKeKey(email){return email.toLowerCase().trim().replace(/[^a-z0-9]/g,'_');}
-function apakahPemilikMap(){if(!MAP_AKTIF||!AKUN) return false;return MAP_AKTIF.owner==AKUN.username;}
-function updateBuildUI(){var isOwner=apakahPemilikMap();var btn=document.getElementById('tbBuild');var banner=document.getElementById('buildLockBanner');var info=document.getElementById('buildInfo');if(!MAP_AKTIF){if(banner)banner.style.display='none';return;}if(btn){if(isOwner){btn.classList.remove('locked');btn.innerHTML='🧱<br>Build';}else{btn.classList.add('locked');btn.innerHTML='🔒<br>Build';}}if(banner){banner.style.display=isOwner?'none':'block';banner.innerText='🔒 MAP MILIK @'+(MAP_AKTIF.owner||'?')+' - LU GABISA BANGUN!';}if(info){info.innerText=isOwner?'✅ Ini map lu! Lu BISA bangun bebas!':'🔒 Ini map milik @'+(MAP_AKTIF.owner||'?')+' - Lu cuma bisa jalan!';}}
-function showToast(t){var e=document.getElementById('toast');if(!e)return;e.innerText=t;e.style.display='block';setTimeout(function(){e.style.display='none';},3000);}
+var AKUN=null;
+var GAME={coin:0,totalKlik:0,perKlik:1,perDetik:0,upgrade:{jari:0,sarung:0,palu:0},auto:{teman:0,pabrik:0,tambang:0,bandara:0},prestige:0,multi:1};
+var HARGA_UPGRADE={
+jari:{nama:"🧤 Jari Emas",desc:"+1 per klik",base:15,naik:1.8},
+sarung:{nama:"🧤 Sarung Sultan",desc:"+5 per klik",base:100,naik:1.9},
+palu:{nama:"🔨 Palu Thor",desc:"+25 per klik",base:1000,naik:2.0}
+};
+var HARGA_AUTO={
+teman:{nama:"🧑 Teman Bantuin Klik",desc:"+1 / detik",base:50,naik:1.7},
+pabrik:{nama:"🏭 Pabrik Coin",desc:"+10 / detik",base:500,naik:1.8},
+tambang:{nama:"⛏️ Tambang Batu Bara Longkali",desc:"+100 / detik",base:5000,naik:1.9},
+bandara:{nama:"✈️ Bandara Sultan",desc:"+1000 / detik",base:50000,naik:2.1}
+};
+function hashPass(p){var h=0;for(var i=0;i<p.length;i++){h=((h<<5)-h)+p.charCodeAt(i);h=h&h;}return 'blox_'+Math.abs(h).toString(16)+'_'+p.length;}
+function emailKeKey(e){return e.toLowerCase().trim().replace(/[^a-z0-9]/g,'_');}
+function formatAngka(n){if(n>=1000000000)return (n/1000000000).toFixed(1)+' M';if(n>=1000000)return (n/1000000).toFixed(1)+' Jt';if(n>=1000)return (n/1000).toFixed(1)+' Rb';return Math.floor(n).toString();}
+function hargaBeli(base,naik,jumlah){return Math.floor(base*Math.pow(naik,jumlah));}
+function hitungUlang(){
+var pk=1;
+pk+=GAME.upgrade.jari*1;
+pk+=GAME.upgrade.sarung*5;
+pk+=GAME.upgrade.palu*25;
+GAME.perKlik=pk*GAME.multi;
+var pd=0;
+pd+=GAME.auto.teman*1;
+pd+=GAME.auto.pabrik*10;
+pd+=GAME.auto.tambang*100;
+pd+=GAME.auto.bandara*1000;
+GAME.perDetik=pd*GAME.multi;
+}
+function render(){
+document.getElementById('coinText').innerText=formatAngka(GAME.coin)+' 🪙';
+document.getElementById('perKlikText').innerText='+'+formatAngka(GAME.perKlik);
+document.getElementById('perDetikText').innerText='+'+formatAngka(GAME.perDetik);
+document.getElementById('totalKlikText').innerText=formatAngka(GAME.totalKlik);
+if(AKUN){
+document.getElementById('topDiamond').innerText=AKUN.diamond||0;
+document.getElementById('diamondTopUp').innerText=AKUN.diamond||0;
+document.getElementById('myIDTop').innerText=AKUN.id||'-';
+document.getElementById('myUserTop').innerText=AKUN.username||'-';
+document.getElementById('topupID').innerText=AKUN.id||'-';
+}
+document.getElementById('prestigeInfo').innerText=GAME.coin>=100000?'BISA PRESTIGE!':'Butuh 100K Coin';
+var h='';
+for(var k in HARGA_UPGRADE){
+var it=HARGA_UPGRADE[k];var lvl=GAME.upgrade[k]||0;var harga=hargaBeli(it.base,it.naik,lvl);
+h+='<div class="upg"><div><b>'+it.nama+' Lv.'+lvl+'</b><br><small>'+it.desc+' • Harga: '+formatAngka(harga)+' 🪙</small></div><button onclick="beliUpgrade(\''+k+'\')" '+(GAME.coin<harga?'disabled':'')+'>BELI</button></div>';
+}
+document.getElementById('listUpgrade').innerHTML=h;
+var h2='';
+for(var k2 in HARGA_AUTO){
+var it2=HARGA_AUTO[k2];var lvl2=GAME.auto[k2]||0;var harga2=hargaBeli(it2.base,it2.naik,lvl2);
+h2+='<div class="upg"><div><b>'+it2.nama+' Lv.'+lvl2+'</b><br><small>'+it2.desc+' • Harga: '+formatAngka(harga2)+' 🪙</small></div><button onclick="beliAuto(\''+k2+'\')" '+(GAME.coin<harga2?'disabled':'')+'>BELI</button></div>';
+}
+document.getElementById('listAuto').innerHTML=h2;
+}
+function klikCoin(e){
+if(!AKUN){alert('Login dulu!');document.getElementById('modalLogin').style.display='flex';return;}
+GAME.coin+=GAME.perKlik;
+GAME.totalKlik++;
+hitungUlang();render();
+if(navigator.vibrate) navigator.vibrate(10);
+var btn=document.getElementById('coinBtn');
+var s=document.createElement('div');s.className='plus';s.innerText='+'+formatAngka(GAME.perKlik);
+s.style.left=(Math.random()*60+20)+'px';s.style.top=(Math.random()*40+20)+'px';
+btn.appendChild(s);setTimeout(function(){s.remove();},700);
+}
+function beliUpgrade(k){
+var it=HARGA_UPGRADE[k];var lvl=GAME.upgrade[k]||0;var harga=hargaBeli(it.base,it.naik,lvl);
+if(GAME.coin<harga){alert('Coin kurang!');return;}
+GAME.coin-=harga;GAME.upgrade[k]=lvl+1;hitungUlang();render();simpanKeServer(false);
+}
+function beliAuto(k){
+var it=HARGA_AUTO[k];var lvl=GAME.auto[k]||0;var harga=hargaBeli(it.base,it.naik,lvl);
+if(GAME.coin<harga){alert('Coin kurang!');return;}
+GAME.coin-=harga;GAME.auto[k]=lvl+1;hitungUlang();render();simpanKeServer(false);
+}
+function beliPrestige(){
+if(GAME.coin<100000){alert('Butuh 100.000 Coin buat Prestige! Coin lu: '+formatAngka(GAME.coin));return;}
+if(!confirm('Prestige? Coin lu balik jadi 0, TAPI lu dapet +1 Diamond per 100K Coin + Per Klik x2 permanen!'))return;
+var dpt=Math.floor(GAME.coin/100000);
+GAME.coin=0;GAME.upgrade={jari:0,sarung:0,palu:0};GAME.auto={teman:0,pabrik:0,tambang:0,bandara:0};
+GAME.prestige++;GAME.multi=1+GAME.prestige;
+if(AKUN){AKUN.diamond=(AKUN.diamond||0)+dpt;}
+hitungUlang();render();simpanKeServer(true);alert('🎉 PRESTIGE! Dapet +'+dpt+' 💎! Sekarang Per Klik x'+GAME.multi+'!');
+}
+function gantiTab(t){
+document.getElementById('panelUpgrade').style.display=t=='upgrade'?'block':'none';
+document.getElementById('panelAuto').style.display=t=='auto'?'block':'none';
+document.getElementById('panelRank').style.display=t=='rank'?'block':'none';
+document.getElementById('tabUpgrade').className=t=='upgrade'?'on':'';
+document.getElementById('tabAuto').className=t=='auto'?'on':'';
+document.getElementById('tabRank').className=t=='rank'?'on':'';
+if(t=='rank') loadRank();
+}
 function tutupSemua(){document.querySelectorAll('.modal').forEach(function(m){m.style.display='none';});}
-function switchLoginTab(tab){document.getElementById('panelDaftar').style.display=tab=='daftar'?'block':'none';document.getElementById('panelLogin').style.display=tab=='login'?'block':'none';document.getElementById('btnTabDaftar').style.background=tab=='daftar'?'#111':'#eee';document.getElementById('btnTabDaftar').style.color=tab=='daftar'?'#fff':'#000';document.getElementById('btnTabLogin').style.background=tab=='login'?'#111':'#eee';document.getElementById('btnTabLogin').style.color=tab=='login'?'#fff':'#000';}
-function getEmojiKarakter(){var r=RAMBUT_LIST.find(function(x){return x.id==AVATAR.rambut;});return r?r.emoji:'🧑';}
-function emojiDariRambut(rambut){var r=RAMBUT_LIST.find(function(x){return x.id==rambut;});return r?r.emoji:'🧑';}
-function updateUang(){if(!AKUN)return;var els={'coinsText':AKUN.coins||0,'diamondText':AKUN.diamond||0,'diamondLobby':AKUN.diamond||0,'coinsLobby':AKUN.coins||0,'diamondKatalog':AKUN.diamond||0,'diamondTopUp':AKUN.diamond||0};for(var k in els){var el=document.getElementById(k);if(el)el.innerText=els[k];}var ln=document.getElementById('lobbyNama');if(ln)ln.innerText=AKUN.username+(AKUN.premium?' 👑':'');var le=document.getElementById('lobbyEmail');if(le)le.innerHTML=AKUN.email+' • ID: <b>'+(AKUN.id||'-')+'</b>';['lobbyID','buatMapID','katalogID','topupID','invID'].forEach(function(id){var e=document.getElementById(id);if(e)e.innerText=AKUN.id||'-';});var te=document.getElementById('topupEmail');if(te)te.innerText=AKUN.email||'-';var nt=document.getElementById('namaTop');if(nt)nt.innerText=(MAP_AKTIF?MAP_AKTIF.nama+' • Pemilik: @'+(MAP_AKTIF.owner||'?')+' • Tanah: '+(LUAS_SAAT_INI||200)+'x'+(LUAS_SAAT_INI||200):'Map')+' • @'+AKUN.username;var pl=document.getElementById('premiumLobby');if(pl)pl.innerText=AKUN.premium?'👑 PREMIUM':'GRATIS';var lv=document.getElementById('lobbyVerif');if(lv)lv.innerText=AKUN.premium?'👑 Premium':'Belum diperiksa';var pi=document.getElementById('premiumInfo');if(pi)pi.innerText='Diamond lu: '+(AKUN.diamond||0)+' • '+(AKUN.premium?'Udah Premium 👑':'Belum Premium');var ae=document.getElementById('avatarEmoji');if(ae)ae.innerText=getEmojiKarakter();var pn=document.getElementById('previewNama');if(pn)pn.innerText='@'+AKUN.username+' • ID: '+(AKUN.id||'-')+(AKUN.premium?' 👑 PREMIUM':'');var navAv=document.getElementById('navAvatarEmoji');if(navAv)navAv.innerText=getEmojiKarakter();var jml=document.getElementById('jmlInvLobby');if(jml)jml.innerText=(AKUN.items||[]).length;var jml2=document.getElementById('jmlInv');if(jml2)jml2.innerText=(AKUN.items||[]).length;var dipake=0;if(AVATAR.hat!='none')dipake++;if(AVATAR.wing!='none')dipake++;if(AVATAR.weapon!='none')dipake++;if(AVATAR.backpack!='none')dipake++;var jd=document.getElementById('jmlDipake');if(jd)jd.innerText=dipake;}
-function salinID(){if(!AKUN||!AKUN.id)return;if(navigator.clipboard)navigator.clipboard.writeText(AKUN.id).then(function(){alert('ID disalin: '+AKUN.id);});}
-async function ambilAkunByEmail(email){try{var r=await fetch(DB_URL+"/bloxByEmail/"+emailKeKey(email)+".json");var v=await r.json();if(!v)return null;var r2=await fetch(DB_URL+"/blox/"+v.username+".json");return await r2.json();}catch(e){return null;}}
-async function ambilAkunByUsername(u){try{var r=await fetch(DB_URL+"/blox/"+u+".json");return await r.json();}catch(e){return null;}}
-async function ambilAkunByID(id){try{var r=await fetch(DB_URL+"/bloxByID/"+id+".json");var v=await r.json();if(!v)return null;return await ambilAkunByUsername(v.username);}catch(e){return null;}}
-async function simpanAkun(){if(!AKUN)return;try{localStorage.setItem('bloxAkun',JSON.stringify({email:AKUN.email,username:AKUN.username,id:AKUN.id}));}catch(e){}try{AKUN.avatar=AVATAR;AKUN.equipped={hat:AVATAR.hat,wing:AVATAR.wing,weapon:AVATAR.weapon,backpack:AVATAR.backpack};await fetch(DB_URL+"/blox/"+AKUN.username+".json",{method:"PUT",body:JSON.stringify(AKUN)});if(AKUN.id)await fetch(DB_URL+"/bloxByID/"+AKUN.id+".json",{method:"PUT",body:JSON.stringify({username:AKUN.username,id:AKUN.id,email:AKUN.email})});if(AKUN.email)await fetch(DB_URL+"/bloxByEmail/"+emailKeKey(AKUN.email)+".json",{method:"PUT",body:JSON.stringify({username:AKUN.username,id:AKUN.id,email:AKUN.email})});}catch(e){}}
-async function syncDariServer(){if(!AKUN)return false;var s=await ambilAkunByUsername(AKUN.username);if(!s)return false;AKUN=s;AVATAR=AKUN.avatar||AVATAR;if(AKUN.equipped){AVATAR.hat=AKUN.equipped.hat||'none';AVATAR.wing=AKUN.equipped.wing||'none';AVATAR.weapon=AKUN.equipped.weapon||'none';AVATAR.backpack=AKUN.equipped.backpack||'none';}if(AKUN.diamond==null)AKUN.diamond=0;updateUang();return true;}
-async function buatIDUnik(){for(var i=0;i<20;i++){var id='';for(var j=0;j<10;j++){id+=Math.floor(Math.random()*10).toString();}if(id[0]=='0')id='1'+id.substring(1);var cek=await ambilAkunByID(id);if(!cek)return id;}return Date.now().toString().slice(-10);}
-async function buatAkun(){try{var u=document.getElementById('inUser').value.trim().replace(/[^a-zA-Z0-9_]/g,'');var em=document.getElementById('inEmailDaftar').value.trim().toLowerCase();var p1=document.getElementById('inPassDaftar').value;var p2=document.getElementById('inPassDaftar2').value;if(!u||u.length<3){alert('Username minimal 3 huruf!');return;}if(!em||!em.includes('@')||!em.includes('.')){alert('Email gak valid!');return;}if(!p1||p1.length<6){alert('Password minimal 6 huruf!');return;}if(p1!=p2){alert('Password gak sama!');return;}var cekU=await ambilAkunByUsername(u);if(cekU){alert('Username udah dipake!');return;}var cekE=await ambilAkunByEmail(em);if(cekE){alert('Email udah daftar! Pindah ke LOGIN!');switchLoginTab('login');document.getElementById('inLoginEmail').value=em;return;}showToast('🔄 Bikin akun...');var newID=await buatIDUnik();AKUN={username:u,email:em,id:newID,password:hashPass(p1),coins:100,diamond:0,premium:false,avatar:AVATAR,equipped:{hat:'none',wing:'none',weapon:'none',backpack:'none'},items:[],maps:[],friends:[],created:Date.now()};await simpanAkun();updateUang();renderLobby();tutupSemua();document.getElementById('modalLogin').style.display='none';alert('🎉 AKUN BERHASIL! Username: @'+u+' ID: '+newID);}catch(e){alert('Error: '+e.message);}}
-async function loginAkun(){try{var em=document.getElementById('inLoginEmail').value.trim().toLowerCase();var pw=document.getElementById('inLoginPass').value;if(!em||!em.includes('@')){alert('Isi Email!');return;}if(!pw){alert('Isi Password!');return;}showToast('🔄 Cek akun di server...');var akun=await ambilAkunByEmail(em);if(!akun){alert('Email belum daftar! Daftar dulu!');switchLoginTab('daftar');return;}if(akun.password!=hashPass(pw)&&akun.password!=pw){alert('⛔ PASSWORD SALAH!');return;}if(akun.password==pw)akun.password=hashPass(pw);AKUN=akun;AVATAR=AKUN.avatar||AVATAR;if(AKUN.equipped){AVATAR.hat=AKUN.equipped.hat||'none';AVATAR.wing=AKUN.equipped.wing||'none';AVATAR.weapon=AKUN.equipped.weapon||'none';AVATAR.backpack=AKUN.equipped.backpack||'none';}if(AKUN.diamond==null)AKUN.diamond=0;if(!AKUN.items)AKUN.items=[];if(!AKUN.friends)AKUN.friends=[];await simpanAkun();updateUang();renderLobby();tutupSemua();document.getElementById('modalLogin').style.display='none';alert('✅ Login berhasil! @'+AKUN.username+' • ID: '+AKUN.id);}catch(e){alert('Gagal: '+e.message);}}
-function logoutAkun(){if(!confirm('Logout?'))return;AKUN=null;try{localStorage.removeItem('bloxAkun');}catch(e){}document.getElementById('lobby').style.display='block';document.getElementById('game').style.display='none';document.getElementById('bottomNav').style.display='flex';document.getElementById('modalLogin').style.display='flex';switchLoginTab('login');}
-function renderLobby(){if(!AKUN)return;updateUang();renderTeman();renderMapSaya();loadMapSemua();loadItemsServer();}
-async function renderTeman(){var el=document.getElementById('temanRow');var jml=document.getElementById('temanJumlah');var cnt=document.getElementById('temanCount');var myID=document.getElementById('myIDTeman');if(myID&&AKUN)myID.innerText=AKUN.id||'-';if(!AKUN)return;var list=AKUN.friends||[];if(jml)jml.innerText=list.length;if(cnt)cnt.innerText=list.length+' Teman';if(!el)return;if(list.length==0){el.innerHTML='<div class="temanItem" onclick="bukaTambahTeman()"><div class="av" style="background:#f3f4f6">➕</div><small>Tambah teman</small></div><div style="padding:10px;color:#888;font-size:13px">Belum punya teman!<br><small>Pencet ➕, masukin ID temen lu!</small></div>';return;}var h='<div class="temanItem" onclick="bukaTambahTeman()"><div class="av" style="background:#f3f4f6">➕</div><small>Tambah teman</small></div>';for(var i=0;i<list.length;i++){var fid=list[i];var temanData=null;try{var rr=await fetch(DB_URL+"/bloxByID/"+fid+".json");var vv=await rr.json();if(vv){var rr2=await fetch(DB_URL+"/blox/"+vv.username+".json");temanData=await rr2.json();}}catch(e){}var emoji='🧑';if(temanData&&temanData.avatar)emoji=emojiDariRambut(temanData.avatar.rambut);var namaTeman=temanData?temanData.username:'ID '+fid;h+='<div class="temanItem" onclick="liatProfilTeman(\''+fid+'\')"><div class="av">'+emoji+'</div><small style="font-size:11px">'+namaTeman+'</small><br><small style="font-size:10px;color:#888">ID: '+fid+'</small></div>';}el.innerHTML=h;}
-function bukaTambahTeman(){if(!AKUN)return;document.getElementById('modalTambahTeman').style.display='flex';var myID=document.getElementById('myIDTeman');if(myID)myID.innerText=AKUN.id||'-';document.getElementById('inputIDTeman').value='';document.getElementById('hasilCariTeman').innerHTML='';}
-async function tambahTemanByID(){var idTeman=document.getElementById('inputIDTeman').value.trim();if(idTeman.length!=10||!/^[0-9]{10}$/.test(idTeman)){alert('ID harus 10 digit!');return;}if(idTeman==AKUN.id){alert('Itu ID lu sendiri!');return;}if((AKUN.friends||[]).includes(idTeman)){alert('Udah jadi teman!');return;}showToast('🔄 Cari ID...');var temanAkun=await ambilAkunByID(idTeman);if(!temanAkun){document.getElementById('hasilCariTeman').innerHTML='<div style="background:#fee2e2;padding:10px;border-radius:10px;text-align:center">❌ ID gak ketemu!</div>';return;}document.getElementById('hasilCariTeman').innerHTML='<div style="background:#f0fdf4;padding:12px;border-radius:10px;text-align:center"><b>✅ Ketemu!</b><br><div style="font-size:36px">'+emojiDariRambut(temanAkun.avatar?temanAkun.avatar.rambut:'pendek')+'</div><b>@'+temanAkun.username+'</b><br><button onclick="konfirmasiTambahTeman(\''+idTeman+'\')" style="background:#16a34a;color:#fff;border:none;padding:11px 20px;border-radius:10px;font-weight:900;margin-top:8px">✅ YA, TAMBAH JADI TEMAN!</button></div>';}
-async function konfirmasiTambahTeman(idTeman){if(!AKUN.friends)AKUN.friends=[];if(!AKUN.friends.includes(idTeman))AKUN.friends.push(idTeman);await simpanAkun();alert('🎉 Berhasil nambah teman!');tutupSemua();renderTeman();}
-async function liatProfilTeman(idTeman){var akun=await ambilAkunByID(idTeman);if(!akun){alert('Teman gak ketemu!');return;}var emoji=emojiDariRambut(akun.avatar?akun.avatar.rambut:'pendek');document.getElementById('isiProfilTeman').innerHTML='<div style="font-size:64px">'+emoji+'</div><b style="font-size:20px">@'+akun.username+'</b><br><small>ID: '+akun.id+'</small>';document.getElementById('modalProfilTeman').style.display='flex';}
-async function hapusTeman(idTeman){if(!confirm('Hapus teman?'))return;AKUN.friends=(AKUN.friends||[]).filter(function(x){return x!=idTeman;});await simpanAkun();tutupSemua();renderTeman();}
-async function masukKeMapTeman(usernameTeman){tutupSemua();var akun=await ambilAkunByUsername(usernameTeman);if(!akun||!akun.maps||akun.maps.length==0){alert('@'+usernameTeman+' belum punya map!');return;}var m=akun.maps[0];masukGame(m.nama,m.tema,m.id,m.owner);}
-function renderMapSaya(){var el=document.getElementById('listMapSaya');if(!el)return;var maps=AKUN.maps||[];if(maps.length==0){el.innerHTML='<div style="background:#f9fafb;border:2px dashed #ddd;border-radius:12px;padding:14px;text-align:center;color:#888;font-size:13px">Maps Saya: 0<br>Belum punya map!<br><small>Jadi Premium dulu (500 💎)!</small></div>';return;}var h='';maps.forEach(function(m){h+='<div class="kitem"><div><b>🗺️ '+m.nama+'</b><br><small>Tema: '+m.tema+' • Luas: '+(m.luas||200)+'x'+(m.luas||200)+'</small></div><button class="kbtn" style="background:#16a34a" onclick="masukGame(\''+m.nama+'\',\''+m.tema+'\',\''+m.id+'\',\''+m.owner+'\')">PLAY</button></div>';});el.innerHTML=h;}
-async function loadMapSemua(){try{var r=await fetch(DB_URL+"/bloxMaps.json");var v=await r.json();var el=document.getElementById('rekomGrid');var el2=document.getElementById('lanjutGrid');if(!el)return;if(!v||Object.keys(v).length==0){el.innerHTML='<div style="grid-column:1/3;background:#f9fafb;border:2px dashed #ddd;border-radius:12px;padding:20px;text-align:center;color:#888">Belum ada map sama sekali!<br><b>Jadi yang pertama bikin map!</b></div>';if(el2)el2.innerHTML='';return;}var arr=Object.values(v);var h='';arr.slice(0,6).forEach(function(m){var emoji=m.tema=='lava'?'🌋':m.tema=='beach'?'🏖️':m.tema=='forest'?'🌲':'🏙️';h+='<div class="mapCard" onclick="masukGame(\''+m.nama+'\',\''+m.tema+'\',\''+m.id+'\',\''+m.owner+'\')"><div class="thumb">'+emoji+'</div><b>'+m.nama+'</b><small>@'+m.owner+'</small></div>';});el.innerHTML=h;if(el2){var h2='';arr.slice(0,2).forEach(function(m){var emoji2=m.tema=='lava'?'🌋':m.tema=='beach'?'🏖️':m.tema=='forest'?'🌲':'🏙️';h2+='<div class="mapCard" onclick="masukGame(\''+m.nama+'\',\''+m.tema+'\',\''+m.id+'\',\''+m.owner+'\')"><div class="thumb">'+emoji2+'</div><b>'+m.nama+'</b><small>@'+m.owner+'</small></div>';});el2.innerHTML=h2;}}catch(e){}}
-async function loadItemsServer(){try{var r=await fetch(DB_URL+"/bloxItems.json");var v=await r.json();ITEMS_SERVER=[];if(v)ITEMS_SERVER=Object.values(v);renderKatalog();}catch(e){}}
-async function cobaBuatMap(){if(!AKUN)return;await syncDariServer();if(!AKUN.premium){if(confirm('Bikin Map khusus PREMIUM! Diamond lu: '+(AKUN.diamond||0)+'\nMau beli Premium 500 💎?')){beliPremium();}return;}document.getElementById('modalBuatMap').style.display='flex';}
-function pilihTema(t,label){TEMA_BARU=t;document.getElementById('temaDipilih').innerText=label+' ('+t+')';}
-function pilihLuasAwal(val){LUAS_AWAL_BARU=val;document.getElementById('luasAwalDipilih').innerText=val+' x '+val;}
-async function simpanMapBaru(){if(!AKUN)return;var s=await ambilAkunByUsername(AKUN.username);if(!s||!s.premium){alert('⛔ DITOLAK! Belum Premium!');return;}AKUN=s;var nama=document.getElementById('inputNamaMap').value.trim();if(!nama){alert('Isi nama map!');return;}var id='map_'+Date.now()+'_'+Math.floor(Math.random()*9999);var map={id:id,nama:nama,tema:TEMA_BARU,luas:LUAS_AWAL_BARU,owner:AKUN.username,ownerID:AKUN.id,ownerEmail:AKUN.email,waktu:Date.now()};if(!AKUN.maps)AKUN.maps=[];AKUN.maps.push(map);await simpanAkun();try{await fetch(DB_URL+"/bloxMaps/"+id+".json",{method:"PUT",body:JSON.stringify(map)});}catch(e){}tutupSemua();updateUang();renderMapSaya();alert('✅ Map dibuat!');masukGame(nama,TEMA_BARU,id,AKUN.username);}
-async function beliPremium(){if(!AKUN)return;var s=await ambilAkunByUsername(AKUN.username);if(!s)return;AKUN=s;updateUang();if(AKUN.premium){alert('Udah Premium!');return;}if((AKUN.diamond||0)<500){alert('⛔ Diamond kurang! Top Up WA 0895600169977!');tutupSemua();bukaTopUp();return;}if(!confirm('Beli PREMIUM 500 💎?'))return;AKUN.diamond-=500;AKUN.premium=true;AKUN.coins=(AKUN.coins||0)+500;await simpanAkun();updateUang();renderLobby();alert('🎉 SELAMAT! Lu PREMIUM!');}
-function masukGame(nama,tema,mapId,owner){if(!AKUN)return;MAP_AKTIF={id:mapId,nama:nama,tema:tema||'city',owner:owner||AKUN.username};document.getElementById('lobby').style.display='none';document.getElementById('game').style.display='block';document.getElementById('bottomNav').style.display='none';updateUang();updateBuildUI();document.getElementById('toolPanel').style.display='none';MODE='select';if(scene){for(var k in PARTS){scene.remove(PARTS[k]);}PARTS={};gantiTemaMap(tema);loadWorldServer();}else{init3D();}showToast('Masuk '+nama+'!');}
-function kembaliLobby(){document.getElementById('game').style.display='none';document.getElementById('lobby').style.display='block';document.getElementById('bottomNav').style.display='flex';var b=document.getElementById('buildLockBanner');if(b)b.style.display='none';renderLobby();window.scrollTo(0,0);}
-function gantiTemaMap(tema){if(!baseplate)return;var warna={city:0x7ec850,lava:0x8b0000,beach:0xfde68a,forest:0x166534}[tema]||0x7ec850;baseplate.material.color.setHex(warna);}
-function setMode(m){MODE=m;document.querySelectorAll('#toolbar button').forEach(function(b){b.classList.remove('on');});if(m=='select')document.getElementById('tbSelect').classList.add('on');if(m=='move')document.getElementById('tbMove').classList.add('on');document.getElementById('toolPanel').style.display='none';}
-function toggleBuild(){if(!AKUN)return;if(!apakahPemilikMap()){alert('⛔ GABISA BANGUN! Ini map milik @'+(MAP_AKTIF?MAP_AKTIF.owner:'?'));return;}var p=document.getElementById('toolPanel');var show=p.style.display!='block';p.style.display=show?'block':'none';if(show)MODE='build';else MODE='select';showToast(show?'🧱 BUILD aktif!':'BUILD mati');}
-function setTool(t){if(!apakahPemilikMap()){alert('⛔ Lu bukan pemilik map!');return;}TOOL=t;showToast('Tool: '+t.toUpperCase());}
-function buildWarnaList(){var h='';WARNA_LIST.forEach(function(c){var hex='#'+c.toString(16).padStart(6,'0');h+='<div class="cbtn" style="background:'+hex+'" onclick="WARNA='+c+'"></div>';});var el=document.getElementById('warnaList');if(el)el.innerHTML=h;var h2='';KULIT_LIST.forEach(function(c){var hex='#'+c.toString(16).padStart(6,'0');h2+='<div class="cbtn" style="background:'+hex+'" onclick="gantiKulit('+c+')"></div>';});var e2=document.getElementById('warnaHead');if(e2)e2.innerHTML=h2;var h3='';WARNA_LIST.forEach(function(c){var hex='#'+c.toString(16).padStart(6,'0');h3+='<div class="cbtn" style="background:'+hex+'" onclick="AVATAR.torso='+c+';renderAvatarPreview();simpanAvatar()"></div>';});var e3=document.getElementById('warnaTorso');if(e3)e3.innerHTML=h3;var h4='';WARNA_LIST.forEach(function(c){var hex='#'+c.toString(16).padStart(6,'0');h4+='<div class="cbtn" style="background:'+hex+'" onclick="AVATAR.legs='+c+';renderAvatarPreview();simpanAvatar()"></div>';});var e4=document.getElementById('warnaLegs');if(e4)e4.innerHTML=h4;var h5='';[0x111111,0xffffff,0xff0000,0x00a2ff,0xffd700,0x8b4513].forEach(function(c){var hex='#'+c.toString(16).padStart(6,'0');h5+='<div class="cbtn" style="background:'+hex+'" onclick="AVATAR.shoes='+c+';renderAvatarPreview();simpanAvatar()"></div>';});var e5=document.getElementById('warnaSepatu');if(e5)e5.innerHTML=h5;var hr='';RAMBUT_LIST.forEach(function(r){hr+='<button onclick="gantiRambut(\''+r.id+'\')" style="padding:10px;border-radius:10px;font-weight:900;background:#eee;border:none;font-size:18px">'+r.emoji+'<br><small style="font-size:10px">'+r.nama+'</small></button>';});var er=document.getElementById('listRambut');if(er)er.innerHTML=hr;}
-async function gantiKulit(c){AVATAR.head=c;renderAvatarPreview();await simpanAvatar();}
-async function gantiRambut(id){AVATAR.rambut=id;renderAvatarPreview();await simpanAvatar();}
-async function simpanAvatar(){if(!AKUN)return;var s=await ambilAkunByUsername(AKUN.username);if(s)AKUN=s;AKUN.avatar=AVATAR;AKUN.equipped={hat:AVATAR.hat,wing:AVATAR.wing,weapon:AVATAR.weapon,backpack:AVATAR.backpack};await simpanAkun();gantiAvatar();updateUang();renderAvatarPreview();}
-function bukaAvatar(){if(!AKUN){alert('Login dulu!');return;}document.getElementById('modalAvatar').style.display='flex';updateUang();renderAvatarPreview();var h='<div class="kitem"><div><b>🚫 Lepas Semua</b></div><button class="kbtn" style="background:#ef4444" onclick="lepasSemua()">LEPAS</button></div>';document.getElementById('listTopi').innerHTML=h;}
-function renderAvatarPreview(){var el=document.getElementById('previewKarakterBesar');if(!el) return;var kulit='#'+AVATAR.head.toString(16).padStart(6,'0');var baju='#'+AVATAR.torso.toString(16).padStart(6,'0');var celana='#'+AVATAR.legs.toString(16).padStart(6,'0');var sepatu='#'+AVATAR.shoes.toString(16).padStart(6,'0');var rambutWarna='#'+(AVATAR.rambutWarna||0x2b1a12).toString(16).padStart(6,'0');var hatItem=AVATAR.hat!='none'?ITEMS_SERVER.find(function(x){return x.id==AVATAR.hat;}):null;var wingItem=AVATAR.wing!='none'?ITEMS_SERVER.find(function(x){return x.id==AVATAR.wing;}):null;var hatHtml=hatItem?'<div style="position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:28px">'+hatItem.emoji+'</div>':'';var wingHtml=wingItem?'<div style="position:absolute;top:70px;left:-28px;font-size:32px">'+wingItem.emoji+'</div><div style="position:absolute;top:70px;right:-28px;font-size:32px">'+wingItem.emoji+'</div>':'';el.innerHTML='<div style="position:relative;width:110px;height:200px;transform:rotateY('+PUTAR_KARAKTER+'deg);transition:all .3s;margin-bottom:'+(LOMPAT_PREVIEW*20)+'px">'+wingHtml+'<div style="width:52px;height:52px;background:'+kulit+';border-radius:50%;margin:0 auto;position:relative;border:2px solid rgba(0,0,0,.1);z-index:3">'+hatHtml+(AVATAR.rambut=='botak'?'':'<div style="position:absolute;top:-6px;left:2px;right:2px;height:20px;background:'+rambutWarna+';border-radius:20px 20px 6px 6px"></div>')+'<div style="position:absolute;top:22px;left:10px;width:7px;height:9px;background:#111;border-radius:50%"></div><div style="position:absolute;top:22px;right:10px;width:7px;height:9px;background:#111;border-radius:50%"></div><div style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);width:16px;height:4px;background:#7c2d12;border-radius:4px"></div></div><div style="width:62px;height:62px;background:'+baju+';border-radius:10px;margin:2px auto 0;position:relative;z-index:2"></div><div style="display:flex;gap:4px;justify-content:center;margin-top:2px"><div><div style="width:24px;height:46px;background:'+celana+'"></div><div style="width:28px;height:14px;background:'+sepatu+';border-radius:6px;margin-top:2px"></div></div><div><div style="width:24px;height:46px;background:'+celana+'"></div><div style="width:28px;height:14px;background:'+sepatu+';border-radius:6px;margin-top:2px"></div></div></div></div>';var pn=document.getElementById('previewNama');if(pn&&AKUN)pn.innerText='@'+AKUN.username+' • ID: '+(AKUN.id||'-')+(AKUN.premium?' 👑 PREMIUM':'');var info=document.getElementById('infoAvatarPreview');if(info)info.innerText='Baju: '+baju+' • Celana: '+celana;}
-function putarKarakter(){PUTAR_KARAKTER+=45;if(PUTAR_KARAKTER>=360)PUTAR_KARAKTER=0;renderAvatarPreview();showToast('🔄 Karakter diputar!');}
-function lompatPreview(){LOMPAT_PREVIEW=1;renderAvatarPreview();setTimeout(function(){LOMPAT_PREVIEW=0;renderAvatarPreview();},400);}
-function bukaInventory(){if(!AKUN)return;document.getElementById('modalInventory').style.display='flex';renderInventory();}
-function renderInventory(){if(!AKUN)return;var list=AKUN.items||[];var el=document.getElementById('listInventory');var kosong=document.getElementById('invKosong');updateUang();if(list.length==0){el.innerHTML='';if(kosong)kosong.style.display='block';return;}if(kosong)kosong.style.display='none';var h='';list.forEach(function(id){var k=ITEMS_SERVER.find(function(x){return x.id==id;});if(!k)return;h+='<div class="invCard"><span style="font-size:36px;display:block">'+k.emoji+'</span><b style="font-size:12px">'+k.nama+'</b><br><button onclick="pakaiItem(\''+id+'\')" style="width:100%;background:#16a34a;color:#fff;border:none;padding:10px;border-radius:8px;font-weight:900;margin-top:6px">✅ PAKAI</button></div>';});el.innerHTML=h;}
-async function pakaiItem(id){var k=ITEMS_SERVER.find(function(x){return x.id==id;});if(!k)return;if(k.tipe=='hat')AVATAR.hat=id;if(k.tipe=='wing')AVATAR.wing=id;if(k.tipe=='weapon')AVATAR.weapon=id;if(k.tipe=='backpack')AVATAR.backpack=id;await simpanAvatar();showToast('✅ '+k.nama+' dipake!');renderInventory();}
-async function lepasItem(tipe){if(tipe=='hat')AVATAR.hat='none';if(tipe=='wing')AVATAR.wing='none';if(tipe=='weapon')AVATAR.weapon='none';if(tipe=='backpack')AVATAR.backpack='none';await simpanAvatar();renderInventory();bukaAvatar();}
-async function lepasItemById(id){var k=ITEMS_SERVER.find(function(x){return x.id==id;});if(!k)return;await lepasItem(k.tipe);}
-async function lepasSemua(){AVATAR.hat='none';AVATAR.wing='none';AVATAR.weapon='none';AVATAR.backpack='none';await simpanAvatar();renderInventory();bukaAvatar();}
-function bukaKatalog(){if(!AKUN)return;document.getElementById('modalKatalog').style.display='flex';updateUang();renderKatalog();}
-function renderKatalog(){var el=document.getElementById('listKatalog');var kos=document.getElementById('katalogKosong');if(ITEMS_SERVER.length==0){el.innerHTML='';if(kos)kos.style.display='block';return;}if(kos)kos.style.display='none';var h='';ITEMS_SERVER.forEach(function(k){var punya=(AKUN.items||[]).includes(k.id);h+='<div class="kitem"><div><b>'+k.emoji+' '+k.nama+'</b><br><small>'+k.desc+'</small><br><small style="color:#a855f7;font-weight:900">💎 '+k.harga+'</small></div>'+(punya?'<button class="kbtn" style="background:#16a34a" onclick="pakaiItem(\''+k.id+'\')">PAKAI</button>':'<button class="kbtn" style="background:#a855f7" onclick="beliKatalog(\''+k.id+'\')">BELI</button>')+'</div>';});el.innerHTML=h;}
-async function beliKatalog(id){var k=ITEMS_SERVER.find(function(x){return x.id==id;});var s=await ambilAkunByUsername(AKUN.username);if(!s)return;AKUN=s;updateUang();if((AKUN.diamond||0)<k.harga){alert('⛔ Diamond kurang! Top Up WA 0895600169977!');tutupSemua();bukaTopUp();return;}AKUN.diamond-=k.harga;if(!AKUN.items)AKUN.items=[];AKUN.items.push(id);await simpanAkun();updateUang();gantiAvatar();alert('✅ Beli '+k.nama+' berhasil!');bukaKatalog();}
-function bukaTopUpWA(paketIndex){if(!AKUN)return;var paketText="Saya mau Top Up Diamond!";if(paketIndex!=null&&PAKET[paketIndex]){var p=PAKET[paketIndex];paketText="Saya mau Top Up "+p.label+" (Rp "+p.harga.toLocaleString('id-ID')+")";}var pesan="Halo Admin BloxLongkali!%0A%0A"+encodeURIComponent(paketText)+"%0A%0A"+"Username: "+encodeURIComponent(AKUN.username)+"%0A"+"Email: "+encodeURIComponent(AKUN.email)+"%0A"+"ID: "+encodeURIComponent(AKUN.id||'-');window.open("https://wa.me/"+WA_ADMIN+"?text="+pesan,"_blank");}
-function bukaTopUp(){if(!AKUN){alert('Login dulu!');return;}document.getElementById('modalTopUp').style.display='flex';syncDariServer();var h='';PAKET.forEach(function(p,i){h+='<div class="kitem" style="background:#dcfce7;border:1px solid #25D366"><div><b>'+p.label+'</b><br><small>Rp '+p.harga.toLocaleString('id-ID')+'</small></div><button class="kbtn" style="background:#25D366" onclick="bukaTopUpWA('+i+')">📱 WA</button></div>';});document.getElementById('listTopUp').innerHTML=h;}
-async function tukarVoucher(){if(!AKUN)return;var kode=document.getElementById('inputVoucher').value.trim().toUpperCase();if(!kode){alert('Masukin kode!');return;}try{var r=await fetch(DB_URL+"/voucher/"+kode+".json");var v=await r.json();if(!v||v.pakai){alert('Kode salah / udah dipake!');return;}var s=await ambilAkunByUsername(AKUN.username);if(s)AKUN=s;AKUN.diamond=(AKUN.diamond||0)+(v.diamond||0);await simpanAkun();await fetch(DB_URL+"/voucher/"+kode+".json",{method:"PUT",body:JSON.stringify({diamond:v.diamond||0,pakai:true,pemakai:AKUN.username})});updateUang();alert('✅ +'+v.diamond+' 💎!');}catch(e){alert('Gagal!');}}
-function bukaChat(){document.getElementById('modalChat').style.display='flex';loadChat();}
-async function kirimChat(){var t=document.getElementById('inputChat').value.trim();if(!t)return;if(!AKUN)return;document.getElementById('inputChat').value='';try{await fetch(DB_URL+"/bloxChat.json",{method:"POST",body:JSON.stringify({nama:AKUN.username,id:AKUN.id,teks:t,waktu:Date.now()})});loadChat();}catch(e){}}
-async function loadChat(){try{var r=await fetch(DB_URL+"/bloxChat.json");var v=await r.json();if(!v)return;var arr=Object.values(v).sort(function(a,b){return a.waktu-b.waktu;});var h='';arr.slice(-20).forEach(function(c){var saya=AKUN&&c.nama==AKUN.username;h+='<div style="align-self:'+(saya?'flex-end':'flex-start')+';max-width:80%;background:'+(saya?'#111;color:#fff':'#fff')+';padding:8px 12px;border-radius:12px"><b style="font-size:11px">@'+c.nama+'</b><br>'+c.teks+'</div>';});var el=document.getElementById('isiChat');if(el){el.innerHTML=h;el.scrollTop=el.scrollHeight;}}catch(e){}}
-function previewLuas(val){LUAS_PREVIEW=parseInt(val);var lb=document.getElementById('labelLuas');if(lb)lb.innerText=val+' x '+val;}
-function setLuas(val){var s=document.getElementById('sliderLuas');if(s)s.value=val;previewLuas(val);}
-async function simpanLuas(){if(!apakahPemilikMap()){alert('Bukan pemilik map!');return;}LUAS_SAAT_INI=LUAS_PREVIEW;try{await fetch(DB_URL+"/bloxMaps/"+MAP_AKTIF.id+".json",{method:"PATCH",body:JSON.stringify({luas:LUAS_SAAT_INI})});}catch(e){}showToast('✅ Luas disimpan: '+LUAS_SAAT_INI+' x '+LUAS_SAAT_INI);}
-async function tambahProp(jenis){if(!apakahPemilikMap()){alert('⛔ Lu bukan pemilik map!');return;}if(!pemain)return;var px=Math.round(pemain.position.x/4)*4;var pz=Math.round(pemain.position.z/4)*4-8;var id='p_'+Date.now()+'_'+Math.floor(Math.random()*9999);var data={tipe:'prop',prop:jenis,warna:WARNA,x:px,z:pz,owner:AKUN.username,ownerID:AKUN.id,waktu:Date.now()};buatPropMesh(id,jenis,WARNA,px,pz,AKUN.username);kirimPartKeServer(id,data);showToast('✅ '+jenis+' ditambah!');}
-function buatPropMesh(id,jenis,warna,x,z,owner){if(!scene) return null;var g=new THREE.Group();g.position.set(x,0,z);g.name='partBlox';g.userData={partId:id,tipe:'prop',prop:jenis,warna:warna,x:x,z:z,owner:owner||''};if(jenis=='telepon'){var tiang=new THREE.Mesh(new THREE.BoxGeometry(2,6,2),new THREE.MeshLambertMaterial({color:0xff0000}));tiang.position.y=3;g.add(tiang);}else if(jenis=='rumah'){var badan=new THREE.Mesh(new THREE.BoxGeometry(10,6,8),new THREE.MeshLambertMaterial({color:0xfde68a}));badan.position.y=3;g.add(badan);var atap2=new THREE.Mesh(new THREE.BoxGeometry(11,2,9),new THREE.MeshLambertMaterial({color:0xef4444}));atap2.position.y=7;g.add(atap2);}else if(jenis=='pohon'){var batang=new THREE.Mesh(new THREE.CylinderGeometry(0.6,0.8,4,8),new THREE.MeshLambertMaterial({color:0x8b4513}));batang.position.y=2;g.add(batang);var daun=new THREE.Mesh(new THREE.SphereGeometry(3,10,8),new THREE.MeshLambertMaterial({color:0x16a34a}));daun.position.y=6;g.add(daun);}else if(jenis=='mobil'){var body=new THREE.Mesh(new THREE.BoxGeometry(6,1.5,3),new THREE.MeshLambertMaterial({color:0xff0000}));body.position.y=1.2;g.add(body);}else if(jenis=='lampu'){var tiang2=new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.3,8,8),new THREE.MeshLambertMaterial({color:0x333333}));tiang2.position.y=4;g.add(tiang2);var bohlam=new THREE.Mesh(new THREE.SphereGeometry(0.8,10,8),new THREE.MeshLambertMaterial({color:0xffff00}));bohlam.position.y=8.5;g.add(bohlam);}else if(jenis=='toko'){var b=new THREE.Mesh(new THREE.BoxGeometry(8,5,6),new THREE.MeshLambertMaterial({color:0xffffff}));b.position.y=2.5;g.add(b);}else if(jenis=='jembatan'){var papanJ=new THREE.Mesh(new THREE.BoxGeometry(12,0.6,4),new THREE.MeshLambertMaterial({color:0x8b4513}));papanJ.position.y=2;g.add(papanJ);}else if(jenis=='pagar'){for(var i=0;i<5;i++){var p=new THREE.Mesh(new THREE.BoxGeometry(1.8,2,0.3),new THREE.MeshLambertMaterial({color:0xffffff}));p.position.set(-4+i*2,1,0);g.add(p);}}else if(jenis=='kursi'){var dudukan=new THREE.Mesh(new THREE.BoxGeometry(2,0.4,2),new THREE.MeshLambertMaterial({color:0x8b4513}));dudukan.position.y=1;g.add(dudukan);}else if(jenis=='meja'){var atas=new THREE.Mesh(new THREE.BoxGeometry(4,0.4,3),new THREE.MeshLambertMaterial({color:0xffffff}));atas.position.y=2;g.add(atas);}else if(jenis=='kolam'){var air=new THREE.Mesh(new THREE.BoxGeometry(10,0.4,8),new THREE.MeshLambertMaterial({color:0x00a2ff}));air.position.y=0.35;g.add(air);}else if(jenis=='tower'){var t1=new THREE.Mesh(new THREE.CylinderGeometry(0.5,2,12,8),new THREE.MeshLambertMaterial({color:0x999999}));t1.position.y=6;g.add(t1);}else if(jenis=='sekolah'){var bS=new THREE.Mesh(new THREE.BoxGeometry(14,7,8),new THREE.MeshLambertMaterial({color:0xfef3c7}));bS.position.y=3.5;g.add(bS);}else if(jenis=='masjid'){var bM=new THREE.Mesh(new THREE.BoxGeometry(10,6,10),new THREE.MeshLambertMaterial({color:0xffffff}));bM.position.y=3;g.add(bM);var kubah=new THREE.Mesh(new THREE.SphereGeometry(3,12,8,0,Math.PI*2,0,Math.PI/2),new THREE.MeshLambertMaterial({color:0x16a34a}));kubah.position.y=6;g.add(kubah);}else if(jenis=='warung'){var bW=new THREE.Mesh(new THREE.BoxGeometry(6,4,5),new THREE.MeshLambertMaterial({color:0xfde68a}));bW.position.y=2;g.add(bW);}else if(jenis=='lapangan'){var rumput=new THREE.Mesh(new THREE.BoxGeometry(20,0.3,14),new THREE.MeshLambertMaterial({color:0x22c55e}));rumput.position.y=0.2;g.add(rumput);}else if(jenis=='jalan'){var aspal=new THREE.Mesh(new THREE.BoxGeometry(14,0.3,4),new THREE.MeshLambertMaterial({color:0x333333}));aspal.position.y=0.2;g.add(aspal);}else if(jenis=='pintu'){var tiangK1=new THREE.Mesh(new THREE.BoxGeometry(0.8,7,0.8),new THREE.MeshLambertMaterial({color:0x8b4513}));tiangK1.position.set(-4,3.5,0);g.add(tiangK1);}else{var def=new THREE.Mesh(new THREE.BoxGeometry(3,3,3),new THREE.MeshLambertMaterial({color:warna}));def.position.y=1.5;g.add(def);}scene.add(g);PARTS[id]=g;return g;}
-function buatAvatarRealistis(avatarData,username,id){var av=avatarData||AVATAR;var g=new THREE.Group();var kulit=av.head||0xfdbd8a;var baju=av.torso||0x00a2ff;var celana=av.legs||0x1e3a8a;var sepatu=av.shoes||0x111111;var badan=new THREE.Mesh(new THREE.BoxGeometry(1.05,1.05,0.6),new THREE.MeshLambertMaterial({color:baju}));badan.position.y=1.65;g.add(badan);var kp=new THREE.Mesh(new THREE.SphereGeometry(0.55,16,12),new THREE.MeshLambertMaterial({color:kulit}));kp.position.y=2.75;g.add(kp);var c=document.createElement('canvas');c.width=256;c.height=64;var ctx=c.getContext('2d');ctx.fillStyle='rgba(0,0,0,0.7)';ctx.fillRect(0,0,256,64);ctx.fillStyle='#fff';ctx.font='bold 20px Arial';ctx.textAlign='center';ctx.fillText('@'+(username||'Player'),128,38);var tex=new THREE.CanvasTexture(c);var papan=new THREE.Mesh(new THREE.PlaneGeometry(3.5,0.75),new THREE.MeshBasicMaterial({map:tex,transparent:true}));papan.position.y=3.8;g.add(papan);g.userData={kakiKiri:{rotation:{x:0}},kakiKanan:{rotation:{x:0}},tanganKiri:{rotation:{x:0}},tanganKanan:{rotation:{x:0}},kepala:{position:{y:2.75}}};return g;}
-function animasiJalan(group,sedangJalan,waktu){return;}
-function gantiAvatar(){if(!pemain||!AKUN||!scene)return;var pos=pemain.position.clone();var rot=pemain.rotation.clone();var baru=buatAvatarRealistis(AVATAR,AKUN.username,AKUN.id);baru.position.copy(pos);baru.rotation.copy(rot);scene.remove(pemain);pemain=baru;scene.add(pemain);}
-function buatBaseplate(){baseplate=new THREE.Mesh(new THREE.PlaneGeometry(LUAS_SAAT_INI||200,LUAS_SAAT_INI||200),new THREE.MeshLambertMaterial({color:0x7ec850}));baseplate.rotation.x=-Math.PI/2;scene.add(baseplate);}
-function buatPartMesh(id,tipe,warna,x,z,owner){var m=null;if(tipe=='part'){m=new THREE.Mesh(new THREE.BoxGeometry(4,4,4),new THREE.MeshLambertMaterial({color:warna}));m.position.set(x,2,z);}else if(tipe=='ball'){m=new THREE.Mesh(new THREE.SphereGeometry(2,12,10),new THREE.MeshLambertMaterial({color:warna}));m.position.set(x,2,z);}else if(tipe=='cylinder'){m=new THREE.Mesh(new THREE.CylinderGeometry(2,2,4,10),new THREE.MeshLambertMaterial({color:warna}));m.position.set(x,2,z);}else{m=new THREE.Mesh(new THREE.BoxGeometry(4,4,4),new THREE.MeshLambertMaterial({color:warna}));m.position.set(x,2,z);}if(!m)return null;m.name='partBlox';m.userData={partId:id,tipe:tipe,warna:warna,x:x,z:z,owner:owner||''};scene.add(m);PARTS[id]=m;return m;}
-async function kirimPartKeServer(id,data){try{await fetch(DB_URL+"/bloxWorld_"+MAP_AKTIF.id+"/"+id+".json",{method:"PUT",body:JSON.stringify(data)});}catch(e){}}
-async function hapusPartServer(id){try{await fetch(DB_URL+"/bloxWorld_"+MAP_AKTIF.id+"/"+id+".json",{method:"DELETE"});}catch(e){}}
-async function loadWorldServer(){try{var r=await fetch(DB_URL+"/bloxWorld_"+MAP_AKTIF.id+".json");var v=await r.json();if(!v)return;for(var id in v){if(!PARTS[id]&&v[id]){if(v[id].tipe=='prop'){buatPropMesh(id,v[id].prop,v[id].warna,v[id].x,v[id].z,v[id].owner);}else{buatPartMesh(id,v[id].tipe,v[id].warna,v[id].x,v[id].z,v[id].owner);}}}}catch(e){}}
-async function clearWorld(){if(!apakahPemilikMap()){alert('⛔ Bukan pemilik map!');return;}if(!confirm('Hapus semua part lu?'))return;try{var r=await fetch(DB_URL+"/bloxWorld_"+MAP_AKTIF.id+".json");var v=await r.json();if(!v)return;for(var id in v){if(v[id]&&v[id].owner==AKUN.username){await hapusPartServer(id);if(PARTS[id]){scene.remove(PARTS[id]);delete PARTS[id];}}}showToast('✅ Part lu kehapus!');}catch(e){}}
-function init3D(){try{scene=new THREE.Scene();scene.background=new THREE.Color(0x87ceeb);var holder=document.getElementById('holder');cam=new THREE.PerspectiveCamera(60,holder.clientWidth/holder.clientHeight,0.1,1000);ren=new THREE.WebGLRenderer({antialias:true});ren.setSize(holder.clientWidth,holder.clientHeight);holder.innerHTML='';holder.appendChild(ren.domElement);scene.add(new THREE.AmbientLight(0xffffff,0.9));var dl=new THREE.DirectionalLight(0xffffff,0.6);dl.position.set(20,30,10);scene.add(dl);buatBaseplate();gantiTemaMap(MAP_AKTIF.tema);pemain=buatAvatarRealistis(AVATAR,AKUN?AKUN.username:'Player',AKUN?AKUN.id:'');pemain.position.set(0,0,0);scene.add(pemain);loadWorldServer();ren.domElement.addEventListener('click',function(e){if(MODE!='build')return;var rect=ren.domElement.getBoundingClientRect();MOUSE.x=((e.clientX-rect.left)/rect.width)*2-1;MOUSE.y=-((e.clientY-rect.top)/rect.height)*2+1;RAY.setFromCamera(MOUSE,cam);if(TOOL=='delete'){var hits=RAY.intersectObjects(Object.values(PARTS),true);if(hits.length>0){var t=hits[0].object;while(t.parent&&!t.userData.partId){t=t.parent;}var bid=t.userData.partId;scene.remove(t);delete PARTS[bid];hapusPartServer(bid);}return;}var hit=RAY.intersectObject(baseplate);if(hit.length>0){var p=hit[0].point;var x=Math.round(p.x/4)*4,z=Math.round(p.z/4)*4;var id='p_'+Date.now()+'_'+Math.floor(Math.random()*9999);var data={tipe:TOOL,warna:WARNA,x:x,z:z,owner:AKUN?AKUN.username:'tamu',ownerID:AKUN?AKUN.id:'',waktu:Date.now()};buatPartMesh(id,TOOL,WARNA,x,z,AKUN?AKUN.username:'tamu');kirimPartKeServer(id,data);}});var camDrag=false,lastX=0,lastY=0;ren.domElement.addEventListener('pointerdown',function(e){if(MODE=='build')return;camDrag=true;lastX=e.clientX;lastY=e.clientY;});ren.domElement.addEventListener('pointermove',function(e){if(!camDrag)return;var dx=e.clientX-lastX,dy=e.clientY-lastY;yaw-=dx*0.008;pitch=Math.max(0.2,Math.min(1.4,pitch+dy*0.005));lastX=e.clientX;lastY=e.clientY;});window.addEventListener('pointerup',function(){camDrag=false;});(function loop(){requestAnimationFrame(loop);var mx=0,mz=0;if(joyX!=0||joyY!=0){mx=joyX;mz=joyY;}SEDANG_JALAN=(mx!=0||mz!=0);if(SEDANG_JALAN&&pemain){WALK_TIME+=0.05;var len=Math.sqrt(mx*mx+mz*mz);mx/=len;mz/=len;pemain.position.x+=mx*speed;pemain.position.z+=mz*speed;var batas=(LUAS_SAAT_INI||200)/2-5;pemain.position.x=Math.max(-batas,Math.min(batas,pemain.position.x));pemain.position.z=Math.max(-batas,Math.min(batas,pemain.position.z));pemain.rotation.y=Math.atan2(mx,mz);}if(isJump&&pemain){velY+=0.02;pemain.position.y-=velY;if(pemain.position.y<=0){pemain.position.y=0;isJump=false;velY=0;}}if(cam&&pemain&&ren){cam.position.set(pemain.position.x+Math.sin(yaw)*dist*Math.cos(pitch),pemain.position.y+Math.sin(pitch)*dist+2,pemain.position.z+Math.cos(yaw)*dist*Math.cos(pitch));cam.lookAt(pemain.position.x,pemain.position.y+2,pemain.position.z);ren.render(scene,cam);}})();}catch(e){alert('3D Error: '+e.message);}}
-function lompat(){if(!isJump){isJump=true;velY=-0.5;}}
-window.addEventListener('keydown',function(e){if(e.key==' '){lompat();}});
-var joy=document.getElementById('joy'),knob=document.getElementById('knob'),joyAktif=false;
-if(joy){joy.addEventListener('touchstart',function(e){joyAktif=true;},{passive:true});joy.addEventListener('touchmove',function(e){if(!joyAktif)return;var t=e.touches[0];var rect=joy.getBoundingClientRect();var dx=t.clientX-(rect.left+47);var dy=t.clientY-(rect.top+47);dx=Math.max(-30,Math.min(30,dx));dy=Math.max(-30,Math.min(30,dy));knob.style.left=(28+dx)+'px';knob.style.top=(28+dy)+'px';joyX=dx/30;joyY=dy/30;},{passive:true});joy.addEventListener('touchend',function(){joyAktif=false;joyX=0;joyY=0;knob.style.left='28px';knob.style.top='28px';});}
-window.addEventListener('load',async function(){try{buildWarnaList();}catch(e){}var saved=null;try{saved=localStorage.getItem('bloxAkun');}catch(e){}if(saved){try{var j=JSON.parse(saved);if(j.email){var s=await ambilAkunByEmail(j.email);if(s){AKUN=s;AVATAR=AKUN.avatar||AVATAR;if(AKUN.equipped){AVATAR.hat=AKUN.equipped.hat||'none';AVATAR.wing=AKUN.equipped.wing||'none';AVATAR.weapon=AKUN.equipped.weapon||'none';AVATAR.backpack=AKUN.equipped.backpack||'none';}updateUang();renderLobby();}}}catch(e){}}if(!AKUN){setTimeout(function(){var m=document.getElementById('modalLogin');if(m)m.style.display='flex';},600);}else{renderLobby();}loadChat();});
+function bukaTopUp(){if(!AKUN)return;document.getElementById('modalTopUp').style.display='flex';render();}
+function bukaLeader(){gantiTab('rank');window.scrollTo(0,400);}
+function switchTab(t){
+document.getElementById('pDaftar').style.display=t=='daftar'?'block':'none';
+document.getElementById('pLogin').style.display=t=='login'?'block':'none';
+document.getElementById('btnDaftar').style.background=t=='daftar'?'#111':'#eee';
+document.getElementById('btnDaftar').style.color=t=='daftar'?'#fff':'#000';
+document.getElementById('btnLogin').style.background=t=='login'?'#111':'#eee';
+document.getElementById('btnLogin').style.color=t=='login'?'#fff':'#000';
+}
+function topUpWA(idx){
+if(!AKUN)return;
+var paket=["Saya mau Top Up 100 Diamond (Rp 10.000)","Saya mau Top Up 500 Diamond (Rp 40.000)","Saya mau Top Up 1000 Diamond (Rp 75.000)"];
+var pesan="Halo Admin BloxClicker!%0A%0A"+encodeURIComponent(paket[idx]||paket[0])+"%0A%0AUsername: "+encodeURIComponent(AKUN.username)+"%0AEmail: "+encodeURIComponent(AKUN.email)+"%0AID: "+encodeURIComponent(AKUN.id||'-');
+window.open("https://wa.me/"+WA_ADMIN+"?text="+pesan,"_blank");
+}
+function tukarDiamondKeCoin(diamond){
+if(!AKUN)return;
+if((AKUN.diamond||0)<diamond){alert('Diamond kurang! Top Up WA dulu!');bukaTopUp();return;}
+var coinDapat=diamond==100?10000:100000;
+AKUN.diamond-=diamond;GAME.coin+=coinDapat;hitungUlang();render();simpanKeServer(true);alert('✅ +'+formatAngka(coinDapat)+' Coin!');
+}
+async function tukarVoucher(){
+var kode=document.getElementById('inputVoucher').value.trim().toUpperCase();
+if(!kode){alert('Masukin kode!');return;}
+try{
+var r=await fetch(DB_URL+"/voucher/"+kode+".json");var v=await r.json();
+if(!v||v.pakai){alert('Kode salah / udah dipake!');return;}
+AKUN.diamond=(AKUN.diamond||0)+(v.diamond||0);
+await fetch(DB_URL+"/voucher/"+kode+".json",{method:"PUT",body:JSON.stringify({diamond:v.diamond||0,pakai:true,pemakai:AKUN.username})});
+await simpanKeServer(true);render();alert('✅ +'+v.diamond+' 💎!');
+}catch(e){alert('Gagal!');}
+}
+async function simpanKeServer(show){
+if(!AKUN) return;
+try{
+document.getElementById('statusServer').innerText='💾 Nyimpan...';
+var data={username:AKUN.username,email:AKUN.email,id:AKUN.id,diamond:AKUN.diamond||0,coin:GAME.coin,totalKlik:GAME.totalKlik,perKlik:GAME.perKlik,perDetik:GAME.perDetik,upgrade:GAME.upgrade,auto:GAME.auto,prestige:GAME.prestige,multi:GAME.multi,update:Date.now()};
+await fetch(DB_URL+"/bloxClicker/"+AKUN.username+".json",{method:"PUT",body:JSON.stringify(data)});
+await fetch(DB_URL+"/blox/"+AKUN.username+".json",{method:"PATCH",body:JSON.stringify({diamond:AKUN.diamond||0})});
+document.getElementById('statusServer').innerText='✅ Ke-save di server! Terakhir: '+new Date().toLocaleTimeString('id-ID');
+if(show) alert('✅ Ke-save di server!');
+}catch(e){document.getElementById('statusServer').innerText='⚠️ Gagal nyimpan, coba lagi!';}
+}
+async function loadRank(){
+try{
+var r=await fetch(DB_URL+"/bloxClicker.json");var v=await r.json();
+if(!v){document.getElementById('listRank').innerHTML='Belum ada yang main!';return;}
+var arr=Object.values(v).sort(function(a,b){return (b.coin||0)-(a.coin||0);});
+var h='';arr.slice(0,10).forEach(function(u,i){
+var medal=i==0?'🥇':i==1?'🥈':i==2?'🥉':(i+1)+'.';
+var saya=AKUN&&u.username==AKUN.username?' • LU!':'';
+h+='<div class="rank" style="'+(saya?'border:2px solid #facc15':'')+'"><div><b>'+medal+' @'+u.username+saya+'</b><br><small>Prestige: '+(u.prestige||0)+' • Klik: '+formatAngka(u.totalKlik||0)+'</small></div><b>🪙 '+formatAngka(u.coin||0)+'</b></div>';
+});
+document.getElementById('listRank').innerHTML=h;
+}catch(e){document.getElementById('listRank').innerHTML='Gagal load rank!';}
+}
+async function buatIDUnik(){
+for(var i=0;i<20;i++){var id='';for(var j=0;j<10;j++){id+=Math.floor(Math.random()*10).toString();}if(id[0]=='0')id='1'+id.substring(1);try{var r=await fetch(DB_URL+"/bloxByID/"+id+".json");var v=await r.json();if(!v) return id;}catch(e){return id;}}
+return Date.now().toString().slice(-10);
+}
+async function buatAkun(){
+try{
+var u=document.getElementById('inUser').value.trim().replace(/[^a-zA-Z0-9_]/g,'');
+var em=document.getElementById('inEmailDaftar').value.trim().toLowerCase();
+var p1=document.getElementById('inPassDaftar').value;var p2=document.getElementById('inPassDaftar2').value;
+if(!u||u.length<3){alert('Username min 3 huruf!');return;}
+if(!em||!em.includes('@')){alert('Email gak valid!');return;}
+if(!p1||p1.length<6){alert('Password min 6 huruf!');return;}
+if(p1!=p2){alert('Password gak sama!');return;}
+var r0=await fetch(DB_URL+"/blox/"+u+".json");var cekU=await r0.json();if(cekU){alert('Username udah dipake!');return;}
+var newID=await buatIDUnik();
+AKUN={username:u,email:em,id:newID,password:hashPass(p1),coins:100,diamond:0,premium:false,items:[],friends:[],maps:[]};
+GAME={coin:100,totalKlik:0,perKlik:1,perDetik:0,upgrade:{jari:0,sarung:0,palu:0},auto:{teman:0,pabrik:0,tambang:0,bandara:0},prestige:0,multi:1};
+try{localStorage.setItem('bloxAkun',JSON.stringify({email:AKUN.email,username:AKUN.username,id:AKUN.id}));}catch(e){}
+await fetch(DB_URL+"/blox/"+u+".json",{method:"PUT",body:JSON.stringify(AKUN)});
+await fetch(DB_URL+"/bloxByID/"+newID+".json",{method:"PUT",body:JSON.stringify({username:u,id:newID,email:em})});
+await fetch(DB_URL+"/bloxByEmail/"+emailKeKey(em)+".json",{method:"PUT",body:JSON.stringify({username:u,id:newID,email:em})});
+await simpanKeServer(false);
+tutupSemua();hitungUlang();render();alert('🎉 AKUN BERHASIL! @'+u+' ID: '+newID+' Dapet 100 Coin awal!');
+}catch(e){alert('Error: '+e.message);}
+}
+async function loginAkun(){
+try{
+var em=document.getElementById('inLoginEmail').value.trim().toLowerCase();
+var pw=document.getElementById('inLoginPass').value;
+if(!em||!em.includes('@')){alert('Isi Email!');return;}
+if(!pw){alert('Isi Password!');return;}
+document.getElementById('statusServer').innerText='🔄 Login...';
+var r=await fetch(DB_URL+"/bloxByEmail/"+emailKeKey(em)+".json");var v=await r.json();if(!v){alert('Email belum daftar!');switchTab('daftar');return;}
+var r2=await fetch(DB_URL+"/blox/"+v.username+".json");var akun=await r2.json();
+if(!akun){alert('Akun gak ketemu!');return;}
+if(akun.password!=hashPass(pw)&&akun.password!=pw){alert('Password salah!');return;}
+AKUN=akun;if(AKUN.diamond==null)AKUN.diamond=0;
+try{localStorage.setItem('bloxAkun',JSON.stringify({email:AKUN.email,username:AKUN.username,id:AKUN.id}));}catch(e){}
+var r3=await fetch(DB_URL+"/bloxClicker/"+AKUN.username+".json");var saved=await r3.json();
+if(saved){GAME.coin=saved.coin||0;GAME.totalKlik=saved.totalKlik||0;GAME.upgrade=saved.upgrade||{jari:0,sarung:0,palu:0};GAME.auto=saved.auto||{teman:0,pabrik:0,tambang:0,bandara:0};GAME.prestige=saved.prestige||0;GAME.multi=saved.multi||1;}
+hitungUlang();render();tutupSemua();loadRank();
+alert('✅ Login! @'+AKUN.username+' Coin: '+formatAngka(GAME.coin)+' • Diamond: '+(AKUN.diamond||0));
+}catch(e){alert('Gagal: '+e.message);}
+}
+function logoutAkun(){if(!confirm('Logout? Coin udah ke-save!'))return;simpanKeServer(false);AKUN=null;try{localStorage.removeItem('bloxAkun');}catch(e){}GAME={coin:0,totalKlik:0,perKlik:1,perDetik:0,upgrade:{jari:0,sarung:0,palu:0},auto:{teman:0,pabrik:0,tambang:0,bandara:0},prestige:0,multi:1};hitungUlang();render();document.getElementById('modalLogin').style.display='flex';}
+setInterval(function(){
+if(!AKUN) return;
+if(GAME.perDetik>0){GAME.coin+=GAME.perDetik;render();}
+},1000);
+setInterval(function(){if(AKUN) simpanKeServer(false);},3000);
+window.addEventListener('load',async function(){
+hitungUlang();render();
+var saved=null;try{saved=localStorage.getItem('bloxAkun');}catch(e){}
+if(saved){
+try{
+var j=JSON.parse(saved);
+var r=await fetch(DB_URL+"/bloxByEmail/"+emailKeKey(j.email)+".json");var v=await r.json();
+if(v){
+var r2=await fetch(DB_URL+"/blox/"+v.username+".json");AKUN=await r2.json();
+if(AKUN){
+var r3=await fetch(DB_URL+"/bloxClicker/"+AKUN.username+".json");var s=await r3.json();
+if(s){GAME.coin=s.coin||0;GAME.totalKlik=s.totalKlik||0;GAME.upgrade=s.upgrade||{jari:0,sarung:0,palu:0};GAME.auto=s.auto||{teman:0,pabrik:0,tambang:0,bandara:0};GAME.prestige=s.prestige||0;GAME.multi=s.multi||1;}
+hitungUlang();render();loadRank();
+}
+}
+}catch(e){}
+}
+if(!AKUN){setTimeout(function(){document.getElementById('modalLogin').style.display='flex';},600);}
+else{loadRank();}
+});
 </script></body></html>
